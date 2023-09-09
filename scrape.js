@@ -30,15 +30,49 @@ const getMoveInfo = () => {
   // First element is the entire match.
   // Second is the move number.
   // Third is the partial text match of the first part of the message.
-  $$('div[id^="replaylogs_move_"]').forEach(s => moveInfo.push(s.textContent.match(/Move (\d+)\s*[0-9:]+\s*[AP]M(.{30})/)))
+  $$('div[id^="replaylogs_move_"]').forEach(s => moveInfo.push(s.textContent.match(/Move (\d+)\s*:\s*[0-9:]+\s*[AP]M(.{0,50})/)))
 
   return moveInfo
 }
 
 const getNamedMoves = (moveInfo) => {
-  const names = getNames()
+  // Returns array
+  // First element is the move number
+  // Second element is the player name
+  // Third element is the partial text match
 
+  var names = getNames()
+  //names.push('You')  // For the start-of-game discard
+  var namedMoves = []
 
+  moveInfo.forEach(mi => {
+    if ( mi != null ) {
+      names.forEach(n => {
+        if ( mi[2].startsWith(n) ) {
+          namedMoves.push([mi[1], n, mi[2]])
+        }
+      })
+    }
+  })
+
+  return namedMoves
+}
+
+const removeUndoMoves = (namedMoves) => {
+  // Strip out any moves that are pure undo notification moves
+  var filteredMoves = []
+
+  namedMoves.forEach(nm => {
+    if ( !nm[2].startsWith(`${nm[1]} may undo up to this point`) ) {
+      filteredMoves.push(nm)
+    }
+  })
+
+  return filteredMoves
+}
+
+const getMovesList = () => {
+  return removeUndoMoves(getNamedMoves(getMoveInfo()))
 }
 
 const report = () => {
