@@ -72,8 +72,21 @@ const removeUndoMoves = (namedMoves) => {
   return filteredMoves
 }
 
+const removeRepeatMoves = (namedMoves) => {
+  // Pass the moves list through after undos are stripped out
+  var filteredMoves = [namedMoves[0]]
+
+  for ( let i = 1; i < namedMoves.length; i++ ) {
+    if ( namedMoves[i][1] != namedMoves[i-1][1] ) {
+      filteredMoves.push(namedMoves[i])
+    }
+  }
+
+  return filteredMoves
+}
+
 const getMovesList = () => {
-  return removeUndoMoves(getNamedMoves(getMoveInfo()))
+  return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
 }
 
 const report = () => {
