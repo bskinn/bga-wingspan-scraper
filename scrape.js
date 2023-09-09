@@ -85,6 +85,20 @@ const removeRepeatMoves = (namedMoves) => {
   return filteredMoves
 }
 
+const getRoundBonusMoves = (moveInfo) => {
+  var bonusMoves = []
+
+  moveInfo.forEach(mi => {
+    if ( mi != null ) {
+      if ( mi[3].startsWith('Action cubes are returned') ) {
+        bonusMoves.push([mi[1], 'RoundBonus', mi[3]])
+      }
+    }
+  })
+
+  return bonusMoves
+}
+
 const getMovesList = () => {
   return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
 }
