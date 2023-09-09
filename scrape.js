@@ -29,8 +29,9 @@ const getMoveInfo = () => {
 
   // First element is the entire match.
   // Second is the move number.
-  // Third is the partial text match of the first part of the message.
-  $$('div[id^="replaylogs_move_"]').forEach(s => moveInfo.push(s.textContent.match(/Move (\d+)\s*:\s*[0-9:]+\s*[AP]M(.{0,50})/)))
+  // Third, if present, is the date
+  // Fourth is the partial text match of the first part of the message.
+  $$('div[id^="replaylogs_move_"]').forEach(s => moveInfo.push(s.textContent.match(/Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.{0,50})/)))
 
   return moveInfo
 }
@@ -48,8 +49,8 @@ const getNamedMoves = (moveInfo) => {
   moveInfo.forEach(mi => {
     if ( mi != null ) {
       names.forEach(n => {
-        if ( mi[2].startsWith(n) ) {
-          namedMoves.push([mi[1], n, mi[2]])
+        if ( mi[3].startsWith(n) ) {
+          namedMoves.push([mi[1], n, mi[3]])
         }
       })
     }
