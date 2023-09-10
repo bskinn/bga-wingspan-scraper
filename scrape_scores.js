@@ -1,3 +1,5 @@
+// ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
+
 const getIds = () => {
   var ids = []
 
@@ -31,6 +33,8 @@ const getScores = () => {
 
   return scores
 }
+
+// ======  MOVE RETRIEVAL AND PROCESSING  ======
 
 const getMoveInfo = () => {
   var moveInfo = []
@@ -100,6 +104,19 @@ const removeRepeatMoves = (namedMoves) => {
   return filteredMoves
 }
 
+const getMovesList = () => {
+  return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
+}
+
+const getMoveIds = (movesList) => {
+  var moveIds = movesList.map((m) => m.move)
+  return moveIds.sort((a, b) => {
+    return Math.sign(parseInt(a) - parseInt(b))
+  })
+}
+
+// ======  ROUND BONUS HANDLING  ======
+
 const getRoundBonusMoves = () => {
   // Returns object
   // move: Move number
@@ -119,16 +136,7 @@ const getRoundBonusMoves = () => {
   return bonusMoves
 }
 
-const getMovesList = () => {
-  return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
-}
-
-const getMoveIds = (movesList) => {
-  var moveIds = movesList.map((m) => m.move)
-  return moveIds.sort((a, b) => {
-    return Math.sign(parseInt(a) - parseInt(b))
-  })
-}
+// ======  PUBLIC API  ======
 
 const report = () => {
   const names = getNames()
