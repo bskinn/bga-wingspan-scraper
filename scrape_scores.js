@@ -1,3 +1,13 @@
+// ======  PROXY HANDLERS  ======
+
+const createArrayCycleProxy = (arr) => {
+  return new Proxy(arr, {
+    get: (target, prop) => {
+      return target[prop % arr.length]
+    },
+  })
+}
+
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
 const getIds = () => {
@@ -113,6 +123,12 @@ const getMoveIds = (movesList) => {
   return moveIds.sort((a, b) => {
     return Math.sign(parseInt(a) - parseInt(b))
   })
+}
+
+const getPlayOrderProxy = (movesList) => {
+  return createArrayCycleProxy(
+    movesList.slice(0, getNames().length).map((m) => m.name),
+  )
 }
 
 // ======  ROUND BONUS HANDLING  ======
