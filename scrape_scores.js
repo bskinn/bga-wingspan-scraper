@@ -91,11 +91,11 @@ const removeUndoMoves = (namedMoves) => {
 
 const removeRepeatMoves = (namedMoves) => {
   // Pass the moves list through after undos are stripped out
-  // Always keep the first named move, it'll start with the first player
+  // Skip the first move entirely, it will be the discard move
   //
-  var filteredMoves = [namedMoves[0]]
+  var filteredMoves = [namedMoves[1]]
 
-  for (let i = 1; i < namedMoves.length; i++) {
+  for (let i = 2; i < namedMoves.length; i++) {
     if (namedMoves[i].name != namedMoves[i - 1].name) {
       filteredMoves.push(namedMoves[i])
     }
