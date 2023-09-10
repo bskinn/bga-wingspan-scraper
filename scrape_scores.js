@@ -42,7 +42,7 @@ const getMoveInfo = () => {
   $$('div[id^="replaylogs_move_"]').forEach((s) =>
     moveInfo.push(
       s.textContent.match(
-        /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.{0,50})/,
+        /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/,
       ),
     ),
   )
@@ -54,7 +54,7 @@ const getNamedMoves = (moveInfo) => {
   // Returns array
   // First element is the move number
   // Second element is the player name
-  // Third element is the partial text match
+  // Third element is the full text match
 
   var names = getNames()
   //names.push('You')  // For the start-of-game discard
@@ -64,7 +64,7 @@ const getNamedMoves = (moveInfo) => {
     if (mi != null) {
       names.forEach((n) => {
         if (mi[3].startsWith(n)) {
-          namedMoves.push([mi[1], n, mi[3]])
+          namedMoves.push([mi[1], n, mi[0]])
         }
       })
     }
@@ -105,7 +105,7 @@ const getRoundBonusMoves = (moveInfo) => {
   moveInfo.forEach((mi) => {
     if (mi != null) {
       if (mi[3].startsWith('Action cubes are returned')) {
-        bonusMoves.push([mi[1], 'RoundBonus', mi[3]])
+        bonusMoves.push([mi[1], 'RoundBonus', mi[0]])
       }
     }
   })
