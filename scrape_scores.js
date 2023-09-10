@@ -37,8 +37,8 @@ const getMoveInfo = () => {
 
   // First element is the entire match.
   // Second is the move number.
-  // Third, if present, is the date
-  // Fourth is the partial text match of the first part of the message.
+  // Third, if present, is the date.
+  // Fourth is the full text of the move message.
   $$('div[id^="replaylogs_move_"]').forEach((s) =>
     moveInfo.push(
       s.textContent.match(
