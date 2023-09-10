@@ -119,6 +119,8 @@ const removeRepeatMoves = (namedMoves) => {
 }
 
 const getMovesList = () => {
+  // This is the fully prepared moves list that most functions
+  // should work with
   return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
 }
 
