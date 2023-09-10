@@ -51,20 +51,19 @@ const getMoveInfo = () => {
 }
 
 const getNamedMoves = (moveInfo) => {
-  // Returns array
-  // First element is the move number
-  // Second element is the player name
-  // Third element is the full text match
+  // Returns object
+  // move: Move number
+  // name: Player name
+  // text: Full text match
 
   var names = getNames()
-  //names.push('You')  // For the start-of-game discard
   var namedMoves = []
 
   moveInfo.forEach((mi) => {
     if (mi != null) {
       names.forEach((n) => {
         if (mi[3].startsWith(n)) {
-          namedMoves.push([mi[1], n, mi[0]])
+          namedMoves.push({ move: mi[1], name: n, text: mi[0] })
         }
       })
     }
@@ -78,7 +77,7 @@ const removeUndoMoves = (namedMoves) => {
   var filteredMoves = []
 
   namedMoves.forEach((nm) => {
-    if (!nm[2].startsWith(`${nm[1]} may undo up to this point`)) {
+    if (!nm.text.startsWith(`${nm.name} may undo up to this point`)) {
       filteredMoves.push(nm)
     }
   })
@@ -88,10 +87,12 @@ const removeUndoMoves = (namedMoves) => {
 
 const removeRepeatMoves = (namedMoves) => {
   // Pass the moves list through after undos are stripped out
+  // Always keep the first named move, it'll start with the first player
+  //
   var filteredMoves = [namedMoves[0]]
 
   for (let i = 1; i < namedMoves.length; i++) {
-    if (namedMoves[i][1] != namedMoves[i - 1][1]) {
+    if (namedMoves[i].name != namedMoves[i - 1].name) {
       filteredMoves.push(namedMoves[i])
     }
   }
@@ -100,12 +101,17 @@ const removeRepeatMoves = (namedMoves) => {
 }
 
 const getRoundBonusMoves = () => {
+  // Returns object
+  // move: Move number
+  // name: Player name
+  // text: Full text match
+
   var bonusMoves = []
 
   getMoveInfo().forEach((mi) => {
     if (mi != null) {
       if (mi[3].includes('Action cubes are returned')) {
-        bonusMoves.push([mi[1], 'RoundBonus', mi[0]])
+        bonusMoves.push({ move: mi[1], name: 'RoundBonus', text: mi[0] })
       }
     }
   })
