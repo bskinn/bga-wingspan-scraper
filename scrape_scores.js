@@ -114,7 +114,13 @@ const getRoundBonusMoves = (moveInfo) => {
 }
 
 const getMovesList = () => {
-  return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
+  const moves = removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
+  const bonusMoves = getRoundBonusMoves(getMoveInfo())
+
+  var allMoves = moves.concat(bonusMoves)
+  allMoves.sort((m1, m2) => {return Math.sign(m1[0] - m2[0])})
+
+  return allMoves
 }
 
 const report = () => {
