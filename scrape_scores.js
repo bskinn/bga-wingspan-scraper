@@ -31,6 +31,10 @@ const getNames = () => {
   return names
 }
 
+const numPlayers = () => {
+  return getNames().length
+}
+
 const getScores = () => {
   const ids = getIds()
   var scores = []
