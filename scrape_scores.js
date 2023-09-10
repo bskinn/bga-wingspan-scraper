@@ -158,6 +158,40 @@ const getRoundBonusMoves = () => {
   return bonusMoves
 }
 
+// ======  STATE VALIDATION ======
+
+const checkMoveListLength = () => {
+  return getMovesList().length == numPlayers() * 26
+}
+
+const checkFullPlaySequence = () => {
+  // Check to see whether the sequence of moves identified by
+  // getMovesList() contains the players in the sequence as
+  // expected by the actual game progression (advancement of
+  // first player each round, etc.)
+
+  const actualMoves = getMovesList()
+  const actualPlayerSequence = actualMoves.map((m) => m.name)
+  const numPlayers = getNames().length
+  const orderProxy = getPlayOrderProxy(actualMoves)
+
+  // This assembles the expected move sequence based on the core player
+  // order determined by getPlayOrderProxy()
+  var expectedPlayerSequence = []
+  for (let round_num = 1; round_num <= 4; round_num++) {
+    expectedPlayerSequence = expectedPlayerSequence.concat(
+      [...Array((9 - round_num) * numPlayers).keys()].map(
+        (i) => orderProxy[i + round_num - 1],
+      ),
+    )
+  }
+
+  // Now we check whether expected matches actual
+  return expectedPlayerSequence.every((n, i) => {
+    return n == actualPlayerSequence[i]
+  })
+}
+
 // ======  PUBLIC API  ======
 
 const report = () => {
