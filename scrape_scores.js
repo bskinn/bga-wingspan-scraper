@@ -123,6 +123,13 @@ const getMovesList = () => {
   return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
 }
 
+const getMoveIds = (movesList) => {
+  var moveIds = movesList.map((m) => m.move)
+  return moveIds.sort((a, b) => {
+    return Math.sign(parseInt(a) - parseInt(b))
+  })
+}
+
 const report = () => {
   const names = getNames()
   const scores = getScores()
