@@ -9,12 +9,40 @@ const createArrayCycleProxy = (arr) => {
 }
 
 // ======  UTILITY FUNCTIONS  ======
+const logMsg = (msg) => {
+  console.log(`SCORE SCRAPE: ${msg}`)
+}
+
 const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-const logMsg = (msg) => {
-  console.log(`SCORE SCRAPE: ${msg}`)
+const waitForMoveHelper = (move_num, timeout_step = 5) => {
+  // We're waiting for the previous move's class to be viewed.
+  // 5 sec wait between checks, by default.
+
+  logMsg(`Watching move ${move_num}.`)
+
+  const waitFunc = () => {
+    const checkDivs = $$(`div[id="replaylogs_move_${move_num}"][class~="viewed"]`)
+    logMsg(checkDivs)
+
+    if (checkDivs.length < 1) {
+      logMsg('Waiting...')
+      return setTimeout(waitFunc, timeout_step * 1000)
+    } else {
+      logMsg('Done!')
+      return Promise.resolve()
+    }
+  }
+
+  logMsg(`Starting to wait, ${timeout_step} sec polling...`)
+  return waitFunc()
+  // const waitPromise = new Promise(() => {
+  //   if ($$(`div[id="replaylogs_move_${move_num}"][class~="viewed"]`).length > 0) {
+
+  //   }
+  // })
 }
 
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
@@ -210,9 +238,11 @@ async function getScoreForMove(move_num, wait_for_replay = 10) {
   logMsg(`Advancing replay to move ${move_num}.`)
   $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
 
-  logMsg(`Waiting for ${wait_for_replay} seconds...`)
-  await sleepHelper(wait_for_replay * 1000)
-  logMsg('Done.')
+  // logMsg(`Waiting for ${wait_for_replay} seconds...`)
+  // await sleepHelper(wait_for_replay * 1000)
+  logMsg('Waiting for replay to advance')
+  await waitForMoveHelper(`${parseInt(move_num) - 1}`)
+  // logMsg('Done.')
 
   results = { scores: getScores(), names: getNames() }
   return results.names.map((n, i) => {
