@@ -8,6 +8,15 @@ const createArrayCycleProxy = (arr) => {
   })
 }
 
+// ======  UTILITY FUNCTIONS  ======
+const sleepHelper = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+const logMsg = (msg) => {
+  console.log(`SCORE SCRAPE: ${msg}`)
+}
+
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
 const getIds = () => {
@@ -190,6 +199,29 @@ const checkFullPlaySequence = () => {
   return expectedPlayerSequence.every((n, i) => {
     return n == actualPlayerSequence[i]
   })
+}
+
+// ======  PROCESSING SCORES  ======
+
+async function getScoreForMove(move_num, wait_for_replay = 10) {
+  // Replay wait-to-complete is in seconds
+
+  // Trigger the replay advance
+  logMsg(`Advancing replay to move ${move_num}.`)
+  $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
+
+  logMsg(`Waiting for ${wait_for_replay} seconds...`)
+  await sleepHelper(wait_for_replay * 1000)
+  logMsg('Done.')
+
+  results = { scores: getScores(), names: getNames() }
+  return results.names.map((n, i) => {
+    return { name: n, score: results.scores[i] }
+  })
+}
+
+const getScoresFromMoves = () => {
+  const moves = getMoveIds(getMovesList())
 }
 
 // ======  PUBLIC API  ======
