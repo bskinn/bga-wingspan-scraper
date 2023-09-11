@@ -13,6 +13,10 @@ const logMsg = (msg) => {
   console.log(`SCORE SCRAPE: ${msg}`)
 }
 
+const rangeArray = (len) => {
+  return [...Array(len).keys()]
+}
+
 const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
@@ -218,7 +222,7 @@ const checkFullPlaySequence = () => {
   var expectedPlayerSequence = []
   for (let round_num = 1; round_num <= 4; round_num++) {
     expectedPlayerSequence = expectedPlayerSequence.concat(
-      [...Array((9 - round_num) * numPlayers).keys()].map(
+      rangeArray((9 - round_num) * numPlayers).map(
         (i) => orderProxy[i + round_num - 1],
       ),
     )
