@@ -174,6 +174,10 @@ const getMoveIds = (movesList) => {
   })
 }
 
+const getTurnsetEndMoveIds = (moveIds) => {
+  return rangeArray(26).map(i => {return moveIds[i * 3]})
+}
+
 const getPlayOrderProxy = (movesList) => {
   return createArrayCycleProxy(
     movesList.slice(0, getNames().length).map((m) => m.name),
