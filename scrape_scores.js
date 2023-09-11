@@ -1,3 +1,6 @@
+// ======  CONSTANTS  ======
+BONUS_TURN_ID = 'B'
+
 // ======  PROXY HANDLERS  ======
 
 const createArrayCycleProxy = (arr) => {
@@ -28,6 +31,8 @@ const calcRoundTurn = (raw_turn) => {
     return { round: 3, turn: raw_turn - 14 }
   } else if (raw_turn <= 25) {
     return { round: 4, turn: raw_turn - 20 }
+  } else if (raw_turn == 26) {
+    return { round: 4, turn: BONUS_TURN_ID }
   } else {
     throw new Error('Raw turn index out of bounds')
   }
