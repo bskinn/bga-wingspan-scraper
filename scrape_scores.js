@@ -21,28 +21,29 @@ const waitForMoveHelper = (move_num, timeout_step = 5) => {
   // We're waiting for the previous move's class to be viewed.
   // 5 sec wait between checks, by default.
 
-  logMsg(`Watching move ${move_num}.`)
+  const watched_move_num = `${parseInt(move_num) - 1}`
 
-  const waitFunc = () => {
-    const checkDivs = $$(`div[id="replaylogs_move_${move_num}"][class~="viewed"]`)
-    logMsg(checkDivs)
+  logMsg(`Watching move ${watched_move_num}.`)
+
+  function finisher(resolve) {
+    resolve()
+  }
+
+  function waiter(resolve) {
+    const checkDivs = $$(
+      `div[id="replaylogs_move_${watched_move_num}"][class~="viewed"]`,
+    )
 
     if (checkDivs.length < 1) {
       logMsg('Waiting...')
-      return setTimeout(waitFunc, timeout_step * 1000)
+      setTimeout(() => waiter(resolve), 1000 * timeout_step)
     } else {
-      logMsg('Done!')
-      return Promise.resolve()
+      logMsg("Move reached, waiting one more time to ensure it's complete...")
+      setTimeout(() => finisher(resolve), 1000 * timeout_step)
     }
   }
 
-  logMsg(`Starting to wait, ${timeout_step} sec polling...`)
-  return waitFunc()
-  // const waitPromise = new Promise(() => {
-  //   if ($$(`div[id="replaylogs_move_${move_num}"][class~="viewed"]`).length > 0) {
-
-  //   }
-  // })
+  return new Promise((resolve) => waiter(resolve))
 }
 
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
@@ -241,8 +242,8 @@ async function getScoreForMove(move_num, wait_for_replay = 10) {
   // logMsg(`Waiting for ${wait_for_replay} seconds...`)
   // await sleepHelper(wait_for_replay * 1000)
   logMsg('Waiting for replay to advance')
-  await waitForMoveHelper(`${parseInt(move_num) - 1}`)
-  // logMsg('Done.')
+  await waitForMoveHelper(move_num)
+  logMsg('Replay advance done.')
 
   results = { scores: getScores(), names: getNames() }
   return results.names.map((n, i) => {
