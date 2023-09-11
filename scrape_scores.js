@@ -278,8 +278,28 @@ async function getScoreForMove(move_num, timeout_step = 5) {
   })
 }
 
-const getScoresFromMoves = () => {
-  const moves = getMoveIds(getMovesList())
+async function getTurnsetScores() {
+  var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
+  const data = []
+
+  // Add in the very final move
+  moves.push(getRoundBonusMoves()[3].move)
+
+  // Need to pack the moves with the indices
+  iterable = moves.map((m, i) => {
+    return [m, i]
+  })
+
+  for (const [m, i] of iterable) {
+    result = await getScoreForMove(m)
+    data.push({
+      move: m,
+      ...calcRoundTurn(i),
+      scores: result,
+    })
+  }
+
+  return data
 }
 
 // ======  PUBLIC API  ======
