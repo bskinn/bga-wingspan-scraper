@@ -190,8 +190,10 @@ const getMoveIds = (movesList) => {
   })
 }
 
-const getTurnsetEndMoveIds = (moveIds) => {
-  return rangeArray(26).map(i => {return moveIds[i * 3]})
+const getTurnsetStartMoveIds = (moveIds) => {
+  return rangeArray(26).map((i) => {
+    return moveIds[i * 3]
+  })
 }
 
 const getPlayOrderProxy = (movesList) => {
