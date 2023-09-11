@@ -17,6 +17,22 @@ const rangeArray = (len) => {
   return [...Array(len).keys()]
 }
 
+const calcRoundTurn = (raw_turn) => {
+  // raw_turn is zero-indexed
+  // The output round and in-round turn are one-indexed
+  if (raw_turn <= 7) {
+    return { round: 1, turn: raw_turn + 1 }
+  } else if (raw_turn <= 14) {
+    return { round: 2, turn: raw_turn - 7 }
+  } else if (raw_turn <= 20) {
+    return { round: 3, turn: raw_turn - 14 }
+  } else if (raw_turn <= 25) {
+    return { round: 4, turn: raw_turn - 20 }
+  } else {
+    throw new Error('Raw turn index out of bounds')
+  }
+}
+
 const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
