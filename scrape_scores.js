@@ -114,6 +114,7 @@ const getNamedMoves = (moveInfo) => {
   // Returns object
   // move: Move number
   // name: Player name
+  // msg: Log message
   // text: Full text match
 
   var names = getNames()
@@ -123,7 +124,7 @@ const getNamedMoves = (moveInfo) => {
     if (mi != null) {
       names.forEach((n) => {
         if (mi[3].startsWith(n)) {
-          namedMoves.push({ move: mi[1], name: n, text: mi[0] })
+          namedMoves.push({ move: mi[1], name: n, msg: mi[3], text: mi[0] })
         }
       })
     }
@@ -137,7 +138,7 @@ const removeUndoMoves = (namedMoves) => {
   var filteredMoves = []
 
   namedMoves.forEach((nm) => {
-    if (!nm.text.startsWith(`${nm.name} may undo up to this point`)) {
+    if (!nm.msg.startsWith(`${nm.name} may undo up to this point`)) {
       filteredMoves.push(nm)
     }
   })
