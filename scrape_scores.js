@@ -21,7 +21,7 @@ const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-const waitForMoveHelper = (move_num, timeout_step = 5) => {
+const waitForMoveHelper = (move_num, timeout_step) => {
   // We're waiting for the previous move's class to be viewed.
   // 5 sec wait between checks, by default.
 
@@ -241,7 +241,7 @@ const checkFullPlaySequence = () => {
 
 // ======  PROCESSING SCORES  ======
 
-async function getScoreForMove(move_num, wait_for_replay = 10) {
+async function getScoreForMove(move_num, timeout_step = 5) {
   // Replay wait-to-complete is in seconds
 
   // Trigger the replay advance
@@ -251,7 +251,7 @@ async function getScoreForMove(move_num, wait_for_replay = 10) {
   // logMsg(`Waiting for ${wait_for_replay} seconds...`)
   // await sleepHelper(wait_for_replay * 1000)
   logMsg('Waiting for replay to advance')
-  await waitForMoveHelper(move_num)
+  await waitForMoveHelper(move_num, timeout_step)
   logMsg('Replay advance done.')
 
   results = { scores: getScores(), names: getNames() }
