@@ -285,7 +285,7 @@ const checkFullPlaySequence = () => {
 
 // ======  PROCESSING SCORES  ======
 
-async function getScoreForMove(move_num, timeout_step = 5) {
+async function getScoreForMove(move_num, timeout_step = 8) {
   // Replay wait-to-complete is in seconds
 
   // Trigger the replay advance
