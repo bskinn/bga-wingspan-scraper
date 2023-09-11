@@ -9,12 +9,45 @@ const createArrayCycleProxy = (arr) => {
 }
 
 // ======  UTILITY FUNCTIONS  ======
+const logMsg = (msg) => {
+  console.log(`SCORE SCRAPE: ${msg}`)
+}
+
+const rangeArray = (len) => {
+  return [...Array(len).keys()]
+}
+
 const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-const logMsg = (msg) => {
-  console.log(`SCORE SCRAPE: ${msg}`)
+const waitForMoveHelper = (move_num, timeout_step = 5) => {
+  // We're waiting for the previous move's class to be viewed.
+  // 5 sec wait between checks, by default.
+
+  const watched_move_num = `${parseInt(move_num) - 1}`
+
+  logMsg(`Watching move ${watched_move_num}.`)
+
+  function finisher(resolve) {
+    resolve()
+  }
+
+  function waiter(resolve) {
+    const checkDivs = $$(
+      `div[id="replaylogs_move_${watched_move_num}"][class~="viewed"]`,
+    )
+
+    if (checkDivs.length < 1) {
+      logMsg('Waiting...')
+      setTimeout(() => waiter(resolve), 1000 * timeout_step)
+    } else {
+      logMsg("Move reached, waiting one more time to ensure it's complete...")
+      setTimeout(() => finisher(resolve), 1000 * timeout_step)
+    }
+  }
+
+  return new Promise((resolve) => waiter(resolve))
 }
 
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
@@ -81,6 +114,7 @@ const getNamedMoves = (moveInfo) => {
   // Returns object
   // move: Move number
   // name: Player name
+  // msg: Log message
   // text: Full text match
 
   var names = getNames()
@@ -90,7 +124,7 @@ const getNamedMoves = (moveInfo) => {
     if (mi != null) {
       names.forEach((n) => {
         if (mi[3].startsWith(n)) {
-          namedMoves.push({ move: mi[1], name: n, text: mi[0] })
+          namedMoves.push({ move: mi[1], name: n, msg: mi[3], text: mi[0] })
         }
       })
     }
@@ -104,7 +138,7 @@ const removeUndoMoves = (namedMoves) => {
   var filteredMoves = []
 
   namedMoves.forEach((nm) => {
-    if (!nm.text.startsWith(`${nm.name} may undo up to this point`)) {
+    if (!nm.msg.startsWith(`${nm.name} may undo up to this point`)) {
       filteredMoves.push(nm)
     }
   })
@@ -138,6 +172,10 @@ const getMoveIds = (movesList) => {
   return moveIds.sort((a, b) => {
     return Math.sign(parseInt(a) - parseInt(b))
   })
+}
+
+const getTurnsetEndMoveIds = (moveIds) => {
+  return rangeArray(26).map(i => {return moveIds[i * 3]})
 }
 
 const getPlayOrderProxy = (movesList) => {
@@ -189,7 +227,7 @@ const checkFullPlaySequence = () => {
   var expectedPlayerSequence = []
   for (let round_num = 1; round_num <= 4; round_num++) {
     expectedPlayerSequence = expectedPlayerSequence.concat(
-      [...Array((9 - round_num) * numPlayers).keys()].map(
+      rangeArray((9 - round_num) * numPlayers).map(
         (i) => orderProxy[i + round_num - 1],
       ),
     )
@@ -210,9 +248,11 @@ async function getScoreForMove(move_num, wait_for_replay = 10) {
   logMsg(`Advancing replay to move ${move_num}.`)
   $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
 
-  logMsg(`Waiting for ${wait_for_replay} seconds...`)
-  await sleepHelper(wait_for_replay * 1000)
-  logMsg('Done.')
+  // logMsg(`Waiting for ${wait_for_replay} seconds...`)
+  // await sleepHelper(wait_for_replay * 1000)
+  logMsg('Waiting for replay to advance')
+  await waitForMoveHelper(move_num)
+  logMsg('Replay advance done.')
 
   results = { scores: getScores(), names: getNames() }
   return results.names.map((n, i) => {
