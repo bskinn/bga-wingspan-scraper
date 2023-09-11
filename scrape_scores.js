@@ -317,12 +317,17 @@ async function getTurnsetScores() {
   })
 
   for (const [m, i] of iterable) {
+    var turnset_num = parseInt(i) + 1
+    logMsg(
+      `Start score retrieval for turnset ${turnset_num}, at log move ${m}...`,
+    )
     result = await getScoreForMove(m)
     data.push({
       move: m,
       ...calcRoundTurn(i),
       scores: result,
     })
+    logMsg(`Score retrieval complete for turnset ${turnset_num}.`)
   }
 
   return data
