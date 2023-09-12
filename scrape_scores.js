@@ -84,7 +84,9 @@ const waitForMoveHelper = (move_num, timeout_step) => {
       logMsg('Waiting...')
       setTimeout(() => waiter(resolve), 1000 * timeout_step)
     } else {
-      logMsg("Move reached, waiting one more time to ensure it's complete...")
+      logMsg(
+        'Move reached, waiting one more time to ensure animation is complete...',
+      )
       setTimeout(() => finisher(resolve), 1000 * timeout_step)
     }
   }
