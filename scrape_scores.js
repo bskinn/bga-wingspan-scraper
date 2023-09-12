@@ -29,6 +29,10 @@ const rangeArray = (len) => {
   return [...Array(len).keys()]
 }
 
+const tableNum = () => {
+  return window.location.search.match(/[?&]table=(\d+)(&|$)/)
+}
+
 const calcRoundTurn = (raw_turn) => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
