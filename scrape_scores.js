@@ -51,6 +51,10 @@ const calcRoundTurn = (raw_turn) => {
   }
 }
 
+const advanceToMove = (move_num) => {
+  $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
+}
+
 // ======  DATA EXPORT  ======
 
 // From https://stackoverflow.com/a/18197341/4376000
@@ -305,7 +309,7 @@ async function getScoreForMove(move_num, timeout_step = 8) {
 
   // Trigger the replay advance
   logMsg(`Advancing replay to move ${move_num}.`)
-  $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
+  advanceToMove(move_num)
 
   // logMsg(`Waiting for ${wait_for_replay} seconds...`)
   // await sleepHelper(wait_for_replay * 1000)
