@@ -13,7 +13,16 @@ const createArrayCycleProxy = (arr) => {
 
 // ======  UTILITY FUNCTIONS  ======
 const logMsg = (msg) => {
-  console.log(`SCORE SCRAPE: ${msg}`)
+  const now = new Date()
+  const hours = now.getHours()
+  const mins = now.getMinutes()
+  const secs = now.getSeconds()
+
+  const tstamp = `${hours < 10 ? '0' + hours : hours}:${
+    mins < 10 ? '0' + mins : mins
+  }:${secs < 10 ? '0' + secs : secs}`
+
+  console.log(`SCORE SCRAPE [${tstamp}]: ${msg}`)
 }
 
 const rangeArray = (len) => {
