@@ -92,7 +92,7 @@ const rangeArray = (len) => {
 }
 
 const tableNum = () => {
-  return window.location.search.match(/[?&]table=(\d+)(&|$)/)
+  return window.location.search.match(/[?&]table=(\d+)(&|$)/)[1]
 }
 
 const calcRoundTurn = (raw_turn) => {
