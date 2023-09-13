@@ -429,6 +429,13 @@ const checkFullPlaySequence = () => {
 
 // ======  PROCESSING SCORES  ======
 
+const scrapeResults = () => {
+  const results = { scores: getScores(), names: getNames() }
+  return results.names.map((n, i) => {
+    return { name: n, score: results.scores[i] }
+  })
+}
+
 async function getScoreForMove(move_num, timeout_step = 8) {
   // Replay wait-to-complete is in seconds
 
@@ -436,16 +443,11 @@ async function getScoreForMove(move_num, timeout_step = 8) {
   logMsg(`Advancing replay to move ${move_num}.`)
   advanceToMove(move_num)
 
-  // logMsg(`Waiting for ${wait_for_replay} seconds...`)
-  // await sleepHelper(wait_for_replay * 1000)
-  logMsg('Waiting for replay to advance')
+  logMsg('Waiting for replay to advance...')
   await waitForMoveHelper(move_num, timeout_step)
   logMsg('Replay advance done.')
 
-  results = { scores: getScores(), names: getNames() }
-  return results.names.map((n, i) => {
-    return { name: n, score: results.scores[i] }
-  })
+  return scrapeResults()
 }
 
 async function getTurnsetScores() {
