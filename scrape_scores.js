@@ -1,5 +1,7 @@
 // ======  CONSTANTS  ======
 BONUS_TURN_ID = 'B'
+BONUS_CARD_TURN_ID = 'C'
+GAME_END_TURN_ID = 'G'
 
 // ======  DEV HELPERS  ======
 
