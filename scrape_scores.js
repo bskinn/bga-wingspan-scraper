@@ -51,8 +51,15 @@ const calcRoundTurn = (raw_turn) => {
   }
 }
 
+// ======  MOVE STATE CONTROL  ======
+
 const advanceToMove = (move_num) => {
   $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
+}
+
+const advanceToGameEnd = () => {
+  $$('a[id="archive_end_game"]')[0].click()
+  $$('a[id="go_to_game_end_slow"]')[0].click()
 }
 
 // ======  DATA EXPORT  ======
