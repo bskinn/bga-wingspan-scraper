@@ -6,8 +6,8 @@ BONUS_TURN_ID = 'B'
 devRoundStartScores = [
   {
     move: '67',
-    round: 2,
-    turn: 1,
+    round: '2',
+    turn: '1',
     scores: [
       {
         name: 'Brian Skinn',
@@ -25,8 +25,8 @@ devRoundStartScores = [
   },
   {
     move: '120',
-    round: 3,
-    turn: 1,
+    round: '3',
+    turn: '1',
     scores: [
       {
         name: 'Brian Skinn',
@@ -44,8 +44,8 @@ devRoundStartScores = [
   },
   {
     move: '185',
-    round: 4,
-    turn: 1,
+    round: '4',
+    turn: '1',
     scores: [
       {
         name: 'Brian Skinn',
@@ -103,15 +103,15 @@ const calcRoundTurn = (raw_turn) => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
   if (raw_turn <= 7) {
-    return { round: 1, turn: raw_turn + 1 }
+    return { round: '1', turn: `${raw_turn + 1}` }
   } else if (raw_turn <= 14) {
-    return { round: 2, turn: raw_turn - 7 }
+    return { round: '2', turn: `${raw_turn - 7}` }
   } else if (raw_turn <= 20) {
-    return { round: 3, turn: raw_turn - 14 }
+    return { round: '3', turn: `${raw_turn - 14}` }
   } else if (raw_turn <= 25) {
-    return { round: 4, turn: raw_turn - 20 }
+    return { round: '4', turn: `${raw_turn - 20}` }
   } else if (raw_turn == 26) {
-    return { round: 4, turn: BONUS_TURN_ID }
+    return { round: '4', turn: BONUS_TURN_ID }
   } else {
     throw new Error('Raw turn index out of bounds')
   }
@@ -362,7 +362,7 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
   // Initialize the score entry object
   const newEntry = {
     move: bonusMove.move,
-    round: round,
+    round: `${round}`,
     turn: BONUS_TURN_ID,
     scores: [],
   }
