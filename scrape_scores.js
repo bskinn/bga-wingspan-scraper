@@ -155,8 +155,11 @@ const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-const waitForMoveHelper = (move_num, timeout_step) => {
+const waitForMoveHelper = (move_num, timeout_step = 1) => {
   // We're waiting for the previous move's class to be viewed.
+  // We use a nonzero default on the timeout_step so that it doesn't spam
+  // the system if accidentally called without a timeout while
+  // developing/debugging.
 
   const watched_move_num = `${parseInt(move_num) - 1}`
 
