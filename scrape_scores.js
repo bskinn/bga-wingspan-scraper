@@ -454,7 +454,8 @@ async function getTurnsetScores() {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
   const data = []
 
-  // Add in the very final move
+  // Add in the very final move that can be advanced to with
+  // move clicks
   moves.push(getRoundBonusMoves()[3].move)
 
   // Need to pack the moves with the indices
