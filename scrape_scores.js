@@ -388,7 +388,19 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
   scoreData.push(newEntry)
 }
 
-const calcAndAddGameEndScores = (scoreData) => {}
+const calcAndAddGameEndScores = (scoreData) => {
+  // RESUME
+  // Pull the round bonus scores out of the final round bonus text.
+  // If all has gone well, the turnset code will have also added
+  // the "G" game-end scores to the scoreData, in which case
+  // we can calculate the round bonus points from the text,
+  // and then find the bonus card points from
+  // (end game - 4th "B" value) = (round bonus + bonus card)
+  // So:
+  // Bonus card = (end game - 4th "B" - round bonus)
+  //
+  // TODO: Need to add a comment somewhere about how the 'round bonus' calc is different for round 4, vs rounds 1-3
+}
 
 const calcAndAddAllEndScores = (scoreData) => {
   // scoreData should be the output from getTurnsetScores(),
