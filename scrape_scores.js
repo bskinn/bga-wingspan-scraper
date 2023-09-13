@@ -455,7 +455,7 @@ async function getScoreForMove(move_num, timeout_step = 8) {
   return scrapeResults()
 }
 
-async function getTurnsetScores() {
+async function getTurnsetScores(timeout_step = 8) {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
   const data = []
 
@@ -481,6 +481,25 @@ async function getTurnsetScores() {
     })
     logMsg(`Score retrieval complete for turnset ${turnset_num}.`)
   }
+
+  // Move fully to the end of the game
+  // The move we need to wait for completion here will (or should...)
+  // be the same as the move used for the last-round bonus move
+  // content. The helper auto decrements to get the watched move, so we
+  // have to increment it here when passed.
+  // TODO: TEST THIS
+  const endGameMove = `${parseInt(getRoundBonusMoves[3].move) + 1}`
+  logMsg('Advancing to game end...')
+  advanceToGameEnd()
+  await waitForMoveHelper(endGameMove, timeout_step)
+  logMsg('Reached game end.')
+
+  data.push({
+    move: endGameMove,
+    round: '4',
+    turn: GAME_END_TURN_ID,
+    scores: scrapeResults(),
+  })
 
   return data
 }
