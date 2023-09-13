@@ -95,6 +95,10 @@ const tableNum = () => {
   return window.location.search.match(/[?&]table=(\d+)(&|$)/)[1]
 }
 
+const extractRoundBonusScore = (name, text) => {
+  return text.match(new RegExp(`${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`))[1]
+}
+
 const calcRoundTurn = (raw_turn) => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
