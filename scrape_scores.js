@@ -341,6 +341,59 @@ const getRoundBonusMoves = () => {
   return bonusMoves
 }
 
+const calcAndAddRoundEndScores = (scoreData, round) => {
+  // Subtracting the round bonus scores from the scores at the
+  // start of the next round, to get the scores prior to the
+  // round bonuses, for rounds 1-3.
+  // Round 4 needs special treatment because of the end of
+  // game behavior.
+
+  const names = getNames()
+
+  // Scores at the start of the next round
+  const nextScores = scoreData.find(
+    (obj) => obj.round == round + 1 && obj.turn == 1,
+  )
+
+  // Text of the relevant round bonus move. We subtract one since the
+  // JS array object is zero-indexed.
+  const bonusMove = getRoundBonusMoves()[round - 1]
+
+  // Initialize the score entry object
+  const newEntry = {
+    move: bonusMove.move,
+    round: round,
+    turn: BONUS_TURN_ID,
+    scores: [],
+  }
+
+  names.forEach((name) => {
+    console.log(name)
+    let nextScore = nextScores.scores.find((obj) => obj.name == name).score
+    let roundBonusScore = extractRoundBonusScore(name, bonusMove.text)
+
+    // Calculate the math but keep the result as a string since that's
+    // how everything is (for now)
+    let roundEndScore = `${parseInt(nextScore) - parseInt(roundBonusScore)}`
+
+    // Push the calculated score into the score entry object
+    newEntry.scores.push({ name: name, score: roundEndScore })
+  })
+
+  // Push the new score entry object into the overall data
+  scoreData.push(newEntry)
+}
+
+const calcAndAddGameEndScores = (scoreData) => {}
+
+const calcAndAddAllEndScores = (scoreData) => {
+  // scoreData should be the output from getTurnsetScores(),
+  // or a simulation of it
+  for (const round of [1, 2, 3]) {
+    calcAndAddRoundEndScores(scoreData, round)
+  }
+}
+
 // ======  STATE VALIDATION ======
 
 const checkMoveListLength = () => {
