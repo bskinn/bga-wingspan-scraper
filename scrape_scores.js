@@ -1,6 +1,68 @@
 // ======  CONSTANTS  ======
 BONUS_TURN_ID = 'B'
 
+// ======  DEV HELPERS  ======
+
+devRoundStartScores = [
+  {
+    move: '67',
+    round: 2,
+    turn: 1,
+    scores: [
+      {
+        name: 'Brian Skinn',
+        score: '5',
+      },
+      {
+        name: 'xïkmd',
+        score: '19',
+      },
+      {
+        name: 'KrissiMay',
+        score: '12',
+      },
+    ],
+  },
+  {
+    move: '120',
+    round: 3,
+    turn: 1,
+    scores: [
+      {
+        name: 'Brian Skinn',
+        score: '17',
+      },
+      {
+        name: 'xïkmd',
+        score: '32',
+      },
+      {
+        name: 'KrissiMay',
+        score: '25',
+      },
+    ],
+  },
+  {
+    move: '185',
+    round: 4,
+    turn: 1,
+    scores: [
+      {
+        name: 'Brian Skinn',
+        score: '48',
+      },
+      {
+        name: 'xïkmd',
+        score: '42',
+      },
+      {
+        name: 'KrissiMay',
+        score: '32',
+      },
+    ],
+  },
+]
+
 // ======  PROXY HANDLERS  ======
 
 const createArrayCycleProxy = (arr) => {
