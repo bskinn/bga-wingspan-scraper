@@ -155,7 +155,6 @@ const sleepHelper = (ms) => {
 
 const waitForMoveHelper = (move_num, timeout_step) => {
   // We're waiting for the previous move's class to be viewed.
-  // 5 sec wait between checks, by default.
 
   const watched_move_num = `${parseInt(move_num) - 1}`
 
