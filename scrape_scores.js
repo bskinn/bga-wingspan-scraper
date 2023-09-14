@@ -500,7 +500,7 @@ async function getTurnsetScores(timeout_step = 8) {
   // content. The helper auto decrements to get the watched move, so we
   // have to increment it here when passed.
   // TODO: TEST THIS
-  const endGameMove = `${parseInt(getRoundBonusMoves[3].move) + 1}`
+  const endGameMove = `${parseInt(getRoundBonusMoves()[3].move) + 1}`
   logMsg('Advancing to game end...')
   advanceToGameEnd()
   await waitForMoveHelper(endGameMove, timeout_step)
