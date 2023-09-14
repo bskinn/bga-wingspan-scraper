@@ -499,7 +499,7 @@ async function getTurnsetScores(timeout_step = 8) {
   // be the same as the move used for the last-round bonus move
   // content. The helper auto decrements to get the watched move, so we
   // have to increment it here when passed.
-  // TODO: TEST THIS
+  // TODO: DEAL WITH THE SCORE SCRAPE HAPPENING WHILE THE FINAL COUNT IS STILL GOING
   const endGameMove = `${parseInt(getRoundBonusMoves()[3].move) + 1}`
   logMsg('Advancing to game end...')
   advanceToGameEnd()
