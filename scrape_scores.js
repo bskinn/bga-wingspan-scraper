@@ -100,8 +100,8 @@ const logMsg = (msg) => {
   console.log(`SCORE SCRAPE [${tstamp}]: ${msg}`)
 }
 
-const rangeArray = (len) => {
-  return [...Array(len).keys()]
+const rangeArray = (len, start = 0, step = 1) => {
+  return Array.from(Array(len).keys(), (k) => start + step * k)
 }
 
 const tableNum = () => {
