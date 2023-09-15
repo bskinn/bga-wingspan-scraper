@@ -440,7 +440,7 @@ const calcAndAddGameEndScores = (scoreData) => {
 const calcAndAddAllEndScores = (scoreData) => {
   // scoreData should be the output from getTurnsetScores(),
   // or a simulation of it
-  for (const round of [1, 2, 3]) {
+  for (const round of rangeArray(3, 1)) {
     calcAndAddRoundEndScores(scoreData, round)
   }
 }
