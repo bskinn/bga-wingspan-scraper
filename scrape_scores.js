@@ -116,8 +116,8 @@ const tableNum = () => {
 const timestampFullShort = () => {
   const d = new Date()
 
-  return `${d.getFullYear()}${twoDigit(d.getMonth())}${twoDigit(
-    d.getDay(),
+  return `${d.getFullYear()}${twoDigit(d.getMonth() + 1)}${twoDigit(
+    d.getDate(),
   )}_${twoDigit(d.getHours())}${twoDigit(d.getMinutes())}${twoDigit(
     d.getSeconds(),
   )}`
