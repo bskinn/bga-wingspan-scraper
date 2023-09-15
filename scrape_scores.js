@@ -589,11 +589,8 @@ const reportCurrentScores = () => {
   console.log(`${names.join()}\n${scores.join()}`)
 }
 
-const scrapeAndSave = () => {
-  getTurnsetScores().then((data) =>
-    download(
-      `${tableNum()}-${timestampFullShort()}.json`,
-      JSON.stringify(data),
-    ),
-  )
+async function scrapeAndSave() {
+  const data = await getTurnsetScores()
+  calcAndAddAllEndScores(data)
+  download(`${tableNum()}-${timestampFullShort()}.json`, JSON.stringify(data))
 }
