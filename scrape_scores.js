@@ -391,7 +391,7 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
   // start of the next round, to get the scores prior to the
   // round bonuses, for rounds 1-3.
   // Round 4 needs special treatment because of the end of
-  // game behavior.
+  // game behavior; handled as part of calcAndAddGameEndScores().
 
   const names = getNames()
 
@@ -429,17 +429,55 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
 }
 
 const calcAndAddGameEndScores = (scoreData) => {
-  // RESUME
-  // Pull the round bonus scores out of the final round bonus text.
-  // If all has gone well, the turnset code will have also added
-  // the "G" game-end scores to the scoreData, in which case
-  // we can calculate the round bonus points from the text,
-  // and then find the bonus card points from
-  // (end game - 4th "B" value) = (round bonus + bonus card)
-  // So:
-  // Bonus card = (end game - 4th "B" - round bonus)
+  // Parse the final round-end move text for both the
+  // R4 round bonuses and the bonus card bonuses
   //
-  // TODO: Need to add a comment somewhere about how the 'round bonus' calc is different for round 4, vs rounds 1-3
+
+  // Get the end of game move text and the names list
+  const finalMoveText = getRoundBonusMoves()[3].text
+  const names = getNames()
+  const referenceScores = scoreData.find(
+    (obj) => obj.round == '4' && obj.turn == BONUS_TURN_ID,
+  )
+  logMsg(referenceScores)
+
+  // Initialize score objects for after round bonuses and for
+  // end of game score
+  const roundBonusScores = {
+    move: NO_MOVE_NUM,
+    round: '4',
+    turn: BONUS_CARD_TURN_ID,
+    scores: [],
+  }
+  const endGameScores = {
+    move: NO_MOVE_NUM,
+    round: '4',
+    turn: GAME_END_TURN_ID,
+    scores: [],
+  }
+
+  names.forEach((name) => {
+    // Get the relevant scores
+    var roundScore = extractRoundBonusScore(name, finalMoveText)
+    var cardScore = extractBonusCardScore(name, finalMoveText)
+    var refScore = referenceScores.scores.find((obj) => obj.name == name).score
+
+    // Add the score entries for the current player name
+    roundBonusScores.scores.push({
+      name: name,
+      score: `${parseInt(refScore) + parseInt(roundScore)}`,
+    })
+    endGameScores.scores.push({
+      name: name,
+      score: `${
+        parseInt(refScore) + parseInt(roundScore) + parseInt(cardScore)
+      }`,
+    })
+  })
+
+  // Add the new score entries to the score data
+  scoreData.push(roundBonusScores)
+  scoreData.push(endGameScores)
 }
 
 const calcAndAddAllEndScores = (scoreData) => {
