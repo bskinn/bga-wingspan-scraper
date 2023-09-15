@@ -63,6 +63,16 @@ devRoundStartScores = [
       },
     ],
   },
+  {
+    move: '232',
+    round: '4',
+    turn: 'B',
+    scores: [
+      { name: 'Brian Skinn', score: '68' },
+      { name: 'xïkmd', score: '65' },
+      { name: 'KrissiMay', score: '52' },
+    ],
+  },
 ]
 
 // ======  PROXY HANDLERS  ======
