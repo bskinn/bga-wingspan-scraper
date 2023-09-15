@@ -108,6 +108,16 @@ const tableNum = () => {
   return window.location.search.match(/[?&]table=(\d+)(&|$)/)[1]
 }
 
+const timestampFullShort = () => {
+  const d = new Date()
+
+  return `${d.getFullYear()}${twoDigit(d.getMonth())}${twoDigit(
+    d.getDay(),
+  )}_${twoDigit(d.getHours())}${twoDigit(d.getMinutes())}${twoDigit(
+    d.getSeconds(),
+  )}`
+}
+
 const extractRoundBonusScore = (name, text) => {
   return text.match(new RegExp(`${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`))[1]
 }
