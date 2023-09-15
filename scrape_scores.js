@@ -86,15 +86,16 @@ const createArrayCycleProxy = (arr) => {
 }
 
 // ======  UTILITY FUNCTIONS  ======
+const twoDigit = (val) => {
+  return val >= 10 ? val : '0' + val
+}
+
 const logMsg = (msg) => {
   const now = new Date()
-  const hours = now.getHours()
-  const mins = now.getMinutes()
-  const secs = now.getSeconds()
 
-  const tstamp = `${hours < 10 ? '0' + hours : hours}:${
-    mins < 10 ? '0' + mins : mins
-  }:${secs < 10 ? '0' + secs : secs}`
+  const tstamp = `${twoDigit(now.getHours())}:${twoDigit(
+    now.getMinutes(),
+  )}:${twoDigit(now.getSeconds())}`
 
   console.log(`SCORE SCRAPE [${tstamp}]: ${msg}`)
 }
