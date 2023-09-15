@@ -486,6 +486,8 @@ const calcAndAddAllEndScores = (scoreData) => {
   for (const round of rangeArray(3, 1)) {
     calcAndAddRoundEndScores(scoreData, round)
   }
+
+  calcAndAddGameEndScores(scoreData)
 }
 
 // ======  STATE VALIDATION ======
