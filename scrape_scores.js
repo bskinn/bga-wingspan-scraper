@@ -599,7 +599,7 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
 
 // ======  PUBLIC API  ======
 
-const report = () => {
+const reportCurrentScores = () => {
   const names = getNames()
   const scores = getScores()
 
