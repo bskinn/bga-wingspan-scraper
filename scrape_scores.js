@@ -122,6 +122,21 @@ const extractRoundBonusScore = (name, text) => {
   return text.match(new RegExp(`${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`))[1]
 }
 
+const extractBonusCardScore = (name, text) => {
+  // Find all the instances of bonus card scores and sum them
+  return text
+    .matchAll(
+      new RegExp(
+        `[A-Z][A-Za-z ]+?:\\s+${name}\\s+has \\d+ birds, scoring (\\d+)`,
+        'g',
+      ),
+    )
+    .reduce(
+      (accum, newMatch) => `${parseInt(accum) + parseInt(newMatch[1])}`,
+      '0',
+    )
+}
+
 const calcRoundTurn = (raw_turn) => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
