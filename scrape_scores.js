@@ -408,7 +408,6 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
   }
 
   names.forEach((name) => {
-    console.log(name)
     let nextScore = nextScores.scores.find((obj) => obj.name == name).score
     let roundBonusScore = extractRoundBonusScore(name, bonusMove.text)
 
