@@ -3,6 +3,11 @@ BONUS_TURN_ID = 'B'
 BONUS_CARD_TURN_ID = 'C'
 GAME_END_TURN_ID = 'G'
 
+NO_MOVE_NUM = 'NONE'
+
+DEFAULT_MOVE_WAIT_POLL = 8  // seconds
+DEFAULT_ENDGAME_WAIT = 120  // seconds (2 min)
+
 // ======  DEV HELPERS  ======
 
 devRoundStartScores = [
@@ -488,7 +493,10 @@ const scrapeResults = () => {
   })
 }
 
-async function getScoreForMove(move_num, timeout_step = 8) {
+async function getScoreForMove(
+  move_num,
+  timeout_step = DEFAULT_MOVE_WAIT_POLL,
+) {
   // Replay wait-to-complete is in seconds
 
   // Trigger the replay advance
@@ -502,7 +510,7 @@ async function getScoreForMove(move_num, timeout_step = 8) {
   return scrapeResults()
 }
 
-async function getTurnsetScores(timeout_step = 8) {
+async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
   const data = []
 
