@@ -592,11 +592,18 @@ async function scrapeAndSave() {
   const data = await getTurnsetScores()
   calcAndAddAllEndScores(data)
 
-  data['table'] = tableNum()
+  const outerData = {}
 
-  download(`${tableNum()}-${timestampFullShort()}.json`, JSON.stringify(data))
+  outerData.data = data
+  outerData.table = tableNum()
+  outerData.timestamp = timestampFullShort()
+
+  download(
+    `${tableNum()}-${timestampFullShort()}.json`,
+    JSON.stringify(outerData),
+  )
   download(
     `${tableNum()}-${timestampFullShort()}.b64`,
-    btoa(JSON.stringify(data)),
+    btoa(JSON.stringify(outerData)),
   )
 }
