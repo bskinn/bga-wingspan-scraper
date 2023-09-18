@@ -18,15 +18,15 @@ devRoundStartScores = [
     scores: [
       {
         name: 'Brian Skinn',
-        score: '5',
+        score: 5,
       },
       {
         name: 'xïkmd',
-        score: '19',
+        score: 19,
       },
       {
         name: 'KrissiMay',
-        score: '12',
+        score: 12,
       },
     ],
   },
@@ -37,15 +37,15 @@ devRoundStartScores = [
     scores: [
       {
         name: 'Brian Skinn',
-        score: '17',
+        score: 17,
       },
       {
         name: 'xïkmd',
-        score: '32',
+        score: 32,
       },
       {
         name: 'KrissiMay',
-        score: '25',
+        score: 25,
       },
     ],
   },
@@ -56,15 +56,15 @@ devRoundStartScores = [
     scores: [
       {
         name: 'Brian Skinn',
-        score: '48',
+        score: 48,
       },
       {
         name: 'xïkmd',
-        score: '42',
+        score: 42,
       },
       {
         name: 'KrissiMay',
-        score: '32',
+        score: 32,
       },
     ],
   },
@@ -73,9 +73,9 @@ devRoundStartScores = [
     round: '4',
     turn: 'B',
     scores: [
-      { name: 'Brian Skinn', score: '68' },
-      { name: 'xïkmd', score: '65' },
-      { name: 'KrissiMay', score: '52' },
+      { name: 'Brian Skinn', score: 68 },
+      { name: 'xïkmd', score: 65 },
+      { name: 'KrissiMay', score: 52 },
     ],
   },
 ]
@@ -92,7 +92,7 @@ const createArrayCycleProxy = (arr) => {
 
 // ======  UTILITY FUNCTIONS  ======
 const twoDigit = (val) => {
-  return val >= 10 ? val : '0' + val
+  return parseInt(val) >= 10 ? val : '0' + parseInt(val)
 }
 
 const logMsg = (msg) => {
@@ -124,7 +124,9 @@ const timestampFullShort = () => {
 }
 
 const extractRoundBonusScore = (name, text) => {
-  return text.match(new RegExp(`${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`))[1]
+  return parseInt(
+    text.match(new RegExp(`${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`))[1],
+  )
 }
 
 const extractBonusCardScore = (name, text) => {
@@ -136,10 +138,7 @@ const extractBonusCardScore = (name, text) => {
         'g',
       ),
     )
-    .reduce(
-      (accum, newMatch) => `${parseInt(accum) + parseInt(newMatch[1])}`,
-      '0',
-    )
+    .reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
 }
 
 const calcRoundTurn = (raw_turn) => {
@@ -262,7 +261,9 @@ const getScores = () => {
 
   ids.forEach((s) =>
     scores.push(
-      $$(`span[id$="${s}"][class^="player_score"]`)[0].textContent.trim(),
+      parseInt(
+        $$(`span[id$="${s}"][class^="player_score"]`)[0].textContent.trim(),
+      ),
     ),
   )
 
@@ -418,7 +419,7 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
 
     // Calculate the math but keep the result as a string since that's
     // how everything is (for now)
-    let roundEndScore = `${parseInt(nextScore) - parseInt(roundBonusScore)}`
+    let roundEndScore = nextScore - roundBonusScore
 
     // Push the calculated score into the score entry object
     newEntry.scores.push({ name: name, score: roundEndScore })
@@ -465,13 +466,11 @@ const calcAndAddGameEndScores = (scoreData) => {
     // Add the score entries for the current player name
     roundBonusScores.scores.push({
       name: name,
-      score: `${parseInt(refScore) + parseInt(roundScore)}`,
+      score: refScore + roundScore,
     })
     endGameScores.scores.push({
       name: name,
-      score: `${
-        parseInt(refScore) + parseInt(roundScore) + parseInt(cardScore)
-      }`,
+      score: refScore + roundScore + cardScore,
     })
   })
 
@@ -592,6 +591,9 @@ const reportCurrentScores = () => {
 async function scrapeAndSave() {
   const data = await getTurnsetScores()
   calcAndAddAllEndScores(data)
+
+  data['table'] = tableNum()
+
   download(`${tableNum()}-${timestampFullShort()}.json`, JSON.stringify(data))
   download(
     `${tableNum()}-${timestampFullShort()}.b64`,
