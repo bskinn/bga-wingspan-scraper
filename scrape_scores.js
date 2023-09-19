@@ -326,6 +326,17 @@ const removeUndoMoves = (namedMoves) => {
   return filteredMoves
 }
 
+const removePinkPowerMoves = (namedMoves) => {
+  // Have to remove any interleaved actions from pink power birds.
+  // Hopefully looking for the action cube placement will be
+  // determinative... Needs to be done before checking for repeat moves,
+  // since these moves will be interleaved with other players' turns.
+  // TODO: will need to recheck the validity of some prior games to ensure no breakage
+  return namedMoves.filter((nm) => {
+    return nm.text.match(/places an action cube/) != null
+  })
+}
+
 const removeRepeatMoves = (namedMoves) => {
   // Pass the moves list through after undos are stripped out
   // Skip the first move entirely, it will be the discard move
@@ -517,9 +528,24 @@ const checkFullPlaySequence = () => {
   }
 
   // Now we check whether expected matches actual
-  return expectedPlayerSequence.every((n, i) => {
+  const checkVal = expectedPlayerSequence.every((n, i) => {
     return n == actualPlayerSequence[i]
   })
+
+  if (!checkVal) {
+    console.log(
+      expectedPlayerSequence.map((n, i) => {
+        return [
+          n == actualPlayerSequence[i],
+          actualMoves[i].move,
+          n,
+          actualPlayerSequence[i],
+        ]
+      }),
+    )
+  }
+
+  return checkVal
 }
 
 // ======  PROCESSING SCORES  ======
