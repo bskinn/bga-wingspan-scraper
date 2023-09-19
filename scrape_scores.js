@@ -356,7 +356,7 @@ const getMoveIds = (movesList) => {
 
 const getTurnsetStartMoveIds = (moveIds) => {
   return rangeArray(26).map((i) => {
-    return moveIds[i * 3]
+    return moveIds[i * numPlayers()]
   })
 }
 
@@ -503,7 +503,6 @@ const checkFullPlaySequence = () => {
 
   const actualMoves = getMovesList()
   const actualPlayerSequence = actualMoves.map((m) => m.name)
-  const numPlayers = getNames().length
   const orderProxy = getPlayOrderProxy(actualMoves)
 
   // This assembles the expected move sequence based on the core player
@@ -511,7 +510,7 @@ const checkFullPlaySequence = () => {
   var expectedPlayerSequence = []
   for (let round_num = 1; round_num <= 4; round_num++) {
     expectedPlayerSequence = expectedPlayerSequence.concat(
-      rangeArray((9 - round_num) * numPlayers).map(
+      rangeArray((9 - round_num) * numPlayers()).map(
         (i) => orderProxy[i + round_num - 1],
       ),
     )
