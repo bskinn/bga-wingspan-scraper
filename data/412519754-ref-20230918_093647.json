@@ -1,0 +1,742 @@
+{
+  "data": [
+    {
+      "move": "6",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 0
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 0
+        },
+        {
+          "name": "KrissiMay",
+          "score": 0
+        },
+        {
+          "name": "xïkmd",
+          "score": 0
+        }
+      ],
+      "turn": "1"
+    },
+    {
+      "move": "14",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 3
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 0
+        },
+        {
+          "name": "KrissiMay",
+          "score": 0
+        },
+        {
+          "name": "xïkmd",
+          "score": 3
+        }
+      ],
+      "turn": "2"
+    },
+    {
+      "move": "22",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 7
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 0
+        },
+        {
+          "name": "KrissiMay",
+          "score": 0
+        },
+        {
+          "name": "xïkmd",
+          "score": 5
+        }
+      ],
+      "turn": "3"
+    },
+    {
+      "move": "32",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 7
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 2
+        },
+        {
+          "name": "KrissiMay",
+          "score": 0
+        },
+        {
+          "name": "xïkmd",
+          "score": 4
+        }
+      ],
+      "turn": "4"
+    },
+    {
+      "move": "40",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 9
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 4
+        },
+        {
+          "name": "KrissiMay",
+          "score": 2
+        },
+        {
+          "name": "xïkmd",
+          "score": 3
+        }
+      ],
+      "turn": "5"
+    },
+    {
+      "move": "53",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 8
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 9
+        },
+        {
+          "name": "KrissiMay",
+          "score": 7
+        },
+        {
+          "name": "xïkmd",
+          "score": 3
+        }
+      ],
+      "turn": "6"
+    },
+    {
+      "move": "62",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 10
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 9
+        },
+        {
+          "name": "KrissiMay",
+          "score": 7
+        },
+        {
+          "name": "xïkmd",
+          "score": 5
+        }
+      ],
+      "turn": "7"
+    },
+    {
+      "move": "70",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 12
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 11
+        },
+        {
+          "name": "KrissiMay",
+          "score": 9
+        },
+        {
+          "name": "xïkmd",
+          "score": 4
+        }
+      ],
+      "turn": "8"
+    },
+    {
+      "move": "79",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 14
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 17
+        },
+        {
+          "name": "KrissiMay",
+          "score": 11
+        },
+        {
+          "name": "xïkmd",
+          "score": 7
+        }
+      ],
+      "turn": "1"
+    },
+    {
+      "move": "91",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 13
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 16
+        },
+        {
+          "name": "KrissiMay",
+          "score": 11
+        },
+        {
+          "name": "xïkmd",
+          "score": 7
+        }
+      ],
+      "turn": "2"
+    },
+    {
+      "move": "101",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 14
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 16
+        },
+        {
+          "name": "KrissiMay",
+          "score": 11
+        },
+        {
+          "name": "xïkmd",
+          "score": 11
+        }
+      ],
+      "turn": "3"
+    },
+    {
+      "move": "110",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 17
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 15
+        },
+        {
+          "name": "KrissiMay",
+          "score": 11
+        },
+        {
+          "name": "xïkmd",
+          "score": 11
+        }
+      ],
+      "turn": "4"
+    },
+    {
+      "move": "123",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 18
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 14
+        },
+        {
+          "name": "KrissiMay",
+          "score": 13
+        },
+        {
+          "name": "xïkmd",
+          "score": 11
+        }
+      ],
+      "turn": "5"
+    },
+    {
+      "move": "131",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 19
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 19
+        },
+        {
+          "name": "KrissiMay",
+          "score": 13
+        },
+        {
+          "name": "xïkmd",
+          "score": 19
+        }
+      ],
+      "turn": "6"
+    },
+    {
+      "move": "140",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 21
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 22
+        },
+        {
+          "name": "KrissiMay",
+          "score": 15
+        },
+        {
+          "name": "xïkmd",
+          "score": 21
+        }
+      ],
+      "turn": "7"
+    },
+    {
+      "move": "159",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 22
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 28
+        },
+        {
+          "name": "KrissiMay",
+          "score": 17
+        },
+        {
+          "name": "xïkmd",
+          "score": 26
+        }
+      ],
+      "turn": "1"
+    },
+    {
+      "move": "171",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 22
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 28
+        },
+        {
+          "name": "KrissiMay",
+          "score": 17
+        },
+        {
+          "name": "xïkmd",
+          "score": 29
+        }
+      ],
+      "turn": "2"
+    },
+    {
+      "move": "181",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 30
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 32
+        },
+        {
+          "name": "KrissiMay",
+          "score": 17
+        },
+        {
+          "name": "xïkmd",
+          "score": 29
+        }
+      ],
+      "turn": "3"
+    },
+    {
+      "move": "193",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 31
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 31
+        },
+        {
+          "name": "KrissiMay",
+          "score": 18
+        },
+        {
+          "name": "xïkmd",
+          "score": 31
+        }
+      ],
+      "turn": "4"
+    },
+    {
+      "move": "203",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 34
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 30
+        },
+        {
+          "name": "KrissiMay",
+          "score": 19
+        },
+        {
+          "name": "xïkmd",
+          "score": 33
+        }
+      ],
+      "turn": "5"
+    },
+    {
+      "move": "214",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 35
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 34
+        },
+        {
+          "name": "KrissiMay",
+          "score": 23
+        },
+        {
+          "name": "xïkmd",
+          "score": 38
+        }
+      ],
+      "turn": "6"
+    },
+    {
+      "move": "229",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 41
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 37
+        },
+        {
+          "name": "KrissiMay",
+          "score": 30
+        },
+        {
+          "name": "xïkmd",
+          "score": 49
+        }
+      ],
+      "turn": "1"
+    },
+    {
+      "move": "242",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 49
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 43
+        },
+        {
+          "name": "KrissiMay",
+          "score": 30
+        },
+        {
+          "name": "xïkmd",
+          "score": 49
+        }
+      ],
+      "turn": "2"
+    },
+    {
+      "move": "253",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 50
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 47
+        },
+        {
+          "name": "KrissiMay",
+          "score": 31
+        },
+        {
+          "name": "xïkmd",
+          "score": 54
+        }
+      ],
+      "turn": "3"
+    },
+    {
+      "move": "272",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 57
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 52
+        },
+        {
+          "name": "KrissiMay",
+          "score": 39
+        },
+        {
+          "name": "xïkmd",
+          "score": 58
+        }
+      ],
+      "turn": "4"
+    },
+    {
+      "move": "284",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 60
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 57
+        },
+        {
+          "name": "KrissiMay",
+          "score": 45
+        },
+        {
+          "name": "xïkmd",
+          "score": 62
+        }
+      ],
+      "turn": "5"
+    },
+    {
+      "move": "297",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 63
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 62
+        },
+        {
+          "name": "KrissiMay",
+          "score": 50
+        },
+        {
+          "name": "xïkmd",
+          "score": 67
+        }
+      ],
+      "turn": "B"
+    },
+    {
+      "move": "78",
+      "round": "1",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 14
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 13
+        },
+        {
+          "name": "KrissiMay",
+          "score": 11
+        },
+        {
+          "name": "xïkmd",
+          "score": 7
+        }
+      ],
+      "turn": "B"
+    },
+    {
+      "move": "158",
+      "round": "2",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 22
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 25
+        },
+        {
+          "name": "KrissiMay",
+          "score": 16
+        },
+        {
+          "name": "xïkmd",
+          "score": 23
+        }
+      ],
+      "turn": "B"
+    },
+    {
+      "move": "228",
+      "round": "3",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 38
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 37
+        },
+        {
+          "name": "KrissiMay",
+          "score": 28
+        },
+        {
+          "name": "xïkmd",
+          "score": 43
+        }
+      ],
+      "turn": "B"
+    },
+    {
+      "move": "NONE",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 63
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 66
+        },
+        {
+          "name": "KrissiMay",
+          "score": 57
+        },
+        {
+          "name": "xïkmd",
+          "score": 70
+        }
+      ],
+      "turn": "C"
+    },
+    {
+      "move": "NONE",
+      "round": "4",
+      "scores": [
+        {
+          "name": "Aurorabori",
+          "score": 73
+        },
+        {
+          "name": "Brian Skinn",
+          "score": 72
+        },
+        {
+          "name": "KrissiMay",
+          "score": 60
+        },
+        {
+          "name": "xïkmd",
+          "score": 78
+        }
+      ],
+      "turn": "G"
+    }
+  ],
+  "table": "412519754",
+  "timestamp": "20230918_093647"
+}
