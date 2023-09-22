@@ -125,7 +125,9 @@ const timestampFullShort = () => {
 
 const extractRoundBonusScore = (name, text) => {
   return parseInt(
-    text.match(new RegExp(`${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`))[1],
+    text.match(
+      new RegExp(`Action cubes.+?${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`),
+    )[1],
   )
 }
 
