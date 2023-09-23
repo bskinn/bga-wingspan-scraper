@@ -88,6 +88,14 @@ calcEggCount = (player, loc) => {
   return $$(`div[id="location_zone_${player}_${loc}"]`)[0].children.length
 }
 
+// ======  TUCKED CARD CALCULATION  ======
+
+calcTuckCount = (player, loc) => {
+  div = $$(`div[id="tuckedcounter_${player}_${loc}"]`)[0]
+
+  return div ? parseInt(div.textContent) : 0
+}
+
 // ======  PUBLIC API  ======
 
 printNameInfo = () => {
