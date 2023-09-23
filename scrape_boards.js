@@ -96,6 +96,19 @@ calcTuckCount = (player, loc) => {
   return div ? parseInt(div.textContent) : 0
 }
 
+// ======  CACHED FOOD CALCULATION  ======
+
+calcCacheCount = (player, loc) => {
+  accum = 0
+  divs = $$(`div[id^="cachecounter_${player}_${loc}_"]`)
+
+  divs.forEach((div) => {
+    accum += parseInt(div.textContent)
+  })
+
+  return accum
+}
+
 // ======  PUBLIC API  ======
 
 printNameInfo = () => {
