@@ -584,6 +584,7 @@ async function getScoreForMove(
 async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
   const data = []
+  const slowTurnsets = [8, 15, 21, 26]
 
   // Add in the very final move that can be advanced to with
   // move clicks
@@ -599,7 +600,12 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
     logMsg(
       `Start score retrieval for turnset ${turnset_num}, at log move ${m}...`,
     )
-    result = await getScoreForMove(m)
+
+    var timeout_current =
+      timeout_step * (slowTurnsets.includes(turnset_num) ? 3 : 1)
+
+    logMsg(`Wait timeout is ${timeout_current} sec.`)
+    result = await getScoreForMove(m, timeout_current)
     data.push({
       move: m,
       ...calcRoundTurn(i),
