@@ -584,7 +584,10 @@ async function getScoreForMove(
 async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
   const data = []
-  const slowTurnsets = [8, 15, 21, 26]
+
+  // These are the first turnsets of rounds 2-4, plus the last turnset,
+  // falling right before the last round bonus and bonus card calculation
+  const slowTurnsets = [9, 16, 22, 27]
 
   // Add in the very final move that can be advanced to with
   // move clicks
