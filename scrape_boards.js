@@ -16,6 +16,7 @@ CARD_LOCATIONS = [
   '28',
   '29',
 ]
+NO_BIRD_ID = -1
 
 // ======  HELPER FUNCTIONS  ======
 cardLocationDescription = (locId) => {
@@ -38,6 +39,24 @@ cardLocationDescription = (locId) => {
   }[locId]
 }
 
+getXYPixelValues = (xyString) => {
+  mch = xyString.match(/(-?\d+)px\s+(-?\d+)px/)
+  return { x: mch[1], y: mch[2] }
+}
+
+calcBirdIndex = (div) => {
+  resizeData = getComputedStyle(div)['background-size']
+  offsetData = getComputedStyle(div)['background-position']
+
+  resizeXY = getXYPixelValues(resizeData)
+  offsetXY = getXYPixelValues(offsetData)
+
+  xOffset = Math.round((-16 * parseInt(offsetXY.x)) / parseInt(resizeXY.x))
+  yOffset = Math.round((-11 * parseInt(offsetXY.y)) / parseInt(resizeXY.y))
+
+  return xOffset + 16 * yOffset
+}
+
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
 getIds = () => {
@@ -48,4 +67,25 @@ getNames = () => {
   return getIds().map((id) =>
     $$(`div[id$="${id}"][class="player-name"]`)[0].textContent.trim(),
   )
+}
+
+// ======  BIRD IDENTIFICATION  ======
+
+getBirdIndex = (player, loc) => {
+  divId = `bird_img_${player}_${loc}`
+  div = $$(`div[id="${divId}"]`)[0]
+
+  if (div.classList.contains('wsp_hidden')) {
+    return NO_BIRD_ID
+  }
+
+  return calcBirdIndex(div)
+}
+
+// ======  PUBLIC API  ======
+
+printNameInfo = () => {
+  getNames().forEach((n, i) => {
+    console.log(`${n}: ${getIds()[i]}`)
+  })
 }
