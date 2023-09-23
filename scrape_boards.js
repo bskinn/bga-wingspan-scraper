@@ -82,6 +82,12 @@ getBirdIndex = (player, loc) => {
   return calcBirdIndex(div)
 }
 
+// ======  EGG CALCULATION  ======
+
+calcEggCount = (player, loc) => {
+  return $$(`div[id="location_zone_${player}_${loc}"]`)[0].children.length
+}
+
 // ======  PUBLIC API  ======
 
 printNameInfo = () => {
