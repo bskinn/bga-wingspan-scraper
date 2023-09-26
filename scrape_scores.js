@@ -522,6 +522,43 @@ const calcAndAddAllEndScores = (scoreData) => {
   calcAndAddGameEndScores(scoreData)
 }
 
+// ======  FIXING ANY LAST-TURN GLITCHES  ======
+
+const correctLastTurnGlitches = (scoreData) => {
+  // Assumes we've been advanced to the endgame state
+  // Collect the scores
+  const endGameActualData = scrapeResults()
+
+  // Pluck the end-game scores from the passed score data
+  const endGameCalcData = scoreData.find(
+    (sd) => sd.round == '4' && sd.turn == GAME_END_TURN_ID,
+  ).scores
+
+  // Loop over the player names, calculate the difference between
+  // the actual and calculated end-game scores for each player,
+  // and add that difference to all of the pre-round bonus, pre-bonus card,
+  // and end-game scores. This can happen if a final bit of points from the
+  // last turn is included in the round-bonus move in the replay log
+  // (e.g., when a bird that lays eggs in everyone's habitat is used
+  // on that last turn of the game; see game 416620972)
+  getNames().forEach((name) => {
+    var actual = endGameActualData.find((s) => s.name == name)
+    var calc = endGameCalcData.find((s) => s.name == name)
+
+    var diff = parseInt(actual.score) - parseInt(calc.score)
+
+    console.log(`${name}: ${diff}`)
+
+    // for (turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
+    //   let workingScores = scoreData.find(sd => sd.round = '4' && sd.turn == turn_id).scores
+
+    //   let working = workingScores.find(s => s.name == name)
+
+    //   working.score = `${parseInt(working.score) + diff}`
+    // }
+  })
+}
+
 // ======  STATE VALIDATION ======
 
 const checkMoveListLength = () => {
@@ -630,8 +667,13 @@ const reportCurrentScores = () => {
 }
 
 async function scrapeAndSave() {
+  // Get the main data and augment with end-scores
   const data = await getTurnsetScores()
   calcAndAddAllEndScores(data)
+
+  // Advance to the endgame state, with 3min wait
+  advanceToGameEnd()
+  await sleepHelper(180 * 1000)
 
   const outerData = {}
 
