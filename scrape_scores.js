@@ -677,6 +677,9 @@ async function scrapeAndSave() {
   advanceToGameEnd()
   await sleepHelper(180 * 1000)
 
+  // Fix the endgame scores
+  correctLastTurnGlitches(data)
+
   const outerData = {}
 
   outerData.data = data
