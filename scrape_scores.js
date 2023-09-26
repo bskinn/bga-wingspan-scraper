@@ -547,7 +547,7 @@ correctLastTurnGlitches = (scoreData) => {
 
     var diff = parseInt(actual.score) - parseInt(calc.score)
 
-    console.log(`${name}: ${diff}`)
+    logMsg(`Endgame glitch calc for ${name}: ${diff}`)
 
     for (turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
       let workingScores = scoreData.find(
@@ -556,7 +556,8 @@ correctLastTurnGlitches = (scoreData) => {
 
       let working = workingScores.find((s) => s.name == name)
 
-      working.score = `${parseInt(working.score) + diff}`
+      // Scores are Numbers now
+      working.score += diff
     }
   })
 }

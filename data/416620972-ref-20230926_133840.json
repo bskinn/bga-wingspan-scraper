@@ -500,15 +500,15 @@
       "scores": [
         {
           "name": "Brian Skinn",
-          "score": "65"
+          "score": 65
         },
         {
           "name": "xïkmd",
-          "score": "52"
+          "score": 52
         },
         {
           "name": "KrissiMay",
-          "score": "46"
+          "score": 46
         }
       ],
       "turn": "B"
@@ -576,15 +576,15 @@
       "scores": [
         {
           "name": "Brian Skinn",
-          "score": "69"
+          "score": 69
         },
         {
           "name": "xïkmd",
-          "score": "55"
+          "score": 55
         },
         {
           "name": "KrissiMay",
-          "score": "53"
+          "score": 53
         }
       ],
       "turn": "C"
@@ -595,15 +595,15 @@
       "scores": [
         {
           "name": "Brian Skinn",
-          "score": "80"
+          "score": 80
         },
         {
           "name": "xïkmd",
-          "score": "72"
+          "score": 72
         },
         {
           "name": "KrissiMay",
-          "score": "56"
+          "score": 56
         }
       ],
       "turn": "G"
