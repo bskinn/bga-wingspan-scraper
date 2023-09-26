@@ -524,7 +524,7 @@ const calcAndAddAllEndScores = (scoreData) => {
 
 // ======  FIXING ANY LAST-TURN GLITCHES  ======
 
-correctLastTurnGlitches = (scoreData) => {
+const correctLastTurnGlitches = (scoreData) => {
   // Assumes we've been advanced to the endgame state
   // Collect the scores
   const endGameActualData = scrapeResults()
