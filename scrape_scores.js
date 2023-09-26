@@ -524,7 +524,7 @@ const calcAndAddAllEndScores = (scoreData) => {
 
 // ======  FIXING ANY LAST-TURN GLITCHES  ======
 
-const correctLastTurnGlitches = (scoreData) => {
+correctLastTurnGlitches = (scoreData) => {
   // Assumes we've been advanced to the endgame state
   // Collect the scores
   const endGameActualData = scrapeResults()
@@ -549,13 +549,15 @@ const correctLastTurnGlitches = (scoreData) => {
 
     console.log(`${name}: ${diff}`)
 
-    // for (turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
-    //   let workingScores = scoreData.find(sd => sd.round = '4' && sd.turn == turn_id).scores
+    for (turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
+      let workingScores = scoreData.find(
+        (sd) => sd.round == '4' && sd.turn == turn_id,
+      ).scores
 
-    //   let working = workingScores.find(s => s.name == name)
+      let working = workingScores.find((s) => s.name == name)
 
-    //   working.score = `${parseInt(working.score) + diff}`
-    // }
+      working.score = `${parseInt(working.score) + diff}`
+    }
   })
 }
 
