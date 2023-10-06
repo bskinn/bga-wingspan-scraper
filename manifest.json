@@ -12,7 +12,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://boardgamearena.com/*"],
+      "matches": ["*://boardgamearena.com/archive/replay/*"],
       "js": ["scrape_scores.js"]
     }
   ]
