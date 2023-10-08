@@ -138,14 +138,14 @@ const extractRoundBonusScore = (name, text) => {
 
 const extractBonusCardScore = (name, text) => {
   // Find all the instances of bonus card scores and sum them
-  return text
-    .matchAll(
+  return [
+    ...text.matchAll(
       new RegExp(
         `[A-Z][A-Za-z ]+?:\\s+${name}\\s+has \\d+ birds, scoring (\\d+)`,
         'g',
       ),
-    )
-    .reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
+    ),
+  ].reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
 }
 
 const calcRoundTurn = (raw_turn) => {
