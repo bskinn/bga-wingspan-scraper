@@ -677,6 +677,7 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
 
 // ======  EXTENSION  ======
 
+// Button for checking the turnset move list length
 const buttonCheckMoveList = document.createElement('button')
 buttonCheckMoveList.textContent = 'Check Move List'
 buttonCheckMoveList.id = 'buttonCheckMoveList'
@@ -687,6 +688,7 @@ buttonCheckMoveList.addEventListener('click', () => {
 })
 document.body.appendChild(buttonCheckMoveList)
 
+// Button for checking the player sequence in the turnset move list
 const buttonCheckPlaySeq = document.createElement('button')
 buttonCheckPlaySeq.textContent = 'Check Play Sequence'
 buttonCheckPlaySeq.id = 'buttonCheckPlaySeq'
@@ -697,6 +699,7 @@ buttonCheckPlaySeq.addEventListener('click', () => {
 })
 document.body.appendChild(buttonCheckPlaySeq)
 
+// Button to start score scraping
 const buttonScrapeScores = document.createElement('button')
 buttonScrapeScores.textContent = 'Scrape Scores'
 buttonScrapeScores.id = 'buttonScrapeScores'
@@ -707,6 +710,38 @@ buttonScrapeScores.addEventListener('click', () => {
   scrapeAndSave()
 })
 document.body.appendChild(buttonScrapeScores)
+
+// Input field for debug expression to evaluate
+const inputDebugEval = document.createElement('input')
+inputDebugEval.id = 'inputDebugEval'
+inputDebugEval.type = 'text'
+inputDebugEval.style =
+  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em;'
+document.body.appendChild(inputDebugEval)
+
+// Button to trigger debug evaluate and print
+const buttonDebugPrint = document.createElement('button')
+buttonDebugPrint.textContent = 'Debug Print'
+buttonDebugPrint.id = 'buttonDebugPrint'
+buttonDebugPrint.style =
+  'position: fixed; top: 95%; left: 13em; height: 2em; width: 8em;'
+buttonDebugPrint.addEventListener('click', () => {
+  try {
+    const result = eval(inputDebugEval.value)
+    alert(JSON.stringify(result))
+  } catch (error) {
+    alert(`Error: ${error.message}`)
+  }
+})
+document.body.appendChild(buttonDebugPrint)
+
+// Extra listener for the Enter keyup in the input field,
+// so we don't have to use the mouse to do the debug print
+inputDebugEval.addEventListener('keyup', function (event) {
+  if (event.key == 'Enter') {
+    buttonDebugPrint.click()
+  }
+})
 
 // ======  PUBLIC API  ======
 
