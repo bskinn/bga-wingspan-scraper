@@ -1,8 +1,3 @@
-// ======  EXTENSION PREP  ======
-// if (typeof $$ == 'undefined') {
-const DOMQuery = window.document.querySelectorAll
-// }
-
 // ======  CONSTANTS  ======
 BONUS_TURN_ID = 'B'
 BONUS_CARD_TURN_ID = 'C'
@@ -202,6 +197,26 @@ function download(filename, text) {
 
 const sleepHelper = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+const waitForGameEndHelper = (timeout_step = 10) => {
+  logMsg('Waiting for game end...')
+
+  function waiter(resolve) {
+    if (
+      [...window.document.querySelectorAll('span')].some((span) =>
+        span.textContent.includes('End of game'),
+      )
+    ) {
+      logMsg('Reached game end.')
+      resolve()
+    } else {
+      logMsg('Waiting...')
+      setTimeout(() => waiter(resolve), 1000 * timeout_step)
+    }
+  }
+
+  return new Promise((resolve) => waiter(resolve))
 }
 
 const waitForMoveHelper = (move_num, timeout_step = 1) => {
@@ -757,9 +772,9 @@ async function scrapeAndSave() {
   const data = await getTurnsetScores()
   calcAndAddAllEndScores(data)
 
-  // Advance to the endgame state, with 3min wait
+  // Advance to the endgame state, with detection wait
   advanceToGameEnd()
-  await sleepHelper(180 * 1000)
+  await waitForGameEndHelper()
 
   // Fix the endgame scores
   correctLastTurnGlitches(data)
