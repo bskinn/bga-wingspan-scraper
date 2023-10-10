@@ -1,3 +1,8 @@
+// ======  EXTENSION PREP  ======
+// if (typeof $$ == 'undefined') {
+const DOMQuery = window.document.querySelectorAll
+// }
+
 // ======  CONSTANTS  ======
 BONUS_TURN_ID = 'B'
 BONUS_CARD_TURN_ID = 'C'
@@ -133,14 +138,14 @@ const extractRoundBonusScore = (name, text) => {
 
 const extractBonusCardScore = (name, text) => {
   // Find all the instances of bonus card scores and sum them
-  return text
-    .matchAll(
+  return [
+    ...text.matchAll(
       new RegExp(
         `[A-Z][A-Za-z ]+?:\\s+${name}\\s+has \\d+ birds, scoring (\\d+)`,
         'g',
       ),
-    )
-    .reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
+    ),
+  ].reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
 }
 
 const calcRoundTurn = (raw_turn) => {
@@ -164,12 +169,14 @@ const calcRoundTurn = (raw_turn) => {
 // ======  MOVE STATE CONTROL  ======
 
 const advanceToMove = (move_num) => {
-  $$(`div[id="replaylogs_move_${move_num}"]`)[0].click()
+  window.document
+    .querySelectorAll(`div[id="replaylogs_move_${move_num}"]`)[0]
+    .click()
 }
 
 const advanceToGameEnd = () => {
-  $$('a[id="archive_end_game"]')[0].click()
-  $$('a[id="go_to_game_end_slow"]')[0].click()
+  window.document.querySelectorAll('a[id="archive_end_game"]')[0].click()
+  window.document.querySelectorAll('a[id="go_to_game_end_slow"]')[0].click()
 }
 
 // ======  DATA EXPORT  ======
@@ -212,7 +219,7 @@ const waitForMoveHelper = (move_num, timeout_step = 1) => {
   }
 
   function waiter(resolve) {
-    const checkDivs = $$(
+    const checkDivs = window.document.querySelectorAll(
       `div[id="replaylogs_move_${watched_move_num}"][class~="viewed"]`,
     )
 
@@ -235,7 +242,9 @@ const waitForMoveHelper = (move_num, timeout_step = 1) => {
 const getIds = () => {
   var ids = []
 
-  $$('div[class="player-name"]').forEach((s) => ids.push(s.id.split('_')[2]))
+  window.document
+    .querySelectorAll('div[class="player-name"]')
+    .forEach((s) => ids.push(s.id.split('_')[2]))
 
   return ids
 }
@@ -246,7 +255,9 @@ const getNames = () => {
 
   ids.forEach((s) =>
     names.push(
-      $$(`div[id$="${s}"][class="player-name"]`)[0].textContent.trim(),
+      window.document
+        .querySelectorAll(`div[id$="${s}"][class="player-name"]`)[0]
+        .textContent.trim(),
     ),
   )
 
@@ -264,7 +275,9 @@ const getScores = () => {
   ids.forEach((s) =>
     scores.push(
       parseInt(
-        $$(`span[id$="${s}"][class^="player_score"]`)[0].textContent.trim(),
+        window.document
+          .querySelectorAll(`span[id$="${s}"][class^="player_score"]`)[0]
+          .textContent.trim(),
       ),
     ),
   )
@@ -281,13 +294,15 @@ const getMoveInfo = () => {
   // Second is the move number.
   // Third, if present, is the date.
   // Fourth is the full text of the move message.
-  $$('div[id^="replaylogs_move_"]').forEach((s) =>
-    moveInfo.push(
-      s.textContent.match(
-        /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/,
+  window.document
+    .querySelectorAll('div[id^="replaylogs_move_"]')
+    .forEach((s) =>
+      moveInfo.push(
+        s.textContent.match(
+          /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/,
+        ),
       ),
-    ),
-  )
+    )
 
   return moveInfo
 }
@@ -659,6 +674,74 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
 
   return data
 }
+
+// ======  EXTENSION  ======
+
+// Button for checking the turnset move list length
+const buttonCheckMoveList = document.createElement('button')
+buttonCheckMoveList.textContent = 'Check Move List'
+buttonCheckMoveList.id = 'buttonCheckMoveList'
+buttonCheckMoveList.style =
+  'position: fixed; top: 90%; left: 10px; height: 2em; width: 10em;'
+buttonCheckMoveList.addEventListener('click', () => {
+  alert(checkMoveListLength())
+})
+document.body.appendChild(buttonCheckMoveList)
+
+// Button for checking the player sequence in the turnset move list
+const buttonCheckPlaySeq = document.createElement('button')
+buttonCheckPlaySeq.textContent = 'Check Play Sequence'
+buttonCheckPlaySeq.id = 'buttonCheckPlaySeq'
+buttonCheckPlaySeq.style =
+  'position: fixed; top: 90%; left: 11em; height: 2em; width: 12em;'
+buttonCheckPlaySeq.addEventListener('click', () => {
+  alert(checkFullPlaySequence())
+})
+document.body.appendChild(buttonCheckPlaySeq)
+
+// Button to start score scraping
+const buttonScrapeScores = document.createElement('button')
+buttonScrapeScores.textContent = 'Scrape Scores'
+buttonScrapeScores.id = 'buttonScrapeScores'
+buttonScrapeScores.style =
+  'position: fixed; top: 95%; left: 20px; height: 2em; width: 10em;'
+buttonScrapeScores.addEventListener('click', () => {
+  buttonScrapeScores.disabled = true
+  scrapeAndSave()
+})
+document.body.appendChild(buttonScrapeScores)
+
+// Input field for debug expression to evaluate
+const inputDebugEval = document.createElement('input')
+inputDebugEval.id = 'inputDebugEval'
+inputDebugEval.type = 'text'
+inputDebugEval.style =
+  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em;'
+document.body.appendChild(inputDebugEval)
+
+// Button to trigger debug evaluate and print
+const buttonDebugPrint = document.createElement('button')
+buttonDebugPrint.textContent = 'Debug Print'
+buttonDebugPrint.id = 'buttonDebugPrint'
+buttonDebugPrint.style =
+  'position: fixed; top: 95%; left: 13em; height: 2em; width: 8em;'
+buttonDebugPrint.addEventListener('click', () => {
+  try {
+    const result = eval(inputDebugEval.value)
+    alert(JSON.stringify(result))
+  } catch (error) {
+    alert(`Error: ${error.message}`)
+  }
+})
+document.body.appendChild(buttonDebugPrint)
+
+// Extra listener for the Enter keyup in the input field,
+// so we don't have to use the mouse to do the debug print
+inputDebugEval.addEventListener('keyup', function (event) {
+  if (event.key == 'Enter') {
+    buttonDebugPrint.click()
+  }
+})
 
 // ======  PUBLIC API  ======
 
