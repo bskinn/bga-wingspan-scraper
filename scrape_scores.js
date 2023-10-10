@@ -204,9 +204,9 @@ const waitForGameEndHelper = (timeout_step = 10) => {
 
   function waiter(resolve) {
     if (
-      window.document
-        .querySelectorAll('span')
-        .some((span) => span.textContent.includes('End of game'))
+      [...window.document.querySelectorAll('span')].some((span) =>
+        span.textContent.includes('End of game'),
+      )
     ) {
       logMsg('Reached game end.')
       resolve()
