@@ -279,6 +279,28 @@ const getNames = () => {
   return names
 }
 
+const getColors = () => {
+  const ids = getIds()
+
+  return ids.map((s) => {
+    let div = window.document.querySelectorAll(
+      `div[id$="${s}"][class="player-name"]`,
+    )[0]
+    let a = Array.from(div.children).filter((el) => el.target == '_blank')[0]
+    let mch = a.style.color.match(/rgb\((\d+), (\d+), (\d+)\)/)
+
+    let color = (
+      65536 * parseInt(mch[1]) +
+      256 * parseInt(mch[2]) +
+      parseInt(mch[3])
+    )
+      .toString(16)
+      .toUpperCase()
+
+    return '#' + '0'.repeat(6 - color.length) + color
+  })
+}
+
 const numPlayers = () => {
   return getNames().length
 }
@@ -784,6 +806,9 @@ async function scrapeAndSave() {
   outerData.data = data
   outerData.table = tableNum()
   outerData.timestamp = timestampFullShort()
+  outerData.colors = getNames().map((n, i) => {
+    return { name: n, color: getColors()[i] }
+  })
 
   download(
     `${tableNum()}-${timestampFullShort()}.json`,
