@@ -614,6 +614,27 @@ const correctLastTurnGlitches = (scoreData) => {
   })
 }
 
+// ======  FINDING FIRST-TURNS  ======
+
+const getFirstTurns = () => {
+  const firstMove = getMovesList()[0]
+  const firstMoveName = firstMove.msg.match(/^(.+?) places/)[1]
+
+  const firstTurns = { 1: firstMoveName }
+
+  rangeArray(3, 2).forEach((round) => {
+    let workingDiv = [...window.document.querySelectorAll('div')]
+      .filter((div) => div.textContent.includes('is now first player'))
+      .filter((div) => div.textContent.includes(`Round ${round}`))[0]
+
+    firstTurns[round] = workingDiv.textContent.match(
+      new RegExp(`Round ${round}: (.+?) is now first player`),
+    )[1]
+  })
+
+  return firstTurns
+}
+
 // ======  STATE VALIDATION ======
 
 const checkMoveListLength = () => {
@@ -753,7 +774,7 @@ const inputDebugEval = document.createElement('input')
 inputDebugEval.id = 'inputDebugEval'
 inputDebugEval.type = 'text'
 inputDebugEval.style =
-  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em;'
+  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em; padding-left: 0.25em; padding-right: 0.25em;'
 document.body.appendChild(inputDebugEval)
 
 // Button to trigger debug evaluate and print
@@ -809,6 +830,7 @@ async function scrapeAndSave() {
   outerData.colors = getNames().map((n, i) => {
     return { name: n, color: getColors()[i] }
   })
+  outerData.first_turns = getFirstTurns()
 
   download(
     `${tableNum()}-${timestampFullShort()}.json`,
