@@ -635,6 +635,16 @@ const getFirstTurns = () => {
   return firstTurns
 }
 
+// ======  FINDING THE WINNER  ======
+
+const getWinner = () => {
+  const endDiv = [...window.document.querySelectorAll('div')].filter((div) =>
+    div.textContent.includes('The end of the game'),
+  )[0]
+
+  return endDiv.textContent.match(/The end of the game: (.+?) wins!/)[1]
+}
+
 // ======  STATE VALIDATION ======
 
 const checkMoveListLength = () => {
@@ -831,6 +841,7 @@ async function scrapeAndSave() {
     return { name: n, color: getColors()[i] }
   })
   outerData.first_turns = getFirstTurns()
+  outerData.winner = getWinner()
 
   download(
     `${tableNum()}-${timestampFullShort()}.json`,
