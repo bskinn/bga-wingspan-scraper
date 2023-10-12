@@ -753,7 +753,7 @@ const inputDebugEval = document.createElement('input')
 inputDebugEval.id = 'inputDebugEval'
 inputDebugEval.type = 'text'
 inputDebugEval.style =
-  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em;'
+  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em; padding-left: 0.25em; padding-right: 0.25em;'
 document.body.appendChild(inputDebugEval)
 
 // Button to trigger debug evaluate and print
