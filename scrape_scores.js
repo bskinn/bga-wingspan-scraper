@@ -1,13 +1,3 @@
-// ======  CONSTANTS  ======
-BONUS_TURN_ID = 'B'
-BONUS_CARD_TURN_ID = 'C'
-GAME_END_TURN_ID = 'G'
-
-NO_MOVE_NUM = 'NONE'
-
-DEFAULT_MOVE_WAIT_POLL = 12 // seconds
-DEFAULT_ENDGAME_WAIT = 90 // seconds (1.5 min)
-
 // ======  DEV HELPERS  ======
 
 devRoundStartScores = [

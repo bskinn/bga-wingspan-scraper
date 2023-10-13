@@ -13,7 +13,7 @@
   "content_scripts": [
     {
       "matches": ["*://boardgamearena.com/archive/replay/*"],
-      "js": ["scrape_scores.js"]
+      "js": ["scrape_scores.js", "extension/constants.js"]
     }
   ]
 }
