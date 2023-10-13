@@ -1,5 +1,6 @@
 # bga-wingspan-scraper
-JS helper script to generate JSON output of the score history of a Wingspan game on BGA
+JS helper script and nascent Firefox extension to generate JSON output
+of the score history of a Wingspan game on [Board Game Arena].
 
 This code has been developed and tested using Firefox around v118.
 
@@ -59,3 +60,5 @@ scraped:
 ```
 
 *(needs schema of this JSON)*
+
+[board game arena]: https://boardgamearena.com
