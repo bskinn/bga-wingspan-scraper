@@ -1,12 +1,11 @@
-// ======  CONSTANTS  ======
-BONUS_TURN_ID = 'B'
-BONUS_CARD_TURN_ID = 'C'
-GAME_END_TURN_ID = 'G'
+// import {BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID, NO_MOVE_NUM, DEFAULT_MOVE_WAIT_POLL, DEFAULT_ENDGAME_WAIT} from "./extension/constants"
 
-NO_MOVE_NUM = 'NONE'
-
-DEFAULT_MOVE_WAIT_POLL = 12 // seconds
-DEFAULT_ENDGAME_WAIT = 90 // seconds (1.5 min)
+constants = {}
+import('./extension/constants').then(mod => {
+  for (let thing in mod) {
+    constants[thing] = mod[thing]
+  }
+})
 
 // ======  DEV HELPERS  ======
 
@@ -155,7 +154,7 @@ const calcRoundTurn = (raw_turn) => {
   } else if (raw_turn <= 25) {
     return { round: '4', turn: `${raw_turn - 20}` }
   } else if (raw_turn == 26) {
-    return { round: '4', turn: BONUS_TURN_ID }
+    return { round: '4', turn: constants.BONUS_TURN_ID }
   } else {
     throw new Error('Raw turn index out of bounds')
   }
@@ -494,7 +493,7 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
   const newEntry = {
     move: bonusMove.move,
     round: `${round}`,
-    turn: BONUS_TURN_ID,
+    turn: constants.BONUS_TURN_ID,
     scores: [],
   }
 
@@ -523,22 +522,22 @@ const calcAndAddGameEndScores = (scoreData) => {
   const finalMoveText = getRoundBonusMoves()[3].text
   const names = getNames()
   const referenceScores = scoreData.find(
-    (obj) => obj.round == '4' && obj.turn == BONUS_TURN_ID,
+    (obj) => obj.round == '4' && obj.turn == constants.BONUS_TURN_ID,
   )
   logMsg(referenceScores)
 
   // Initialize score objects for after round bonuses and for
   // end of game score
   const roundBonusScores = {
-    move: NO_MOVE_NUM,
+    move: constants.NO_MOVE_NUM,
     round: '4',
-    turn: BONUS_CARD_TURN_ID,
+    turn: constants.BONUS_CARD_TURN_ID,
     scores: [],
   }
   const endGameScores = {
-    move: NO_MOVE_NUM,
+    move: constants.NO_MOVE_NUM,
     round: '4',
-    turn: GAME_END_TURN_ID,
+    turn: constants.GAME_END_TURN_ID,
     scores: [],
   }
 
@@ -583,7 +582,7 @@ const correctLastTurnGlitches = (scoreData) => {
 
   // Pluck the end-game scores from the passed score data
   const endGameCalcData = scoreData.find(
-    (sd) => sd.round == '4' && sd.turn == GAME_END_TURN_ID,
+    (sd) => sd.round == '4' && sd.turn == constants.GAME_END_TURN_ID,
   ).scores
 
   // Loop over the player names, calculate the difference between
@@ -601,7 +600,7 @@ const correctLastTurnGlitches = (scoreData) => {
 
     logMsg(`Endgame glitch calc for ${name}: ${diff}`)
 
-    for (turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
+    for (turn_id of [constants.BONUS_TURN_ID, constants.BONUS_CARD_TURN_ID, constants.GAME_END_TURN_ID]) {
       let workingScores = scoreData.find(
         (sd) => sd.round == '4' && sd.turn == turn_id,
       ).scores
@@ -689,7 +688,7 @@ const scrapeResults = () => {
 
 async function getScoreForMove(
   move_num,
-  timeout_step = DEFAULT_MOVE_WAIT_POLL,
+  timeout_step = constants.DEFAULT_MOVE_WAIT_POLL,
 ) {
   // Replay wait-to-complete is in seconds
 
@@ -704,7 +703,7 @@ async function getScoreForMove(
   return scrapeResults()
 }
 
-async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
+async function getTurnsetScores(timeout_step = constants.DEFAULT_MOVE_WAIT_POLL) {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
   const data = []
 
