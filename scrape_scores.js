@@ -291,6 +291,7 @@ const getMoveInfo = () => {
 }
 
 const getNamedMoves = (moveInfo) => {
+  // BELIEVED OBSOLETE
   // Returns object
   // move: Move number
   // name: Player name
@@ -314,6 +315,7 @@ const getNamedMoves = (moveInfo) => {
 }
 
 const removeUndoMoves = (namedMoves) => {
+  // BELIEVED OBSOLETE
   // Strip out any moves that are pure undo notification moves
   var filteredMoves = []
 
@@ -327,6 +329,7 @@ const removeUndoMoves = (namedMoves) => {
 }
 
 const removePinkPowerMoves = (namedMoves) => {
+  // BELIEVED OBSOLETE
   // Have to remove any interleaved actions from pink power birds.
   // Hopefully looking for the action cube placement will be
   // determinative... Needs to be done before checking for repeat moves,
@@ -338,6 +341,7 @@ const removePinkPowerMoves = (namedMoves) => {
 }
 
 const removeRepeatMoves = (namedMoves) => {
+  // BELIEVED OBSOLETE
   // Pass the moves list through after undos are stripped out
   // Skip the first move entirely, it will be the discard move
   //
@@ -352,10 +356,38 @@ const removeRepeatMoves = (namedMoves) => {
   return filteredMoves
 }
 
+const getActionCubeMoves = (movesList) => {
+  // Trying a different tack on the moves list
+  // Returns object
+  // move: Move number
+  // name: Player name
+  // msg: Log message
+  // text: Full text match
+  var names = getNames()
+
+  const filteredMoves = movesList.filter((m) =>
+    m[3].match(/places an action cube/),
+  )
+
+  const filteredObjs = filteredMoves.map((m) => {
+    return { move: m[1], msg: m[3], text: m[0] }
+  })
+
+  for (fo of filteredObjs) {
+    var name = names.filter((n) =>
+      fo.msg.match(new RegExp(`^.*?${n}\\s+places an action cube`)),
+    )[0]
+    fo.name = name
+  }
+
+  return filteredObjs
+}
+
 const getMovesList = () => {
   // This is the fully prepared moves list that most functions
   // should work with
-  return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
+  // return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
+  return getActionCubeMoves(getMoveInfo())
 }
 
 const getMoveIds = (movesList) => {
