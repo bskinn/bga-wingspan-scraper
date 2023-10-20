@@ -44,6 +44,25 @@ getXYPixelValues = (xyString) => {
   return { x: mch[1], y: mch[2] }
 }
 
+calcCardIndex = (div, numCols, numRows) => {
+  // Calculate the 1-D index of a card from the given div
+  // Assumes row-major order
+  resizeData = getComputedStyle(div)['background-size']
+  offsetData = getComputedStyle(div)['background-position']
+
+  resizeXY = getXYPixelValues(resizeData)
+  offsetXY = getXYPixelValues(offsetData)
+
+  xOffset = Math.round(
+    (-1 * numCols * parseInt(offsetXY.x)) / parseInt(resizeXY.x),
+  )
+  yOffset = Math.round(
+    (-1 * numRows * parseInt(offsetXY.y)) / parseInt(resizeXY.y),
+  )
+
+  return xOffset + numCols * yOffset
+}
+
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
 getIds = () => {
@@ -63,19 +82,10 @@ getNames = () => {
 // ======  BIRD IDENTIFICATION  ======
 
 calcBirdIndex = (div) => {
-  resizeData = getComputedStyle(div)['background-size']
-  offsetData = getComputedStyle(div)['background-position']
-
-  resizeXY = getXYPixelValues(resizeData)
-  offsetXY = getXYPixelValues(offsetData)
-
-  xOffset = Math.round((-16 * parseInt(offsetXY.x)) / parseInt(resizeXY.x))
-  yOffset = Math.round((-11 * parseInt(offsetXY.y)) / parseInt(resizeXY.y))
-
-  return xOffset + 16 * yOffset
+  return calcCardIndex(div, 16, 11)
 }
 
-getBirdIndex = (player, loc) => {
+getBoardBirdIndex = (player, loc) => {
   divId = `bird_img_${player}_${loc}`
   div = window.document.querySelectorAll(`div[id="${divId}"]`)[0]
 
