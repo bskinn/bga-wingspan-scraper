@@ -96,6 +96,12 @@ getBoardBirdIndex = (player, loc) => {
   return calcBirdIndex(div)
 }
 
+getHandBirdsIndexes = () => {
+  return [
+    ...window.document.querySelectorAll('div[id^="handcard_bird_panel"]'),
+  ].map((div) => calcBirdIndex(div))
+}
+
 // ======  EGG CALCULATION  ======
 
 calcEggCount = (player, loc) => {
