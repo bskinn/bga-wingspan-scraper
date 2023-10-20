@@ -47,12 +47,16 @@ getXYPixelValues = (xyString) => {
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
 getIds = () => {
-  return $$('div[class="player-name"]').map((div) => div.id.split('_')[2])
+  return window.document
+    .querySelectorAll('div[class="player-name"]')
+    .map((div) => div.id.split('_')[2])
 }
 
 getNames = () => {
   return getIds().map((id) =>
-    $$(`div[id$="${id}"][class="player-name"]`)[0].textContent.trim(),
+    window.document
+      .querySelectorAll(`div[id$="${id}"][class="player-name"]`)[0]
+      .textContent.trim(),
   )
 }
 
@@ -73,7 +77,7 @@ calcBirdIndex = (div) => {
 
 getBirdIndex = (player, loc) => {
   divId = `bird_img_${player}_${loc}`
-  div = $$(`div[id="${divId}"]`)[0]
+  div = window.document.querySelectorAll(`div[id="${divId}"]`)[0]
 
   if (div.classList.contains('wsp_hidden')) {
     return NO_BIRD_ID
@@ -85,13 +89,17 @@ getBirdIndex = (player, loc) => {
 // ======  EGG CALCULATION  ======
 
 calcEggCount = (player, loc) => {
-  return $$(`div[id="location_zone_${player}_${loc}"]`)[0].children.length
+  return window.document.querySelectorAll(
+    `div[id="location_zone_${player}_${loc}"]`,
+  )[0].children.length
 }
 
 // ======  TUCKED CARD CALCULATION  ======
 
 calcTuckCount = (player, loc) => {
-  div = $$(`div[id="tuckedcounter_${player}_${loc}"]`)[0]
+  div = window.document.querySelectorAll(
+    `div[id="tuckedcounter_${player}_${loc}"]`,
+  )[0]
 
   return div ? parseInt(div.textContent) : 0
 }
@@ -100,7 +108,9 @@ calcTuckCount = (player, loc) => {
 
 calcCacheCount = (player, loc) => {
   accum = 0
-  divs = $$(`div[id^="cachecounter_${player}_${loc}_"]`)
+  divs = window.document.querySelectorAll(
+    `div[id^="cachecounter_${player}_${loc}_"]`,
+  )
 
   divs.forEach((div) => {
     accum += parseInt(div.textContent)
