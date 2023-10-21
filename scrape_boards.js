@@ -1,5 +1,5 @@
 // ======  USEFUL CONSTANTS  ======
-CARD_LOCATIONS = [
+const CARD_LOCATIONS = [
   '9',
   '10',
   '11',
@@ -16,10 +16,10 @@ CARD_LOCATIONS = [
   '28',
   '29',
 ]
-NO_BIRD_ID = -1
+const NO_BIRD_ID = -1
 
 // ======  HELPER FUNCTIONS  ======
-cardLocationDescription = (locId) => {
+const cardLocationDescription = (locId) => {
   return {
     9: 'Forest 1',
     10: 'Forest 2',
@@ -39,12 +39,12 @@ cardLocationDescription = (locId) => {
   }[locId]
 }
 
-getXYPixelValues = (xyString) => {
+const getXYPixelValues = (xyString) => {
   mch = xyString.match(/(-?\d+)px\s+(-?\d+)px/)
   return { x: mch[1], y: mch[2] }
 }
 
-calcCardIndex = (div, numCols, numRows) => {
+const calcCardIndex = (div, numCols, numRows) => {
   // Calculate the 1-D index of a card from the given div
   // Assumes row-major order
   resizeData = getComputedStyle(div)['background-size']
@@ -65,27 +65,30 @@ calcCardIndex = (div, numCols, numRows) => {
 
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
-getIds = () => {
-  return window.document
-    .querySelectorAll('div[class="player-name"]')
-    .map((div) => div.id.split('_')[2])
-}
+// These two are unneeded now that this file is part of the extension.
+// The functions from scrape_scores.js can be reused here.
 
-getNames = () => {
-  return getIds().map((id) =>
-    window.document
-      .querySelectorAll(`div[id$="${id}"][class="player-name"]`)[0]
-      .textContent.trim(),
-  )
-}
+// const getIds = () => {
+//   return window.document
+//     .querySelectorAll('div[class="player-name"]')
+//     .map((div) => div.id.split('_')[2])
+// }
+
+// const getNames = () => {
+//   return getIds().map((id) =>
+//     window.document
+//       .querySelectorAll(`div[id$="${id}"][class="player-name"]`)[0]
+//       .textContent.trim(),
+//   )
+// }
 
 // ======  BIRD IDENTIFICATION  ======
 
-calcBirdIndex = (div) => {
+const calcBirdIndex = (div) => {
   return calcCardIndex(div, 16, 11)
 }
 
-getBoardBirdIndex = (player, loc) => {
+const getBoardBirdIndex = (player, loc) => {
   divId = `bird_img_${player}_${loc}`
   div = window.document.querySelectorAll(`div[id="${divId}"]`)[0]
 
@@ -96,7 +99,7 @@ getBoardBirdIndex = (player, loc) => {
   return calcBirdIndex(div)
 }
 
-getHandBirdsIndexes = () => {
+const getHandBirdsIndexes = () => {
   return [
     ...window.document.querySelectorAll('div[id^="handcard_bird_panel"]'),
   ].map((div) => calcBirdIndex(div))
@@ -104,7 +107,7 @@ getHandBirdsIndexes = () => {
 
 // ======  EGG CALCULATION  ======
 
-calcEggCount = (player, loc) => {
+const calcEggCount = (player, loc) => {
   return window.document.querySelectorAll(
     `div[id="location_zone_${player}_${loc}"]`,
   )[0].children.length
@@ -112,7 +115,7 @@ calcEggCount = (player, loc) => {
 
 // ======  TUCKED CARD CALCULATION  ======
 
-calcTuckCount = (player, loc) => {
+const calcTuckCount = (player, loc) => {
   div = window.document.querySelectorAll(
     `div[id="tuckedcounter_${player}_${loc}"]`,
   )[0]
@@ -122,7 +125,7 @@ calcTuckCount = (player, loc) => {
 
 // ======  CACHED FOOD CALCULATION  ======
 
-calcCacheCount = (player, loc) => {
+const calcCacheCount = (player, loc) => {
   accum = 0
   divs = window.document.querySelectorAll(
     `div[id^="cachecounter_${player}_${loc}_"]`,
@@ -137,7 +140,7 @@ calcCacheCount = (player, loc) => {
 
 // ======  PUBLIC API  ======
 
-printNameInfo = () => {
+const printNameInfo = () => {
   getNames().forEach((n, i) => {
     console.log(`${n}: ${getIds()[i]}`)
   })
