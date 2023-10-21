@@ -1,4 +1,4 @@
-BIRD_MAPPING = {
+const BIRD_MAPPING = {
   0: 'Acorn Woodpecker',
   1: 'American Avocet',
   2: 'American Bittern',
@@ -170,3 +170,5 @@ BIRD_MAPPING = {
   168: 'Yellow-Headed Blackbird',
   169: 'Yellow-Rumped Warbler',
 }
+
+export default BIRD_MAPPING

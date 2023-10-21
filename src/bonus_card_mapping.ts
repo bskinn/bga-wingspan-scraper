@@ -1,4 +1,4 @@
-BONUS_CARD_MAPPING = {
+const BONUS_CARD_MAPPING = {
   0: 'Anatomist',
   1: 'Backyard Birder',
   2: 'Bird Counter',
@@ -26,3 +26,5 @@ BONUS_CARD_MAPPING = {
   24: 'Wetland Scientist',
   25: 'Wildlife Gardener',
 }
+
+export default BONUS_CARD_MAPPING
