@@ -63,25 +63,6 @@ const calcCardIndex = (div, numCols, numRows) => {
   return xOffset + numCols * yOffset
 }
 
-// ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
-
-// These two are unneeded now that this file is part of the extension.
-// The functions from scrape_scores.js can be reused here.
-
-// const getIds = () => {
-//   return window.document
-//     .querySelectorAll('div[class="player-name"]')
-//     .map((div) => div.id.split('_')[2])
-// }
-
-// const getNames = () => {
-//   return getIds().map((id) =>
-//     window.document
-//       .querySelectorAll(`div[id$="${id}"][class="player-name"]`)[0]
-//       .textContent.trim(),
-//   )
-// }
-
 // ======  BIRD IDENTIFICATION  ======
 
 const calcBirdIndex = (div) => {
