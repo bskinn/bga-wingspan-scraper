@@ -85,6 +85,7 @@ const calcBirdIndex = (div) => {
 }
 
 const getBoardBirdIndex = (player, loc) => {
+  // Store at the per-card, per-turn JSON scope
   divId = `bird_img_${player}_${loc}`
   div = window.document.querySelectorAll(`div[id="${divId}"]`)[0]
 
@@ -96,6 +97,7 @@ const getBoardBirdIndex = (player, loc) => {
 }
 
 const getHandBirdsIndices = () => {
+  // Store at the per-player, per-turn JSON scope
   return [
     ...window.document.querySelectorAll('div[id^="handcard_bird_panel"]'),
   ].map((div) => calcBirdIndex(div))
@@ -104,6 +106,7 @@ const getHandBirdsIndices = () => {
 // ======  EGG CALCULATION  ======
 
 const calcEggCount = (player, loc) => {
+  // Store at the per-card, per-turn JSON scope
   return window.document.querySelectorAll(
     `div[id="location_zone_${player}_${loc}"]`,
   )[0].children.length
@@ -112,6 +115,7 @@ const calcEggCount = (player, loc) => {
 // ======  TUCKED CARD CALCULATION  ======
 
 const calcTuckCount = (player, loc) => {
+  // Store at the per-card, per-turn JSON scope
   div = window.document.querySelectorAll(
     `div[id="tuckedcounter_${player}_${loc}"]`,
   )[0]
@@ -122,6 +126,7 @@ const calcTuckCount = (player, loc) => {
 // ======  CACHED FOOD CALCULATION  ======
 
 const calcCacheCount = (player, loc) => {
+  // Store at the per-card, per-turn scope of JSON
   accum = 0
   divs = window.document.querySelectorAll(
     `div[id^="cachecounter_${player}_${loc}_"]`,

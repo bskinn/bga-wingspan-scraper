@@ -306,6 +306,7 @@ const numPlayers = () => {
 }
 
 const getScores = () => {
+  // Store at the per-player, per-turn JSON scope
   const ids = getIds()
   var scores = []
 
