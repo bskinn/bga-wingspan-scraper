@@ -18,6 +18,21 @@ const CARD_LOCATIONS = [
 ]
 const NO_BIRD_ID = -1
 
+const ROUND_BONUS_BOARDS = {
+  GREEN: 'green',
+  BLUE: 'blue',
+}
+
+const ROUND_BONUS_SCORES = {
+  [ROUND_BONUS_BOARDS.GREEN]: [
+    [4, 1, 0, 0],
+    [5, 2, 1, 0],
+    [6, 3, 2, 0],
+    [7, 4, 3, 0],
+  ],
+  [ROUND_BONUS_BOARDS.BLUE]: [[5, 4, 3, 2, 1, 0]],
+}
+
 // ======  HELPER FUNCTIONS  ======
 const cardLocationDescription = (locId) => {
   return {
@@ -117,6 +132,27 @@ const calcCacheCount = (player, loc) => {
   })
 
   return accum
+}
+
+// ======  ROUND BONUS CALCULATION  ======
+
+const getRoundBonusBoardSide = () => {
+  // Store at the game-scope, one-time level
+  const div = window.document.querySelector('div[id="goal_board_img"]')
+  return getComputedStyle(div).backgroundPositionY == '0px' ? 'green' : 'blue'
+}
+
+const calcRoundBonusChipIndex = (div) => {
+  return calcCardIndex(div, 4, 4)
+}
+
+const getRoundBonusChipIndices = () => {
+  // Store at the game-scope, one-time level
+  return rangeArray(4).map((idx) => {
+    return calcRoundBonusChipIndex(
+      window.document.querySelector(`div[id="goal_${idx}"]`),
+    )
+  })
 }
 
 // ======  PUBLIC API  ======
