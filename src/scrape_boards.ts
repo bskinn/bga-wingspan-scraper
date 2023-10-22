@@ -1,40 +1,8 @@
-// ======  USEFUL CONSTANTS  ======
-const CARD_LOCATIONS = [
-  '9',
-  '10',
-  '11',
-  '12',
-  '13',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '25',
-  '26',
-  '27',
-  '28',
-  '29',
-]
-const NO_BIRD_ID = -1
-
-const ROUND_BONUS_BOARDS = {
-  GREEN: 'green',
-  BLUE: 'blue',
-}
-
-const ROUND_BONUS_SCORES = {
-  [ROUND_BONUS_BOARDS.GREEN]: [
-    [4, 1, 0, 0],
-    [5, 2, 1, 0],
-    [6, 3, 2, 0],
-    [7, 4, 3, 0],
-  ],
-  [ROUND_BONUS_BOARDS.BLUE]: [[5, 4, 3, 2, 1, 0]],
-}
+import { CARD_LOCATIONS, NO_BIRD_ID, ROUND_BONUS_SCORES } from './consts'
+import * as enums from './enums'
 
 // ======  HELPER FUNCTIONS  ======
-const cardLocationDescription = (locId) => {
+const cardLocationDescription = (locId: string) => {
   return {
     9: 'Forest 1',
     10: 'Forest 2',
