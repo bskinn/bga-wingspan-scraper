@@ -1,26 +1,12 @@
-import { CARD_LOCATIONS, NO_BIRD_ID, ROUND_BONUS_SCORES } from './consts'
+import {
+  BOARD_LOCATION_IDS,
+  BOARD_LOCATION_DESCRIPTIONS,
+  NO_BIRD_ID,
+  ROUND_BONUS_SCORES,
+} from './consts'
 import * as enums from './enums'
 
 // ======  HELPER FUNCTIONS  ======
-const cardLocationDescription = (locId: string) => {
-  return {
-    9: 'Forest 1',
-    10: 'Forest 2',
-    11: 'Forest 3',
-    12: 'Forest 4',
-    13: 'Forest 5',
-    17: 'Grassland 1',
-    18: 'Grassland 2',
-    19: 'Grassland 3',
-    20: 'Grassland 4',
-    21: 'Grassland 5',
-    25: 'Wetland 1',
-    26: 'Wetland 2',
-    27: 'Wetland 3',
-    28: 'Wetland 4',
-    29: 'Wetland 5',
-  }[locId]
-}
 
 const getXYPixelValues = (xyString) => {
   mch = xyString.match(/(-?\d+)px\s+(-?\d+)px/)

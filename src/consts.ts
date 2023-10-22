@@ -1,9 +1,10 @@
 import { E_Habitat, E_PlayedCardPosition, E_RoundBonusBoards } from './enums'
+import { TBoardLocationIDs, TBoardLocationDescriptions } from './types'
 
 export const NO_BIRD_ID: number = -1
 
-export const CARD_LOCATIONS: {
-  [key in E_Habitat]: { [key in E_PlayedCardPosition]: string }
+export const BOARD_LOCATION_IDS: {
+  [key1 in E_Habitat]: { [key2 in E_PlayedCardPosition]: TBoardLocationIDs }
 } = {
   [E_Habitat.Forest]: {
     [E_PlayedCardPosition.First]: '9',
@@ -25,6 +26,34 @@ export const CARD_LOCATIONS: {
     [E_PlayedCardPosition.Third]: '27',
     [E_PlayedCardPosition.Fourth]: '28',
     [E_PlayedCardPosition.Fifth]: '29',
+  },
+}
+
+export const BOARD_LOCATION_DESCRIPTIONS: {
+  [key1 in E_Habitat]: {
+    [key2 in E_PlayedCardPosition]: TBoardLocationDescriptions
+  }
+} = {
+  [E_Habitat.Forest]: {
+    [E_PlayedCardPosition.First]: 'Forest 1',
+    [E_PlayedCardPosition.Second]: 'Forest 2',
+    [E_PlayedCardPosition.Third]: 'Forest 3',
+    [E_PlayedCardPosition.Fourth]: 'Forest 4',
+    [E_PlayedCardPosition.Fifth]: 'Forest 5',
+  },
+  [E_Habitat.Grassland]: {
+    [E_PlayedCardPosition.First]: 'Grassland 1',
+    [E_PlayedCardPosition.Second]: 'Grassland 2',
+    [E_PlayedCardPosition.Third]: 'Grassland 3',
+    [E_PlayedCardPosition.Fourth]: 'Grassland 4',
+    [E_PlayedCardPosition.Fifth]: 'Grassland 5',
+  },
+  [E_Habitat.Wetland]: {
+    [E_PlayedCardPosition.First]: 'Wetland 1',
+    [E_PlayedCardPosition.Second]: 'Wetland 2',
+    [E_PlayedCardPosition.Third]: 'Wetland 3',
+    [E_PlayedCardPosition.Fourth]: 'Wetland 4',
+    [E_PlayedCardPosition.Fifth]: 'Wetland 5',
   },
 }
 
