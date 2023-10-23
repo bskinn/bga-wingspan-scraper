@@ -1,0 +1,305 @@
+{
+  "data": [
+    {
+      "move": "4",
+      "round": "1",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 0 },
+        { "name": "KrissiMay", "score": 0 }
+      ]
+    },
+    {
+      "move": "7",
+      "round": "1",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 0 },
+        { "name": "KrissiMay", "score": 0 }
+      ]
+    },
+    {
+      "move": "13",
+      "round": "1",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 0 },
+        { "name": "KrissiMay", "score": 1 }
+      ]
+    },
+    {
+      "move": "17",
+      "round": "1",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 2 },
+        { "name": "KrissiMay", "score": 1 }
+      ]
+    },
+    {
+      "move": "21",
+      "round": "1",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 3 },
+        { "name": "KrissiMay", "score": 1 }
+      ]
+    },
+    {
+      "move": "24",
+      "round": "1",
+      "turn": "6",
+      "scores": [
+        { "name": "Brian Skinn", "score": 8 },
+        { "name": "KrissiMay", "score": 1 }
+      ]
+    },
+    {
+      "move": "28",
+      "round": "1",
+      "turn": "7",
+      "scores": [
+        { "name": "Brian Skinn", "score": 8 },
+        { "name": "KrissiMay", "score": 2 }
+      ]
+    },
+    {
+      "move": "33",
+      "round": "1",
+      "turn": "8",
+      "scores": [
+        { "name": "Brian Skinn", "score": 8 },
+        { "name": "KrissiMay", "score": 4 }
+      ]
+    },
+    {
+      "move": "37",
+      "round": "2",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 11 },
+        { "name": "KrissiMay", "score": 11 }
+      ]
+    },
+    {
+      "move": "42",
+      "round": "2",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 12 },
+        { "name": "KrissiMay", "score": 11 }
+      ]
+    },
+    {
+      "move": "47",
+      "round": "2",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 13 },
+        { "name": "KrissiMay", "score": 11 }
+      ]
+    },
+    {
+      "move": "52",
+      "round": "2",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 13 },
+        { "name": "KrissiMay", "score": 14 }
+      ]
+    },
+    {
+      "move": "56",
+      "round": "2",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 18 },
+        { "name": "KrissiMay", "score": 14 }
+      ]
+    },
+    {
+      "move": "62",
+      "round": "2",
+      "turn": "6",
+      "scores": [
+        { "name": "Brian Skinn", "score": 18 },
+        { "name": "KrissiMay", "score": 14 }
+      ]
+    },
+    {
+      "move": "67",
+      "round": "2",
+      "turn": "7",
+      "scores": [
+        { "name": "Brian Skinn", "score": 21 },
+        { "name": "KrissiMay", "score": 17 }
+      ]
+    },
+    {
+      "move": "73",
+      "round": "3",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 23 },
+        { "name": "KrissiMay", "score": 25 }
+      ]
+    },
+    {
+      "move": "79",
+      "round": "3",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 24 },
+        { "name": "KrissiMay", "score": 26 }
+      ]
+    },
+    {
+      "move": "85",
+      "round": "3",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 37 },
+        { "name": "KrissiMay", "score": 28 }
+      ]
+    },
+    {
+      "move": "92",
+      "round": "3",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 39 },
+        { "name": "KrissiMay", "score": 28 }
+      ]
+    },
+    {
+      "move": "99",
+      "round": "3",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 39 },
+        { "name": "KrissiMay", "score": 29 }
+      ]
+    },
+    {
+      "move": "104",
+      "round": "3",
+      "turn": "6",
+      "scores": [
+        { "name": "Brian Skinn", "score": 43 },
+        { "name": "KrissiMay", "score": 34 }
+      ]
+    },
+    {
+      "move": "113",
+      "round": "4",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 51 },
+        { "name": "KrissiMay", "score": 40 }
+      ]
+    },
+    {
+      "move": "120",
+      "round": "4",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 52 },
+        { "name": "KrissiMay", "score": 41 }
+      ]
+    },
+    {
+      "move": "126",
+      "round": "4",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 56 },
+        { "name": "KrissiMay", "score": 43 }
+      ]
+    },
+    {
+      "move": "130",
+      "round": "4",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 64 },
+        { "name": "KrissiMay", "score": 46 }
+      ]
+    },
+    {
+      "move": "137",
+      "round": "4",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 68 },
+        { "name": "KrissiMay", "score": 46 }
+      ]
+    },
+    {
+      "move": "144",
+      "round": "4",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 73 },
+        { "name": "KrissiMay", "score": 48 }
+      ]
+    },
+    {
+      "move": "36",
+      "round": "1",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 10 },
+        { "name": "KrissiMay", "score": 7 }
+      ]
+    },
+    {
+      "move": "72",
+      "round": "2",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 21 },
+        { "name": "KrissiMay", "score": 20 }
+      ]
+    },
+    {
+      "move": "112",
+      "round": "3",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 48 },
+        { "name": "KrissiMay", "score": 34 }
+      ]
+    },
+    {
+      "move": "NONE",
+      "round": "4",
+      "turn": "C",
+      "scores": [
+        { "name": "Brian Skinn", "score": 77 },
+        { "name": "KrissiMay", "score": 55 }
+      ]
+    },
+    {
+      "move": "NONE",
+      "round": "4",
+      "turn": "G",
+      "scores": [
+        { "name": "Brian Skinn", "score": 83 },
+        { "name": "KrissiMay", "score": 62 }
+      ]
+    }
+  ],
+  "table": "399465545",
+  "timestamp": "20231022_153849",
+  "colors": [
+    { "name": "Brian Skinn", "color": "#FF0000" },
+    { "name": "KrissiMay", "color": "#008000" }
+  ],
+  "first_turns": {
+    "1": "Brian Skinn",
+    "2": "KrissiMay",
+    "3": "Brian Skinn",
+    "4": "KrissiMay"
+  },
+  "winner": "Brian Skinn"
+}
