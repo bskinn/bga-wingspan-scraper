@@ -1,4 +1,6 @@
-const BONUS_CARD_MAPPING = {
+import type { TBonusCardId } from './types'
+
+const BONUS_CARD_MAPPING: { [key in TBonusCardId]: string } = {
   0: 'Anatomist',
   1: 'Backyard Birder',
   2: 'Bird Counter',

@@ -1,4 +1,6 @@
-const BIRD_MAPPING = {
+import type { TBirdId } from './types'
+
+const BIRD_MAPPING: { [key in TBirdId]: string } = {
   0: 'Acorn Woodpecker',
   1: 'American Avocet',
   2: 'American Bittern',
