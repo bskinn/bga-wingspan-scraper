@@ -6,42 +6,53 @@ import {
 } from './consts'
 import * as enums from './enums'
 
+import type { TPixelValues } from './types_misc'
+
 // ======  HELPER FUNCTIONS  ======
 
-const getXYPixelValues = (xyString) => {
-  mch = xyString.match(/(-?\d+)px\s+(-?\d+)px/)
-  return { x: mch[1], y: mch[2] }
+const getXYPixelValues = (xyString: string): TPixelValues => {
+  const mch = xyString.match(/(-?\d+)px\s+(-?\d+)px/)
+
+  if (mch === null) {
+    const errMsg = `Regex failed to match in getXYPixelValues on string:\n\n${xyString}`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  return { x: parseFloat(mch[1]), y: parseFloat(mch[2]) }
 }
 
-const calcCardIndex = (div, numCols, numRows) => {
+const calcCardIndex = (
+  div: HTMLDivElement,
+  numCols: number,
+  numRows: number,
+) => {
   // Calculate the 1-D index of a card from the given div
   // Assumes row-major order
-  resizeData = getComputedStyle(div)['background-size']
-  offsetData = getComputedStyle(div)['background-position']
+  const resizeData = getComputedStyle(div).backgroundSize
+  const offsetData = getComputedStyle(div).backgroundPosition
 
-  resizeXY = getXYPixelValues(resizeData)
-  offsetXY = getXYPixelValues(offsetData)
+  const resizeXY = getXYPixelValues(resizeData)
+  const offsetXY = getXYPixelValues(offsetData)
 
-  xOffset = Math.round(
-    (-1 * numCols * parseInt(offsetXY.x)) / parseInt(resizeXY.x),
-  )
-  yOffset = Math.round(
-    (-1 * numRows * parseInt(offsetXY.y)) / parseInt(resizeXY.y),
-  )
+  const xOffset = Math.round((-1 * numCols * offsetXY.x) / resizeXY.x)
+  const yOffset = Math.round((-1 * numRows * offsetXY.y) / resizeXY.y)
 
   return xOffset + numCols * yOffset
 }
 
 // ======  BIRD IDENTIFICATION  ======
 
-const calcBirdIndex = (div) => {
+const calcBirdIndex = (div: HTMLDivElement): number => {
   return calcCardIndex(div, 16, 11)
 }
 
-const getBoardBirdIndex = (player, loc) => {
+const getBoardBirdIndex = (player: string, loc: number): number => {
   // Store at the per-card, per-turn JSON scope
-  divId = `bird_img_${player}_${loc}`
-  div = window.document.querySelectorAll(`div[id="${divId}"]`)[0]
+  const divId = `bird_img_${player}_${loc}`
+  const div = window.document.querySelectorAll(
+    `div[id="${divId}"]`,
+  )[0] as HTMLDivElement
 
   if (div.classList.contains('wsp_hidden')) {
     return NO_BIRD_ID
@@ -50,20 +61,22 @@ const getBoardBirdIndex = (player, loc) => {
   return calcBirdIndex(div)
 }
 
-const getHandBirdsIndices = () => {
+const getHandBirdsIndices = (): Array<number> => {
   // Store at the per-player, per-turn JSON scope
-  return [
+  const divArray: Array<HTMLDivElement> = [
     ...window.document.querySelectorAll('div[id^="handcard_bird_panel"]'),
-  ].map((div) => calcBirdIndex(div))
+  ] as Array<HTMLDivElement>
+  return divArray.map((div) => calcBirdIndex(div))
 }
 
 // ======  EGG CALCULATION  ======
 
-const calcEggCount = (player, loc) => {
+const calcEggCount = (player: string, loc: number) => {
   // Store at the per-card, per-turn JSON scope
-  return window.document.querySelectorAll(
+  const eggDiv: HTMLDivElement = window.document.querySelector(
     `div[id="location_zone_${player}_${loc}"]`,
-  )[0].children.length
+  ) as HTMLDivElement
+  return eggDiv.children.length
 }
 
 // ======  TUCKED CARD CALCULATION  ======
