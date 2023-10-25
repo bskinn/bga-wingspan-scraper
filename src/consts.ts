@@ -1,5 +1,5 @@
 import { E_Habitat, E_PlayedCardPosition, E_RoundBonusBoards } from './enums'
-import { TBoardLocationIDs, TBoardLocationDescriptions } from './types'
+import { TBoardLocationIDs, TBoardLocationDescriptions } from './types_misc'
 
 export const NO_BIRD_ID: number = -1
 

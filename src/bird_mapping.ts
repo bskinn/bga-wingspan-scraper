@@ -1,4 +1,4 @@
-import type { TBirdId } from './types'
+import type { TBirdId } from './types_misc'
 
 const BIRD_MAPPING: { [key in TBirdId]: string } = {
   0: 'Acorn Woodpecker',
