@@ -45,3 +45,10 @@ export type TPixelValues = {
   x: number
   y: number
 }
+
+export type TRoundId = '1' | '2' | '3' | '4'
+
+// prettier-ignore
+export type TTurnId =
+  | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
+  | 'B' | 'C' | 'G'

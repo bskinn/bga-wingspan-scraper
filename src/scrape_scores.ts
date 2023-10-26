@@ -1,16 +1,18 @@
-// ======  CONSTANTS  ======
-BONUS_TURN_ID = 'B'
-BONUS_CARD_TURN_ID = 'C'
-GAME_END_TURN_ID = 'G'
+import { TScoreScrapeData } from './types_score_scrape'
 
-NO_MOVE_NUM = 'NONE'
+import {
+  BONUS_TURN_ID,
+  BONUS_CARD_TURN_ID,
+  GAME_END_TURN_ID,
+  DEFAULT_ENDGAME_WAIT,
+  DEFAULT_MOVE_WAIT_POLL,
+} from './consts'
 
-DEFAULT_MOVE_WAIT_POLL = 15 // seconds
-DEFAULT_ENDGAME_WAIT = 90 // seconds (1.5 min)
+import { createArrayCycleProxy } from './proxies'
 
 // ======  DEV HELPERS  ======
 
-devRoundStartScores = [
+const devRoundStartScores: Array<TScoreScrapeData> = [
   {
     move: '67',
     round: '2',
@@ -82,20 +84,12 @@ devRoundStartScores = [
 
 // ======  PROXY HANDLERS  ======
 
-const createArrayCycleProxy = (arr) => {
-  return new Proxy(arr, {
-    get: (target, prop) => {
-      return target[prop % arr.length]
-    },
-  })
-}
-
 // ======  UTILITY FUNCTIONS  ======
-const twoDigit = (val) => {
-  return parseInt(val) >= 10 ? val : '0' + parseInt(val)
+const twoDigit = (val: number): string => {
+  return val >= 10 ? `${val}` : `0${val}`
 }
 
-const logMsg = (msg) => {
+const logMsg = (msg: string): void => {
   const now = new Date()
 
   const tstamp = `${twoDigit(now.getHours())}:${twoDigit(
@@ -105,7 +99,7 @@ const logMsg = (msg) => {
   console.log(`SCORE SCRAPE [${tstamp}]: ${msg}`)
 }
 
-const rangeArray = (len, start = 0, step = 1) => {
+const rangeArray = (len: number, start = 0, step = 1): Array<number> => {
   return Array.from(Array(len).keys(), (k) => start + step * k)
 }
 
