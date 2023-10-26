@@ -1,6 +1,7 @@
 import type { TBirdId } from './types_misc'
 
 const BIRD_MAPPING: { [key in TBirdId]: string } = {
+  [-1]: '(No bird card present)',
   0: 'Acorn Woodpecker',
   1: 'American Avocet',
   2: 'American Bittern',

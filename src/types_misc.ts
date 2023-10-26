@@ -1,18 +1,18 @@
 // prettier-ignore
-export type TBoardLocationIDs =
+export type TBoardLocationID =
   | '9' | '10' | '11' | '12' | '13'
   | '17' | '18' | '19' | '20' | '21'
   | '25' | '26' | '27' | '28' | '29'
 
 // prettier-ignore
-export type TBoardLocationDescriptions =
+export type TBoardLocationDescription =
   | 'Forest 1' | 'Forest 2' | 'Forest 3' | 'Forest 4' | 'Forest 5'
   | 'Grassland 1' | 'Grassland 2' | 'Grassland 3' | 'Grassland 4' | 'Grassland 5'
   | 'Wetland 1' | 'Wetland 2' | 'Wetland 3' | 'Wetland 4' | 'Wetland 5'
 
 // prettier-ignore
 export type TBirdId =
-  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+  | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
   | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
   | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30
   | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40

@@ -1,10 +1,14 @@
 import { E_Habitat, E_PlayedCardPosition, E_RoundBonusBoards } from './enums'
-import { TBoardLocationIDs, TBoardLocationDescriptions } from './types_misc'
+import {
+  TBoardLocationID,
+  TBoardLocationDescription,
+  TBirdId,
+} from './types_misc'
 
-export const NO_BIRD_ID: number = -1
+export const NO_BIRD_ID: TBirdId = -1
 
 export const BOARD_LOCATION_IDS: {
-  [key1 in E_Habitat]: { [key2 in E_PlayedCardPosition]: TBoardLocationIDs }
+  [key1 in E_Habitat]: { [key2 in E_PlayedCardPosition]: TBoardLocationID }
 } = {
   [E_Habitat.Forest]: {
     [E_PlayedCardPosition.First]: '9',
@@ -31,7 +35,7 @@ export const BOARD_LOCATION_IDS: {
 
 export const BOARD_LOCATION_DESCRIPTIONS: {
   [key1 in E_Habitat]: {
-    [key2 in E_PlayedCardPosition]: TBoardLocationDescriptions
+    [key2 in E_PlayedCardPosition]: TBoardLocationDescription
   }
 } = {
   [E_Habitat.Forest]: {

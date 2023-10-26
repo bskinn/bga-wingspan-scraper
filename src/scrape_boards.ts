@@ -6,7 +6,12 @@ import {
 } from './consts'
 import * as enums from './enums'
 
-import type { TPixelValues } from './types_misc'
+import type {
+  TBirdId,
+  TBoardLocationID,
+  TPixelValues,
+  TRoundBonusChipId,
+} from './types_misc'
 
 // ======  HELPER FUNCTIONS  ======
 
@@ -43,11 +48,11 @@ const calcCardIndex = (
 
 // ======  BIRD IDENTIFICATION  ======
 
-const calcBirdIndex = (div: HTMLDivElement): number => {
-  return calcCardIndex(div, 16, 11)
+const calcBirdId = (div: HTMLDivElement): TBirdId => {
+  return calcCardIndex(div, 16, 11) as TBirdId
 }
 
-const getBoardBirdIndex = (player: string, loc: number): number => {
+const getBoardBirdId = (player: string, loc: TBoardLocationID): TBirdId => {
   // Store at the per-card, per-turn JSON scope
   const divId = `bird_img_${player}_${loc}`
   const div = window.document.querySelectorAll(
@@ -58,49 +63,51 @@ const getBoardBirdIndex = (player: string, loc: number): number => {
     return NO_BIRD_ID
   }
 
-  return calcBirdIndex(div)
+  return calcBirdId(div)
 }
 
-const getHandBirdsIndices = (): Array<number> => {
+const getHandBirdsIds = (): Array<TBirdId> => {
   // Store at the per-player, per-turn JSON scope
   const divArray: Array<HTMLDivElement> = [
     ...window.document.querySelectorAll('div[id^="handcard_bird_panel"]'),
   ] as Array<HTMLDivElement>
-  return divArray.map((div) => calcBirdIndex(div))
+  return divArray.map((div) => calcBirdId(div))
 }
 
 // ======  EGG CALCULATION  ======
 
-const calcEggCount = (player: string, loc: number) => {
+const calcEggCount = (playerId: string, loc: TBoardLocationID): number => {
   // Store at the per-card, per-turn JSON scope
   const eggDiv: HTMLDivElement = window.document.querySelector(
-    `div[id="location_zone_${player}_${loc}"]`,
+    `div[id="location_zone_${playerId}_${loc}"]`,
   ) as HTMLDivElement
   return eggDiv.children.length
 }
 
 // ======  TUCKED CARD CALCULATION  ======
 
-const calcTuckCount = (player, loc) => {
+const calcTuckCount = (playerId: string, loc: TBoardLocationID): number => {
   // Store at the per-card, per-turn JSON scope
-  div = window.document.querySelectorAll(
-    `div[id="tuckedcounter_${player}_${loc}"]`,
-  )[0]
+  const div: HTMLDivElement = window.document.querySelector(
+    `div[id="tuckedcounter_${playerId}_${loc}"]`,
+  ) as HTMLDivElement
 
-  return div ? parseInt(div.textContent) : 0
+  return div ? parseInt(div.textContent || '0') : 0
 }
 
 // ======  CACHED FOOD CALCULATION  ======
 
-const calcCacheCount = (player, loc) => {
+const calcCacheCount = (playerId: string, loc: TBoardLocationID): number => {
   // Store at the per-card, per-turn scope of JSON
-  accum = 0
-  divs = window.document.querySelectorAll(
-    `div[id^="cachecounter_${player}_${loc}_"]`,
-  )
+  var accum: number = 0
+  const divArray: Array<HTMLDivElement> = [
+    ...window.document.querySelectorAll(
+      `div[id^="cachecounter_${playerId}_${loc}_"]`,
+    ),
+  ] as Array<HTMLDivElement>
 
-  divs.forEach((div) => {
-    accum += parseInt(div.textContent)
+  divArray.forEach((div) => {
+    accum += parseInt(div.textContent || '0')
   })
 
   return accum
@@ -110,20 +117,30 @@ const calcCacheCount = (player, loc) => {
 
 const getRoundBonusBoardSide = () => {
   // Store at the game-scope, one-time level
-  const div = window.document.querySelector('div[id="goal_board_img"]')
+  const div = window.document.querySelector(
+    'div[id="goal_board_img"]',
+  ) as HTMLDivElement
   return getComputedStyle(div).backgroundPositionY == '0px' ? 'green' : 'blue'
 }
 
-const calcRoundBonusChipIndex = (div) => {
-  return calcCardIndex(div, 4, 4)
+const calcRoundBonusChipIndex = (div: HTMLDivElement): TRoundBonusChipId => {
+  return calcCardIndex(div, 4, 4) as TRoundBonusChipId
 }
 
-const getRoundBonusChipIndices = () => {
+const getRoundBonusChipIndices = (): Array<TRoundBonusChipId> => {
   // Store at the game-scope, one-time level
   return rangeArray(4).map((idx) => {
-    return calcRoundBonusChipIndex(
-      window.document.querySelector(`div[id="goal_${idx}"]`),
-    )
+    const div: HTMLDivElement = window.document.querySelector(
+      `div[id="goal_${idx}"]`,
+    ) as HTMLDivElement
+
+    if (div === null) {
+      const errMsg = `Failed to find round bonus chip div at index ${idx}`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    return calcRoundBonusChipIndex(div)
   })
 }
 
