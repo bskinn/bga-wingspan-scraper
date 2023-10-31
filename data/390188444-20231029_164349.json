@@ -1,0 +1,371 @@
+{
+  "data": [
+    {
+      "move": "6",
+      "round": "1",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 0 },
+        { "name": "Em IV", "score": 0 },
+        { "name": "xïkmd", "score": 0 },
+        { "name": "Aurorabori", "score": 0 }
+      ]
+    },
+    {
+      "move": "16",
+      "round": "1",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 3 },
+        { "name": "Em IV", "score": 2 },
+        { "name": "xïkmd", "score": 2 },
+        { "name": "Aurorabori", "score": 0 }
+      ]
+    },
+    {
+      "move": "26",
+      "round": "1",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 3 },
+        { "name": "Em IV", "score": 2 },
+        { "name": "xïkmd", "score": 2 },
+        { "name": "Aurorabori", "score": 0 }
+      ]
+    },
+    {
+      "move": "35",
+      "round": "1",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 3 },
+        { "name": "Em IV", "score": 4 },
+        { "name": "xïkmd", "score": 2 },
+        { "name": "Aurorabori", "score": 4 }
+      ]
+    },
+    {
+      "move": "50",
+      "round": "1",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 7 },
+        { "name": "Em IV", "score": 4 },
+        { "name": "xïkmd", "score": 4 },
+        { "name": "Aurorabori", "score": 4 }
+      ]
+    },
+    {
+      "move": "59",
+      "round": "1",
+      "turn": "6",
+      "scores": [
+        { "name": "Brian Skinn", "score": 7 },
+        { "name": "Em IV", "score": 4 },
+        { "name": "xïkmd", "score": 11 },
+        { "name": "Aurorabori", "score": 7 }
+      ]
+    },
+    {
+      "move": "69",
+      "round": "1",
+      "turn": "7",
+      "scores": [
+        { "name": "Brian Skinn", "score": 10 },
+        { "name": "Em IV", "score": 6 },
+        { "name": "xïkmd", "score": 11 },
+        { "name": "Aurorabori", "score": 7 }
+      ]
+    },
+    {
+      "move": "83",
+      "round": "1",
+      "turn": "8",
+      "scores": [
+        { "name": "Brian Skinn", "score": 10 },
+        { "name": "Em IV", "score": 8 },
+        { "name": "xïkmd", "score": 15 },
+        { "name": "Aurorabori", "score": 7 }
+      ]
+    },
+    {
+      "move": "93",
+      "round": "2",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 12 },
+        { "name": "Em IV", "score": 13 },
+        { "name": "xïkmd", "score": 18 },
+        { "name": "Aurorabori", "score": 10 }
+      ]
+    },
+    {
+      "move": "109",
+      "round": "2",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 20 },
+        { "name": "Em IV", "score": 14 },
+        { "name": "xïkmd", "score": 18 },
+        { "name": "Aurorabori", "score": 10 }
+      ]
+    },
+    {
+      "move": "117",
+      "round": "2",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 20 },
+        { "name": "Em IV", "score": 16 },
+        { "name": "xïkmd", "score": 24 },
+        { "name": "Aurorabori", "score": 15 }
+      ]
+    },
+    {
+      "move": "136",
+      "round": "2",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 20 },
+        { "name": "Em IV", "score": 18 },
+        { "name": "xïkmd", "score": 25 },
+        { "name": "Aurorabori", "score": 15 }
+      ]
+    },
+    {
+      "move": "148",
+      "round": "2",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 27 },
+        { "name": "Em IV", "score": 22 },
+        { "name": "xïkmd", "score": 27 },
+        { "name": "Aurorabori", "score": 19 }
+      ]
+    },
+    {
+      "move": "165",
+      "round": "2",
+      "turn": "6",
+      "scores": [
+        { "name": "Brian Skinn", "score": 26 },
+        { "name": "Em IV", "score": 24 },
+        { "name": "xïkmd", "score": 32 },
+        { "name": "Aurorabori", "score": 25 }
+      ]
+    },
+    {
+      "move": "179",
+      "round": "2",
+      "turn": "7",
+      "scores": [
+        { "name": "Brian Skinn", "score": 28 },
+        { "name": "Em IV", "score": 27 },
+        { "name": "xïkmd", "score": 31 },
+        { "name": "Aurorabori", "score": 25 }
+      ]
+    },
+    {
+      "move": "190",
+      "round": "3",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 31 },
+        { "name": "Em IV", "score": 28 },
+        { "name": "xïkmd", "score": 37 },
+        { "name": "Aurorabori", "score": 29 }
+      ]
+    },
+    {
+      "move": "207",
+      "round": "3",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 32 },
+        { "name": "Em IV", "score": 30 },
+        { "name": "xïkmd", "score": 44 },
+        { "name": "Aurorabori", "score": 29 }
+      ]
+    },
+    {
+      "move": "221",
+      "round": "3",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 32 },
+        { "name": "Em IV", "score": 30 },
+        { "name": "xïkmd", "score": 43 },
+        { "name": "Aurorabori", "score": 29 }
+      ]
+    },
+    {
+      "move": "230",
+      "round": "3",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 34 },
+        { "name": "Em IV", "score": 30 },
+        { "name": "xïkmd", "score": 43 },
+        { "name": "Aurorabori", "score": 28 }
+      ]
+    },
+    {
+      "move": "241",
+      "round": "3",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 36 },
+        { "name": "Em IV", "score": 34 },
+        { "name": "xïkmd", "score": 45 },
+        { "name": "Aurorabori", "score": 30 }
+      ]
+    },
+    {
+      "move": "258",
+      "round": "3",
+      "turn": "6",
+      "scores": [
+        { "name": "Brian Skinn", "score": 36 },
+        { "name": "Em IV", "score": 36 },
+        { "name": "xïkmd", "score": 45 },
+        { "name": "Aurorabori", "score": 35 }
+      ]
+    },
+    {
+      "move": "277",
+      "round": "4",
+      "turn": "1",
+      "scores": [
+        { "name": "Brian Skinn", "score": 39 },
+        { "name": "Em IV", "score": 37 },
+        { "name": "xïkmd", "score": 49 },
+        { "name": "Aurorabori", "score": 42 }
+      ]
+    },
+    {
+      "move": "295",
+      "round": "4",
+      "turn": "2",
+      "scores": [
+        { "name": "Brian Skinn", "score": 47 },
+        { "name": "Em IV", "score": 41 },
+        { "name": "xïkmd", "score": 50 },
+        { "name": "Aurorabori", "score": 45 }
+      ]
+    },
+    {
+      "move": "316",
+      "round": "4",
+      "turn": "3",
+      "scores": [
+        { "name": "Brian Skinn", "score": 46 },
+        { "name": "Em IV", "score": 47 },
+        { "name": "xïkmd", "score": 52 },
+        { "name": "Aurorabori", "score": 51 }
+      ]
+    },
+    {
+      "move": "336",
+      "round": "4",
+      "turn": "4",
+      "scores": [
+        { "name": "Brian Skinn", "score": 49 },
+        { "name": "Em IV", "score": 53 },
+        { "name": "xïkmd", "score": 59 },
+        { "name": "Aurorabori", "score": 57 }
+      ]
+    },
+    {
+      "move": "357",
+      "round": "4",
+      "turn": "5",
+      "scores": [
+        { "name": "Brian Skinn", "score": 52 },
+        { "name": "Em IV", "score": 58 },
+        { "name": "xïkmd", "score": 66 },
+        { "name": "Aurorabori", "score": 63 }
+      ]
+    },
+    {
+      "move": "376",
+      "round": "4",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 55 },
+        { "name": "Em IV", "score": 63 },
+        { "name": "xïkmd", "score": 74 },
+        { "name": "Aurorabori", "score": 69 }
+      ]
+    },
+    {
+      "move": "92",
+      "round": "1",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 10 },
+        { "name": "Em IV", "score": 11 },
+        { "name": "xïkmd", "score": 18 },
+        { "name": "Aurorabori", "score": 10 }
+      ]
+    },
+    {
+      "move": "189",
+      "round": "2",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 29 },
+        { "name": "Em IV", "score": 27 },
+        { "name": "xïkmd", "score": 32 },
+        { "name": "Aurorabori", "score": 29 }
+      ]
+    },
+    {
+      "move": "276",
+      "round": "3",
+      "turn": "B",
+      "scores": [
+        { "name": "Brian Skinn", "score": 39 },
+        { "name": "Em IV", "score": 35 },
+        { "name": "xïkmd", "score": 47 },
+        { "name": "Aurorabori", "score": 36 }
+      ]
+    },
+    {
+      "move": "NONE",
+      "round": "4",
+      "turn": "C",
+      "scores": [
+        { "name": "Brian Skinn", "score": 60 },
+        { "name": "Em IV", "score": 66 },
+        { "name": "xïkmd", "score": 74 },
+        { "name": "Aurorabori", "score": 74 }
+      ]
+    },
+    {
+      "move": "NONE",
+      "round": "4",
+      "turn": "G",
+      "scores": [
+        { "name": "Brian Skinn", "score": 67 },
+        { "name": "Em IV", "score": 69 },
+        { "name": "xïkmd", "score": 86 },
+        { "name": "Aurorabori", "score": 82 }
+      ]
+    }
+  ],
+  "table": "390188444",
+  "timestamp": "20231029_164349",
+  "colors": [
+    { "name": "Brian Skinn", "color": "#FFA500" },
+    { "name": "Em IV", "color": "#FF0000" },
+    { "name": "xïkmd", "color": "#008000" },
+    { "name": "Aurorabori", "color": "#0000FF" }
+  ],
+  "first_turns": {
+    "1": "Em IV",
+    "2": "xïkmd",
+    "3": "Aurorabori",
+    "4": "Brian Skinn"
+  },
+  "winner": "xïkmd"
+}
