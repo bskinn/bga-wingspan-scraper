@@ -103,11 +103,27 @@ const rangeArray = (len: number, start = 0, step = 1): Array<number> => {
   return Array.from(Array(len).keys(), (k) => start + step * k)
 }
 
-const tableNum = () => {
-  return window.location.search.match(/[?&]table=(\d+)(&|$)/)[1]
+const tableNum = (): string => {
+  const search = window.location.search
+
+  if (search !== null) {
+    const match = search.match(/[?&]table=(\d+)(&|$)/)
+
+    if (match != null) {
+      return match[1]
+    } else {
+      const errMsg = `Table number not found in query parameters: "${search}"`
+      alert(errMsg)
+      throw errMsg
+    }
+  } else {
+    const errMsg = `Current URL has no query parameters: "${window.location}"`
+    alert(errMsg)
+    throw errMsg
+  }
 }
 
-const timestampFullShort = () => {
+const timestampFullShort = (): string => {
   const d = new Date()
 
   return `${d.getFullYear()}${twoDigit(d.getMonth() + 1)}${twoDigit(
@@ -117,12 +133,18 @@ const timestampFullShort = () => {
   )}`
 }
 
-const extractRoundBonusScore = (name, text) => {
-  return parseInt(
-    text.match(
-      new RegExp(`Action cubes.+?${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`),
-    )[1],
+const extractRoundBonusScore = (name: string, text: string) => {
+  const match = text.match(
+    new RegExp(`Action cubes.+?${name}.+?scor[^\\s]+\\s+(\\d+)\\s+point`),
   )
+
+  if (match != null) {
+    return parseInt(match[1])
+  } else {
+    const errMsg = `Player name "${name} not found in search text:\n\n${text}`
+    alert(errMsg)
+    throw errMsg
+  }
 }
 
 const extractBonusCardScore = (name, text) => {
