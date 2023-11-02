@@ -1,3 +1,4 @@
+import { TRawTurnId } from './types_misc'
 import { TScoreScrapeData } from './types_score_scrape'
 
 import {
@@ -147,7 +148,7 @@ const extractRoundBonusScore = (name: string, text: string) => {
   }
 }
 
-const extractBonusCardScore = (name, text) => {
+const extractBonusCardScore = (name: string, text: string) => {
   // Find all the instances of bonus card scores and sum them
   return [
     ...text.matchAll(
@@ -159,7 +160,7 @@ const extractBonusCardScore = (name, text) => {
   ].reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
 }
 
-const calcRoundTurn = (raw_turn) => {
+const calcRoundTurn = (raw_turn: TRawTurnId) => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
   if (raw_turn <= 7) {
@@ -173,27 +174,58 @@ const calcRoundTurn = (raw_turn) => {
   } else if (raw_turn == 26) {
     return { round: '4', turn: BONUS_TURN_ID }
   } else {
-    throw new Error('Raw turn index out of bounds')
+    const errMsg = `Raw turn index out of bounds: ${raw_turn}`
+    alert(errMsg)
+    throw errMsg
   }
 }
 
 // ======  MOVE STATE CONTROL  ======
 
-const advanceToMove = (move_num) => {
-  window.document
-    .querySelectorAll(`div[id="replaylogs_move_${move_num}"]`)[0]
-    .click()
+const advanceToMove = (move_num: string) => {
+  const moveElement = window.document.querySelector(
+    `div[id="replaylogs_move_${move_num}"]`,
+  ) as HTMLDivElement
+
+  if (moveElement != null) {
+    moveElement.click()
+  } else {
+    const errMsg = `Replay log div for move '${move_num} not found in page`
+    alert(errMsg)
+    throw errMsg
+  }
 }
 
 const advanceToGameEnd = () => {
-  window.document.querySelectorAll('a[id="archive_end_game"]')[0].click()
-  window.document.querySelectorAll('a[id="go_to_game_end_slow"]')[0].click()
+  var aElement1 = window.document.querySelector(
+    'a[id="archive_end_game"]',
+  ) as HTMLAnchorElement
+
+  if (aElement1 != null) {
+    aElement1.click()
+  } else {
+    const errMsg = `Anchor element to expose extra replay options not found`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  var aElement2 = window.document.querySelector(
+    'a[id="go_to_game_end_slow"]',
+  ) as HTMLAnchorElement
+
+  if (aElement2 != null) {
+    aElement2.click()
+  } else {
+    const errMsg = `Anchor element to trigger replay advance to game end not found`
+    alert(errMsg)
+    throw errMsg
+  }
 }
 
 // ======  DATA EXPORT  ======
 
 // From https://stackoverflow.com/a/18197341/4376000
-function download(filename, text) {
+function download(filename: string, text: string) {
   var element = document.createElement('a')
   element.setAttribute(
     'href',
@@ -211,17 +243,17 @@ function download(filename, text) {
 
 // ======  ASYNC HELPERS  ======
 
-const sleepHelper = (ms) => {
+const sleepHelper = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 const waitForGameEndHelper = (timeout_step = 10) => {
   logMsg('Waiting for game end...')
 
-  function waiter(resolve) {
+  function waiter(resolve: Function) {
     if (
-      [...window.document.querySelectorAll('span')].some((span) =>
-        span.textContent.includes('End of game'),
+      [...window.document.querySelectorAll('span')].some(
+        (span) => span.textContent?.includes('End of game'),
       )
     ) {
       logMsg('Reached game end.')
@@ -235,7 +267,7 @@ const waitForGameEndHelper = (timeout_step = 10) => {
   return new Promise((resolve) => waiter(resolve))
 }
 
-const waitForMoveHelper = (move_num, timeout_step = 1) => {
+const waitForMoveHelper = (move_num: string, timeout_step = 1) => {
   // We're waiting for the previous move's class to be viewed.
   // We use a nonzero default on the timeout_step so that it doesn't spam
   // the system if accidentally called without a timeout while
@@ -245,11 +277,11 @@ const waitForMoveHelper = (move_num, timeout_step = 1) => {
 
   logMsg(`Watching move ${watched_move_num}.`)
 
-  function finisher(resolve) {
+  function finisher(resolve: Function) {
     resolve()
   }
 
-  function waiter(resolve) {
+  function waiter(resolve: Function) {
     const checkDivs = window.document.querySelectorAll(
       `div[id="replaylogs_move_${watched_move_num}"][class~="viewed"]`,
     )
@@ -270,40 +302,74 @@ const waitForMoveHelper = (move_num, timeout_step = 1) => {
 
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
 
-const getIds = () => {
-  var ids = []
+const getIds = (): Array<string> => {
+  // Scrape the player IDs out of the page
 
-  window.document
-    .querySelectorAll('div[class="player-name"]')
-    .forEach((s) => ids.push(s.id.split('_')[2]))
+  const divs = [
+    ...window.document.querySelectorAll('div[class="player-name"]'),
+  ] as Array<HTMLDivElement>
 
-  return ids
+  return divs.map((s) => s.id.split('_')[2])
 }
 
-const getNames = () => {
-  const ids = getIds()
-  var names = []
+const getNames = (): Array<string> => {
+  // Scrape the player names out of the page
 
-  ids.forEach((s) =>
-    names.push(
-      window.document
-        .querySelectorAll(`div[id$="${s}"][class="player-name"]`)[0]
-        .textContent.trim(),
-    ),
-  )
+  const playerIds = getIds()
 
-  return names
+  return playerIds.map((pid) => {
+    const div = window.document.querySelector(
+      `div[id$="${pid}"][class="player-name"]`,
+    ) as HTMLDivElement
+
+    if (div != null) {
+      if (div.textContent) {
+        return div.textContent.trim()
+      } else {
+        const errMsg = `Empty name string found for player ID '${pid}'`
+        alert(errMsg)
+        throw errMsg
+      }
+    } else {
+      const errMsg = `Player name div not found for player ID '${pid}'`
+      alert(errMsg)
+      throw errMsg
+    }
+  })
 }
 
-const getColors = () => {
-  const ids = getIds()
+const getColors = (): Array<string> => {
+  const playerIds = getIds()
 
-  return ids.map((s) => {
-    let div = window.document.querySelectorAll(
-      `div[id$="${s}"][class="player-name"]`,
-    )[0]
-    let a = Array.from(div.children).filter((el) => el.target == '_blank')[0]
-    let mch = a.style.color.match(/rgb\((\d+), (\d+), (\d+)\)/)
+  return playerIds.map((pid) => {
+    let div = window.document.querySelector(
+      `div[id$="${pid}"][class="player-name"]`,
+    ) as HTMLDivElement
+
+    if (div == null) {
+      const errMsg = `Player colored name div not found for player ID '${pid}'`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    let anchors = Array.from(div.children).filter((el) => {
+      const target = el.getAttribute('target')
+      return target && target == '_blank'
+    }) as Array<HTMLAnchorElement>
+
+    if (anchors.length < 1) {
+      const errMsg = `No suitable anchor element for color determination for player ID '${pid}'`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    let mch = anchors[0].style.color.match(/rgb\((\d+), (\d+), (\d+)\)/)
+
+    if (mch == null) {
+      const errMsg = `Color style information not found for player ID ${pid}`
+      alert(errMsg)
+      throw errMsg
+    }
 
     let color = (
       65536 * parseInt(mch[1]) +
@@ -317,7 +383,7 @@ const getColors = () => {
   })
 }
 
-const numPlayers = () => {
+const numPlayers = (): number => {
   return getNames().length
 }
 
