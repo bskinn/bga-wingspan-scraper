@@ -387,44 +387,76 @@ const numPlayers = (): number => {
   return getNames().length
 }
 
-const getScores = () => {
+const getScores = (): Array<number> => {
   // Store at the per-player, per-turn JSON scope
-  const ids = getIds()
-  var scores = []
+  const playerIds = getIds()
 
-  ids.forEach((s) =>
-    scores.push(
-      parseInt(
-        window.document
-          .querySelectorAll(`span[id$="${s}"][class^="player_score"]`)[0]
-          .textContent.trim(),
-      ),
-    ),
-  )
+  return playerIds.map((pid) => {
+    const span = window.document.querySelector(
+      `span[id$="${pid}"][class^="player_score"]`,
+    ) as HTMLSpanElement
+    if (span != null) {
+      const text = span.textContent
 
-  return scores
+      if (text) {
+        return parseInt(text.trim())
+      } else {
+        const errMsg = `Score span for player ID ${pid} is empty`
+        alert(errMsg)
+        throw errMsg
+      }
+    } else {
+      const errMsg = `Score span not found player ID ${pid}`
+      alert(errMsg)
+      throw errMsg
+    }
+  })
 }
 
 // ======  MOVE RETRIEVAL AND PROCESSING  ======
 
-const getMoveInfo = () => {
-  var moveInfo = []
+const getMoveInfo = (): Array<[string, string, string, string]> => {
+  // Array of info for all the moves in the replay.
+  //
+  // For each element of the outer Array (each move):
+  //   First element is the entire match.
+  //   Second is the move number.
+  //   Third, if present, is the date.
+  //   Fourth is the full text of the move message.
 
-  // First element is the entire match.
-  // Second is the move number.
-  // Third, if present, is the date.
-  // Fourth is the full text of the move message.
-  window.document
-    .querySelectorAll('div[id^="replaylogs_move_"]')
-    .forEach((s) =>
-      moveInfo.push(
-        s.textContent.match(
-          /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/,
-        ),
-      ),
-    )
+  const divs = [
+    ...window.document.querySelectorAll('div[id^="replaylogs_move_"]'),
+  ] as Array<HTMLDivElement>
 
-  return moveInfo
+  return divs.map((div: HTMLDivElement) => {
+    const text = div.textContent
+
+    if (text) {
+      const mch = text.match(
+        /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/,
+      )
+
+      if (mch) {
+        const mchArr = [...mch]
+
+        if (mchArr.length == 4) {
+          return [mchArr[0], mchArr[1], mchArr[2], mchArr[3]]
+        } else {
+          const errMsg = `Incorrect number of match groups for div text:\n\n${text}`
+          alert(errMsg)
+          throw errMsg
+        }
+      } else {
+        const errMsg = `Regex for replay log parsing failed for div text:\n\n${text}`
+        alert(errMsg)
+        throw errMsg
+      }
+    } else {
+      const errMsg = `Empty div contents found for div:\n\n${div}`
+      alert(errMsg)
+      throw errMsg
+    }
+  })
 }
 
 const getNamedMoves = (moveInfo) => {
