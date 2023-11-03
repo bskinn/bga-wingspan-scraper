@@ -9,3 +9,10 @@ export type TScoreScrapeData = {
   turn: string
   scores: Array<TScoreScrapeSingleScore>
 }
+
+export type TMoveInfo = {
+  fullText: string
+  moveNum: string
+  dateStr: string
+  moveText: string
+}

@@ -1,5 +1,5 @@
 import { TRawTurnId } from './types_misc'
-import { TScoreScrapeData } from './types_score_scrape'
+import { TMoveInfo, TScoreScrapeData } from './types_score_scrape'
 
 import {
   BONUS_TURN_ID,
@@ -415,14 +415,17 @@ const getScores = (): Array<number> => {
 
 // ======  MOVE RETRIEVAL AND PROCESSING  ======
 
-const getMoveInfo = (): Array<[string, string, string, string]> => {
+const getMoveInfo = (): Array<TMoveInfo> => {
   // Array of info for all the moves in the replay.
   //
-  // For each element of the outer Array (each move):
+  // Formerly, for each element of the outer Array (each move):
   //   First element is the entire match.
   //   Second is the move number.
   //   Third, if present, is the date.
   //   Fourth is the full text of the move message.
+  //
+  // But now we're using the TMoveInfo type.
+  //
 
   const divs = [
     ...window.document.querySelectorAll('div[id^="replaylogs_move_"]'),
@@ -440,7 +443,12 @@ const getMoveInfo = (): Array<[string, string, string, string]> => {
         const mchArr = [...mch]
 
         if (mchArr.length == 4) {
-          return [mchArr[0], mchArr[1], mchArr[2], mchArr[3]]
+          return {
+            fullText: mchArr[0],
+            moveNum: mchArr[1],
+            dateStr: mchArr[2],
+            moveText: mchArr[3],
+          }
         } else {
           const errMsg = `Incorrect number of match groups for div text:\n\n${text}`
           alert(errMsg)
