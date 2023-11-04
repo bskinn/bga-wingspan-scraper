@@ -1,5 +1,5 @@
 import { TRawTurnId } from './types_misc'
-import { TMoveInfo, TScoreScrapeData } from './types_score_scrape'
+import { TMoveInfo, TRawMoveInfo, TScoreScrapeData } from './types_score_scrape'
 
 import {
   BONUS_TURN_ID,
@@ -415,7 +415,7 @@ const getScores = (): Array<number> => {
 
 // ======  MOVE RETRIEVAL AND PROCESSING  ======
 
-const getMoveInfo = (): Array<TMoveInfo> => {
+const getRawMoveInfo = (): Array<TRawMoveInfo> => {
   // Array of info for all the moves in the replay.
   //
   // Formerly, for each element of the outer Array (each move):
@@ -467,7 +467,7 @@ const getMoveInfo = (): Array<TMoveInfo> => {
   })
 }
 
-const getNamedMoves = (moveInfo) => {
+const getNamedMoves = (rawMoveInfo: Array<TRawMoveInfo>): Array<TMoveInfo> => {
   // BELIEVED OBSOLETE
   // Returns object
   // move: Move number
@@ -476,52 +476,62 @@ const getNamedMoves = (moveInfo) => {
   // text: Full text match
 
   var names = getNames()
-  var namedMoves = []
 
-  moveInfo.forEach((mi) => {
-    if (mi != null) {
-      names.forEach((n) => {
-        if (mi[3].startsWith(n)) {
-          namedMoves.push({ move: mi[1], name: n, msg: mi[3], text: mi[0] })
-        }
-      })
+  return rawMoveInfo.map((rmi) => {
+    const matchingNames: Array<string> = names.filter((n) =>
+      rmi.moveText.startsWith(n),
+    )
+
+    if (matchingNames.length < 1) {
+      const errMsg = `No matching player name found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    if (matchingNames.length > 1) {
+      const errMsg = `Too many player names found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    return {
+      moveNum: rmi.moveNum,
+      playerName: matchingNames[0],
+      moveText: rmi.moveText,
+      fullText: rmi.fullText,
     }
   })
-
-  return namedMoves
 }
 
-const removeUndoMoves = (namedMoves) => {
+const removeUndoMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
   // BELIEVED OBSOLETE
   // Strip out any moves that are pure undo notification moves
-  var filteredMoves = []
-
-  namedMoves.forEach((nm) => {
-    if (!nm.msg.startsWith(`${nm.name} may undo up to this point`)) {
-      filteredMoves.push(nm)
-    }
+  return namedMoves.filter((nm) => {
+    !nm.moveText.startsWith(`${nm.playerName} may undo up to this point`)
   })
-
-  return filteredMoves
 }
 
-const removeRepeatMoves = (namedMoves) => {
+const removeRepeatMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
   // BELIEVED OBSOLETE
   // Pass the moves list through after undos are stripped out
-  // Skip the first move entirely, it will be the discard move
-  //
-  var filteredMoves = [namedMoves[1]]
+  // Skip the first move entirely, it will be the discard move.
+  // Keep the second move, it will be the first move of the game.
 
-  for (let i = 2; i < namedMoves.length; i++) {
-    if (namedMoves[i].name != namedMoves[i - 1].name) {
-      filteredMoves.push(namedMoves[i])
+  return namedMoves.filter((nm, idx, arr) => {
+    if (idx == 0) {
+      return false
     }
-  }
+    if (idx == 1) {
+      return true
+    }
 
-  return filteredMoves
+    return nm.playerName != arr[idx - 1].playerName
+  })
 }
 
-const getActionCubeMoves = (movesList) => {
+const getActionCubeMoves = (
+  movesList: Array<TRawMoveInfo>,
+): Array<TMoveInfo> => {
   // Trying a different tack on the moves list
   // Returns object
   // move: Move number
@@ -530,29 +540,41 @@ const getActionCubeMoves = (movesList) => {
   // text: Full text match
   var names = getNames()
 
-  const filteredMoves = movesList.filter((m) =>
-    m[3].match(/places an action cube/),
+  const filteredRawMoves = movesList.filter((m) =>
+    m.moveText.match(/places an action cube/),
   )
 
-  const filteredObjs = filteredMoves.map((m) => {
-    return { move: m[1], msg: m[3], text: m[0] }
+  return filteredRawMoves.map((frm) => {
+    const matchingNames = names.filter((n) => {
+      frm.moveText.match(new RegExp(`^.*?${n}\\s+places an action cube`))
+    })
+
+    if (matchingNames.length < 1) {
+      const errMsg = `No matching player name found in move ${frm.moveNum} text:\n\n${frm.fullText}`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    if (matchingNames.length > 1) {
+      const errMsg = `Too many player names found in move ${frm.moveNum} text:\n\n${frm.fullText}`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    return {
+      moveNum: frm.moveNum,
+      playerName: matchingNames[0],
+      moveText: frm.moveText,
+      fullText: frm.fullText,
+    }
   })
-
-  for (fo of filteredObjs) {
-    var name = names.filter((n) =>
-      fo.msg.match(new RegExp(`^.*?${n}\\s+places an action cube`)),
-    )[0]
-    fo.name = name
-  }
-
-  return filteredObjs
 }
 
-const getMovesList = () => {
+const getMovesList = (): Array<TMoveInfo> => {
   // This is the fully prepared moves list that most functions
   // should work with
   // return removeRepeatMoves(removeUndoMoves(getNamedMoves(getMoveInfo())))
-  return getActionCubeMoves(getMoveInfo())
+  return getActionCubeMoves(getRawMoveInfo())
 }
 
 const getMoveIds = (movesList) => {
@@ -584,7 +606,7 @@ const getRoundBonusMoves = () => {
 
   var bonusMoves = []
 
-  getMoveInfo().forEach((mi) => {
+  getRawMoveInfo().forEach((mi) => {
     if (mi != null) {
       if (mi[3].includes('Action cubes are returned')) {
         bonusMoves.push({ move: mi[1], name: 'RoundBonus', text: mi[0] })
