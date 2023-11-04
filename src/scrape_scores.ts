@@ -1,5 +1,11 @@
-import { TMoveId, TRawTurnId } from './types_misc'
-import { TMoveInfo, TRawMoveInfo, TScoreScrapeData } from './types_score_scrape'
+import { TMoveId, TRawTurnId, TRoundId } from './types_misc'
+import {
+  TMoveInfo,
+  TRawMoveInfo,
+  TRoundBonusMoveInfo,
+  TScoreScrapeData,
+  TScoreScrapeSingleScore,
+} from './types_score_scrape'
 
 import {
   BONUS_TURN_ID,
@@ -7,6 +13,7 @@ import {
   GAME_END_TURN_ID,
   DEFAULT_ENDGAME_WAIT,
   DEFAULT_MOVE_WAIT_POLL,
+  ROUND_BONUS_MOVE_NAME,
 } from './consts'
 
 import { createArrayCycleProxy } from './proxies'
@@ -445,7 +452,7 @@ const getRawMoveInfo = (): Array<TRawMoveInfo> => {
         if (mchArr.length == 4) {
           return {
             fullText: mchArr[0],
-            moveNum: mchArr[1],
+            moveNum: mchArr[1] as TMoveId,
             dateStr: mchArr[2],
             moveText: mchArr[3],
           }
@@ -601,26 +608,26 @@ const getPlayOrderProxy = (movesList: Array<TMoveInfo>): Array<string> => {
 
 // ======  ROUND BONUS HANDLING  ======
 
-const getRoundBonusMoves = () => {
-  // Returns object
-  // move: Move number
-  // name: Player name
-  // text: Full text match
+const getRoundBonusMoves = (): Array<TRoundBonusMoveInfo> => {
+  // Get info specifically on the round bonus moves
 
-  var bonusMoves = []
-
-  getRawMoveInfo().forEach((mi) => {
-    if (mi != null) {
-      if (mi[3].includes('Action cubes are returned')) {
-        bonusMoves.push({ move: mi[1], name: 'RoundBonus', text: mi[0] })
-      }
-    }
+  const filteredRawMoves = getRawMoveInfo().filter((rmi) => {
+    return rmi != null && rmi.moveText.includes('Action cubes are returned')
   })
 
-  return bonusMoves
+  return filteredRawMoves.map((frm) => {
+    return {
+      moveNum: frm.moveNum,
+      name: ROUND_BONUS_MOVE_NAME,
+      fullText: frm.fullText,
+    }
+  })
 }
 
-const calcAndAddRoundEndScores = (scoreData, round) => {
+const calcAndAddRoundEndScores = (
+  scoreData: Array<TScoreScrapeData>,
+  round: TRoundId,
+) => {
   // Subtracting the round bonus scores from the scores at the
   // start of the next round, to get the scores prior to the
   // round bonuses, for rounds 1-3.
@@ -631,24 +638,40 @@ const calcAndAddRoundEndScores = (scoreData, round) => {
 
   // Scores at the start of the next round
   const nextScores = scoreData.find(
-    (obj) => obj.round == round + 1 && obj.turn == 1,
+    (sd) => sd.round == `${round + 1}` && sd.turn == '1',
   )
+
+  if (nextScores == null) {
+    const errMsg = `Failed to find score data for round ${
+      parseInt(round) + 1
+    } while calculating round-end scores for round ${round}`
+    alert(errMsg)
+    throw errMsg
+  }
 
   // Text of the relevant round bonus move. We subtract one since the
   // JS array object is zero-indexed.
-  const bonusMove = getRoundBonusMoves()[round - 1]
+  const bonusMove = getRoundBonusMoves()[parseInt(round) - 1]
 
   // Initialize the score entry object
   const newEntry = {
-    move: bonusMove.move,
-    round: `${round}`,
+    move: bonusMove.moveNum,
+    round: round,
     turn: BONUS_TURN_ID,
-    scores: [],
+    scores: [] as Array<TScoreScrapeSingleScore>,
   }
 
   names.forEach((name) => {
-    let nextScore = nextScores.scores.find((obj) => obj.name == name).score
-    let roundBonusScore = extractRoundBonusScore(name, bonusMove.text)
+    const nextScoreData = nextScores.scores.find((ns) => ns.name == name)
+
+    if (nextScoreData == null) {
+      const errMsg = `Failed to find score data for player '${name}' while calculating round-end scores for round ${round}`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    const nextScore = nextScoreData.score
+    const roundBonusScore = extractRoundBonusScore(name, bonusMove.fullText)
 
     // Calculate the math but keep the result as a string since that's
     // how everything is (for now)

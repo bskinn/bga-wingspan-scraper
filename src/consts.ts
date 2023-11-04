@@ -5,6 +5,7 @@ import {
   TBirdId,
   TTurnId,
 } from './types_misc'
+import { TRoundBonusMoveName } from './types_score_scrape'
 
 export const NO_BIRD_ID: TBirdId = -1
 export const BONUS_TURN_ID: TTurnId = 'B'
@@ -15,6 +16,8 @@ export const NO_MOVE_NUM: string = 'NONE'
 
 export const DEFAULT_MOVE_WAIT_POLL: number = 15 // seconds
 export const DEFAULT_ENDGAME_WAIT: number = 90 // seconds (1.5 min)
+
+export const ROUND_BONUS_MOVE_NAME: TRoundBonusMoveName = 'RoundBonus'
 
 export const BOARD_LOCATION_IDS: {
   [key1 in E_Habitat]: { [key2 in E_PlayedCardPosition]: TBoardLocationID }
