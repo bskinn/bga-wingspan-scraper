@@ -1,4 +1,4 @@
-export const createArrayCycleProxy = (arr: Array<Object>): Array<Object> => {
+export const createArrayCycleProxy = <T>(arr: Array<T>): Array<T> => {
   return new Proxy(arr, {
     get: (target, prop) => {
       if (typeof prop === 'symbol') {
