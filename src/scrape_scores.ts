@@ -1,4 +1,4 @@
-import { TRawTurnId } from './types_misc'
+import { TMoveId, TRawTurnId } from './types_misc'
 import { TMoveInfo, TRawMoveInfo, TScoreScrapeData } from './types_score_scrape'
 
 import {
@@ -577,22 +577,25 @@ const getMovesList = (): Array<TMoveInfo> => {
   return getActionCubeMoves(getRawMoveInfo())
 }
 
-const getMoveIds = (movesList) => {
-  var moveIds = movesList.map((m) => m.move)
+const getMoveIds = (movesList: Array<TMoveInfo>): Array<TMoveId> => {
+  var moveIds = movesList.map((m) => m.moveNum as TMoveId)
   return moveIds.sort((a, b) => {
     return Math.sign(parseInt(a) - parseInt(b))
   })
 }
 
-const getTurnsetStartMoveIds = (moveIds) => {
+const getTurnsetStartMoveIds = (moveIds: Array<TMoveId>): Array<TMoveId> => {
   return rangeArray(26).map((i) => {
     return moveIds[i * numPlayers()]
   })
 }
 
-const getPlayOrderProxy = (movesList) => {
+const getPlayOrderProxy = (movesList: Array<TMoveInfo>): Array<string> => {
+  // We draw from the movesList instead of just cycle-proxying over the
+  // Array from getNames() because the former will accurately capture
+  // the player who has first turn in the first round.
   return createArrayCycleProxy(
-    movesList.slice(0, getNames().length).map((m) => m.name),
+    movesList.slice(0, getNames().length).map((m) => m.playerName),
   )
 }
 
