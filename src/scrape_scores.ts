@@ -1,5 +1,7 @@
 import { TMoveId, TRawTurnId, TRoundId } from './types_misc'
 import {
+  TFirstTurnList,
+  TFirstTurnListPartial,
   TMoveInfo,
   TRawMoveInfo,
   TRoundBonusMoveInfo,
@@ -837,23 +839,59 @@ const correctLastTurnGlitches = (scoreData: Array<TScoreScrapeData>) => {
 
 // ======  FINDING FIRST-TURNS  ======
 
-const getFirstTurns = () => {
+const getFirstTurns = (): TFirstTurnList => {
   const firstMove = getMovesList()[0]
-  const firstMoveName = firstMove.msg.match(/^(.+?) places/)[1]
+  const firstMovePlayerNameMatch = firstMove.moveText.match(/^(.+?) places/)
 
-  const firstTurns = { 1: firstMoveName }
+  if (firstMovePlayerNameMatch == null) {
+    const errMsg = `Player name not found in replay log message for first turn`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  const firstMovePlayerName = firstMovePlayerNameMatch[1]
+
+  const firstTurns: TFirstTurnListPartial = { 1: firstMovePlayerName }
 
   rangeArray(3, 2).forEach((round) => {
     let workingDiv = [...window.document.querySelectorAll('div')]
-      .filter((div) => div.textContent.includes('is now first player'))
-      .filter((div) => div.textContent.includes(`Round ${round}`))[0]
+      .filter((div) => {
+        if (div.textContent == null) {
+          const errMsg = `Empty div found while looking for round ${round} first player`
+          alert(errMsg)
+          throw errMsg
+        }
+        return div.textContent.includes('is now first player')
+      })
+      .filter((div) => {
+        if (div.textContent == null) {
+          const errMsg = `Empty div found while looking for round ${round} first player`
+          alert(errMsg)
+          throw errMsg
+        }
+        return div.textContent.includes(`Round ${round}`)
+      })[0]
 
-    firstTurns[round] = workingDiv.textContent.match(
+    if (workingDiv.textContent == null) {
+      const errMsg = `Empty div found while looking for round ${round} first player`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    const workingMatch = workingDiv.textContent.match(
       new RegExp(`Round ${round}: (.+?) is now first player`),
-    )[1]
+    )
+
+    if (workingMatch == null) {
+      const errMsg = `Search failed while parsing replay log for round ${round} first player name`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    firstTurns[`${round}` as TRoundId] = workingMatch[1]
   })
 
-  return firstTurns
+  return firstTurns as TFirstTurnList
 }
 
 // ======  FINDING THE WINNER  ======

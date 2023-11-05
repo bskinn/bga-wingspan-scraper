@@ -33,3 +33,11 @@ export type TRoundBonusMoveInfo = {
   name: TRoundBonusMoveName
   fullText: string
 }
+
+export type TFirstTurnListPartial = {
+  [key in TRoundId]?: string
+}
+
+export type TFirstTurnList = {
+  [key in TRoundId]: string
+}
