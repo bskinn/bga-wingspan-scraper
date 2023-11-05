@@ -3,6 +3,7 @@ import {
   TBoardLocationID,
   TBoardLocationDescription,
   TBirdId,
+  TMoveId,
   TTurnId,
 } from './types_misc'
 import { TRoundBonusMoveName } from './types_score_scrape'
@@ -12,7 +13,7 @@ export const BONUS_TURN_ID: TTurnId = 'B'
 export const BONUS_CARD_TURN_ID: TTurnId = 'C'
 export const GAME_END_TURN_ID: TTurnId = 'G'
 
-export const NO_MOVE_NUM: string = 'NONE'
+export const NO_MOVE_NUM: TMoveId = 'NONE'
 
 export const DEFAULT_MOVE_WAIT_POLL: number = 15 // seconds
 export const DEFAULT_ENDGAME_WAIT: number = 90 // seconds (1.5 min)

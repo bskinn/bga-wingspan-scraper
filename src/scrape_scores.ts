@@ -13,6 +13,7 @@ import {
   GAME_END_TURN_ID,
   DEFAULT_ENDGAME_WAIT,
   DEFAULT_MOVE_WAIT_POLL,
+  NO_MOVE_NUM,
   ROUND_BONUS_MOVE_NAME,
 } from './consts'
 
@@ -685,39 +686,54 @@ const calcAndAddRoundEndScores = (
   scoreData.push(newEntry)
 }
 
-const calcAndAddGameEndScores = (scoreData) => {
+const calcAndAddGameEndScores = (scoreData: Array<TScoreScrapeData>) => {
   // Parse the final round-end move text for both the
   // R4 round bonuses and the bonus card bonuses
   //
 
   // Get the end of game move text and the names list
-  const finalMoveText = getRoundBonusMoves()[3].text
+  const finalMoveText = getRoundBonusMoves()[3].fullText
   const names = getNames()
   const referenceScores = scoreData.find(
-    (obj) => obj.round == '4' && obj.turn == BONUS_TURN_ID,
+    (sd) => sd.round == '4' && sd.turn == BONUS_TURN_ID,
   )
-  logMsg(referenceScores)
+
+  if (referenceScores == null) {
+    const errMsg = `Failed to find round 4 bonus turn score info while attempting to add game-end scores`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  logMsg(JSON.stringify(referenceScores))
 
   // Initialize score objects for after round bonuses and for
   // end of game score
-  const roundBonusScores = {
+  const roundBonusScores: TScoreScrapeData = {
     move: NO_MOVE_NUM,
-    round: '4',
+    round: '4' as TRoundId,
     turn: BONUS_CARD_TURN_ID,
-    scores: [],
+    scores: [] as Array<TScoreScrapeSingleScore>,
   }
   const endGameScores = {
     move: NO_MOVE_NUM,
-    round: '4',
+    round: '4' as TRoundId,
     turn: GAME_END_TURN_ID,
-    scores: [],
+    scores: [] as Array<TScoreScrapeSingleScore>,
   }
 
   names.forEach((name) => {
     // Get the relevant scores
     var roundScore = extractRoundBonusScore(name, finalMoveText)
     var cardScore = extractBonusCardScore(name, finalMoveText)
-    var refScore = referenceScores.scores.find((obj) => obj.name == name).score
+    var refScoreData = referenceScores.scores.find((rs) => rs.name == name)
+
+    if (refScoreData == null) {
+      const errMsg = `Expected player '${name}' not found in reference score data`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    var refScore = refScoreData.score
 
     // Add the score entries for the current player name
     roundBonusScores.scores.push({
@@ -735,11 +751,11 @@ const calcAndAddGameEndScores = (scoreData) => {
   scoreData.push(endGameScores)
 }
 
-const calcAndAddAllEndScores = (scoreData) => {
+const calcAndAddAllEndScores = (scoreData: Array<TScoreScrapeData>) => {
   // scoreData should be the output from getTurnsetScores(),
   // or a simulation of it
   for (const round of rangeArray(3, 1)) {
-    calcAndAddRoundEndScores(scoreData, round)
+    calcAndAddRoundEndScores(scoreData, `${round}` as TRoundId)
   }
 
   calcAndAddGameEndScores(scoreData)
@@ -747,15 +763,23 @@ const calcAndAddAllEndScores = (scoreData) => {
 
 // ======  FIXING ANY LAST-TURN GLITCHES  ======
 
-const correctLastTurnGlitches = (scoreData) => {
+const correctLastTurnGlitches = (scoreData: Array<TScoreScrapeData>) => {
   // Assumes we've been advanced to the endgame state
   // Collect the scores
   const endGameActualData = scrapeResults()
 
   // Pluck the end-game scores from the passed score data
-  const endGameCalcData = scoreData.find(
+  const endGameScoreData = scoreData.find(
     (sd) => sd.round == '4' && sd.turn == GAME_END_TURN_ID,
-  ).scores
+  )
+
+  if (endGameScoreData == null) {
+    const errMsg = `Game end score data not found when trying to correct last turn glitches`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  const endGameCalcData = endGameScoreData.scores
 
   // Loop over the player names, calculate the difference between
   // the actual and calculated end-game scores for each player,
@@ -765,19 +789,45 @@ const correctLastTurnGlitches = (scoreData) => {
   // (e.g., when a bird that lays eggs in everyone's habitat is used
   // on that last turn of the game; see game 416620972)
   getNames().forEach((name) => {
-    var actual = endGameActualData.find((s) => s.name == name)
-    var calc = endGameCalcData.find((s) => s.name == name)
+    var actual = endGameActualData.find((d) => d.name == name)
+    var calc = endGameCalcData.find((d) => d.name == name)
 
-    var diff = parseInt(actual.score) - parseInt(calc.score)
+    if (actual == null) {
+      const errMsg = `Score for player '${name}' not found in end-game 'actual' data`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    if (calc == null) {
+      const errMsg = `Score for player '${name}' not found in end-game 'actual' data`
+      alert(errMsg)
+      throw errMsg
+    }
+
+    var diff = actual.score - calc.score
 
     logMsg(`Endgame glitch calc for ${name}: ${diff}`)
 
-    for (turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
-      let workingScores = scoreData.find(
+    for (let turn_id of [BONUS_TURN_ID, BONUS_CARD_TURN_ID, GAME_END_TURN_ID]) {
+      const workingScoreData = scoreData.find(
         (sd) => sd.round == '4' && sd.turn == turn_id,
-      ).scores
+      )
 
-      let working = workingScores.find((s) => s.name == name)
+      if (workingScoreData == null) {
+        const errMsg = `Failed to find score data for turn ID '${turn_id} while correcting possible end-game glitches`
+        alert(errMsg)
+        throw errMsg
+      }
+
+      const workingScores = workingScoreData.scores
+
+      const working = workingScores.find((s) => s.name == name)
+
+      if (working == null) {
+        const errMsg = `Score for player '${name}' not found in data for turn ID '${turn_id} while correcting possible end-game glitches`
+        alert(errMsg)
+        throw errMsg
+      }
 
       // Scores are Numbers now
       working.score += diff
