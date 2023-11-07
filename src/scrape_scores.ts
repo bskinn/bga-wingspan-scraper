@@ -1,10 +1,11 @@
-import { TMoveId, TRawTurnId, TRoundId } from './types_misc'
+import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types_misc'
 import {
   TFirstTurnList,
   TFirstTurnListPartial,
   TMoveInfo,
   TRawMoveInfo,
   TRoundBonusMoveInfo,
+  TRoundTurnInfo,
   TScoreScrapeData,
   TScoreScrapeSingleScore,
 } from './types_score_scrape'
@@ -170,17 +171,17 @@ const extractBonusCardScore = (name: string, text: string) => {
   ].reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
 }
 
-const calcRoundTurn = (raw_turn: TRawTurnId) => {
+const calcRoundTurn = (raw_turn: TRawTurnId): TRoundTurnInfo => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
   if (raw_turn <= 7) {
-    return { round: '1', turn: `${raw_turn + 1}` }
+    return { round: '1', turn: `${raw_turn + 1}` as TTurnId }
   } else if (raw_turn <= 14) {
-    return { round: '2', turn: `${raw_turn - 7}` }
+    return { round: '2', turn: `${raw_turn - 7}` as TTurnId }
   } else if (raw_turn <= 20) {
-    return { round: '3', turn: `${raw_turn - 14}` }
+    return { round: '3', turn: `${raw_turn - 14}` as TTurnId }
   } else if (raw_turn <= 25) {
-    return { round: '4', turn: `${raw_turn - 20}` }
+    return { round: '4', turn: `${raw_turn - 20}` as TTurnId }
   } else if (raw_turn == 26) {
     return { round: '4', turn: BONUS_TURN_ID }
   } else {
@@ -896,40 +897,67 @@ const getFirstTurns = (): TFirstTurnList => {
 
 // ======  FINDING THE WINNER  ======
 
-const getWinner = () => {
-  const endDiv = [...window.document.querySelectorAll('div')].filter((div) =>
-    div.textContent.includes('The end of the game'),
-  )[0]
+const getWinner = (): string => {
+  const endDivs = [...window.document.querySelectorAll('div')].filter(
+    (div) => div.textContent?.includes('The end of the game'),
+  ) as Array<HTMLDivElement>
 
-  return endDiv.textContent.match(/The end of the game: (.+?) wins!/)[1]
+  if (endDivs.length < 1) {
+    const errMsg = `No suitable divs found for retrieving winner name`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  const endDiv = endDivs[0]
+
+  if (endDiv.textContent == null) {
+    const errMsg = `This should have been impossible, but no text was found in the winner-reporting div, despite it passing the initial filtering`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  const endDivMatch = endDiv.textContent.match(
+    /The end of the game: (.+?) wins!/,
+  )
+
+  if (endDivMatch == null) {
+    const errMsg = `Winner name could not be extracted from the end-game div`
+    alert(errMsg)
+    throw errMsg
+  }
+
+  return endDivMatch[1]
 }
 
 // ======  STATE VALIDATION ======
 
-const checkMoveListLength = () => {
+const checkMoveListLength = (): boolean => {
   return getMovesList().length == numPlayers() * 26
 }
 
-const checkFullPlaySequence = () => {
+const checkFullPlaySequence = (): boolean => {
   // Check to see whether the sequence of moves identified by
   // getMovesList() contains the players in the sequence as
   // expected by the actual game progression (advancement of
   // first player each round, etc.)
 
   const actualMoves = getMovesList()
-  const actualPlayerSequence = actualMoves.map((m) => m.name)
+  const actualPlayerSequence = actualMoves.map((m) => m.playerName)
   const orderProxy = getPlayOrderProxy(actualMoves)
 
   // This assembles the expected move sequence based on the core player
   // order determined by getPlayOrderProxy()
-  var expectedPlayerSequence = []
-  for (let round_num = 1; round_num <= 4; round_num++) {
-    expectedPlayerSequence = expectedPlayerSequence.concat(
-      rangeArray((9 - round_num) * numPlayers()).map(
-        (i) => orderProxy[i + round_num - 1],
-      ),
+  // We start by assembling the list for each round...
+  const expectedPlayerSequencesPerRound = rangeArray(4, 1).map((round_num) => {
+    return rangeArray((9 - round_num) * numPlayers()).map(
+      (i) => orderProxy[i + round_num - 1],
     )
-  }
+  })
+
+  // ... and then we concatenate everything together.
+  const expectedPlayerSequence = expectedPlayerSequencesPerRound.reduce(
+    (accum, arr) => accum.concat(arr),
+  )
 
   // Now we check whether expected matches actual
   return expectedPlayerSequence.every((n, i) => {
@@ -939,7 +967,7 @@ const checkFullPlaySequence = () => {
 
 // ======  PROCESSING SCORES  ======
 
-const scrapeResults = () => {
+const scrapeResults = (): Array<TScoreScrapeSingleScore> => {
   const results = { scores: getScores(), names: getNames() }
   return results.names.map((n, i) => {
     return { name: n, score: results.scores[i] }
@@ -947,7 +975,7 @@ const scrapeResults = () => {
 }
 
 async function getScoreForMove(
-  move_num,
+  move_num: TMoveId,
   timeout_step = DEFAULT_MOVE_WAIT_POLL,
 ) {
   // Replay wait-to-complete is in seconds
@@ -965,7 +993,7 @@ async function getScoreForMove(
 
 async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
   var moves = getTurnsetStartMoveIds(getMoveIds(getMovesList()))
-  const data = []
+  const data: Array<TScoreScrapeData> = []
 
   // These are the first turnsets of rounds 2-4, plus the last turnset,
   // falling right before the last round bonus and bonus card calculation
@@ -973,31 +1001,27 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
 
   // Add in the very final move that can be advanced to with
   // move clicks
-  moves.push(getRoundBonusMoves()[3].move)
+  moves.push(getRoundBonusMoves()[3].moveNum)
 
-  // Need to pack the moves with the indices
-  iterable = moves.map((m, i) => {
-    return [m, i]
-  })
-
-  for (const [m, i] of iterable) {
-    var turnset_num = parseInt(i) + 1
+  // Step through each turnset and pull the scores
+  moves.forEach(async (mi, idx) => {
+    var turnset_num = (idx + 1) as TRawTurnId
     logMsg(
-      `Start score retrieval for turnset ${turnset_num}, at log move ${m}...`,
+      `Start score retrieval for turnset ${turnset_num}, at log move ${mi}...`,
     )
 
     var timeout_current =
       timeout_step * (slowTurnsets.includes(turnset_num) ? 3 : 1)
 
     logMsg(`Wait timeout is ${timeout_current} sec.`)
-    result = await getScoreForMove(m, timeout_current)
+    const result = await getScoreForMove(mi, timeout_current)
     data.push({
-      move: m,
-      ...calcRoundTurn(i),
+      move: mi,
+      ...calcRoundTurn(idx as TRawTurnId),
       scores: result,
     })
     logMsg(`Score retrieval complete for turnset ${turnset_num}.`)
-  }
+  })
 
   return data
 }
