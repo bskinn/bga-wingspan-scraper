@@ -4,7 +4,6 @@ import {
   NO_BIRD_ID,
   ROUND_BONUS_SCORES,
 } from './consts'
-import * as enums from './enums'
 
 import type {
   TBirdId,
