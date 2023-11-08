@@ -1,5 +1,6 @@
 import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types_misc'
 import {
+  TCompleteScoreScrapeData,
   TFirstTurnList,
   TFirstTurnListPartial,
   TMoveInfo,
@@ -1032,10 +1033,13 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
 const buttonCheckMoveList = document.createElement('button')
 buttonCheckMoveList.textContent = 'Check Move List'
 buttonCheckMoveList.id = 'buttonCheckMoveList'
-buttonCheckMoveList.style =
-  'position: fixed; top: 90%; left: 10px; height: 2em; width: 10em;'
+buttonCheckMoveList.style.position = 'fixed'
+buttonCheckMoveList.style.top = '90%'
+buttonCheckMoveList.style.left = '10px'
+buttonCheckMoveList.style.height = '2em'
+buttonCheckMoveList.style.width = '10em'
 buttonCheckMoveList.addEventListener('click', () => {
-  alert(checkMoveListLength())
+  alert(checkMoveListLength() ? 'Check OK' : 'Check FAILED')
 })
 document.body.appendChild(buttonCheckMoveList)
 
@@ -1043,10 +1047,13 @@ document.body.appendChild(buttonCheckMoveList)
 const buttonCheckPlaySeq = document.createElement('button')
 buttonCheckPlaySeq.textContent = 'Check Play Sequence'
 buttonCheckPlaySeq.id = 'buttonCheckPlaySeq'
-buttonCheckPlaySeq.style =
-  'position: fixed; top: 90%; left: 11em; height: 2em; width: 12em;'
+buttonCheckPlaySeq.style.position = 'fixed'
+buttonCheckPlaySeq.style.top = '90%'
+buttonCheckPlaySeq.style.left = '11em'
+buttonCheckPlaySeq.style.height = '2em'
+buttonCheckPlaySeq.style.width = '12em'
 buttonCheckPlaySeq.addEventListener('click', () => {
-  alert(checkFullPlaySequence())
+  alert(checkFullPlaySequence() ? 'Check OK' : 'Check FAILED')
 })
 document.body.appendChild(buttonCheckPlaySeq)
 
@@ -1054,8 +1061,11 @@ document.body.appendChild(buttonCheckPlaySeq)
 const buttonScrapeScores = document.createElement('button')
 buttonScrapeScores.textContent = 'Scrape Scores'
 buttonScrapeScores.id = 'buttonScrapeScores'
-buttonScrapeScores.style =
-  'position: fixed; top: 95%; left: 20px; height: 2em; width: 10em;'
+buttonScrapeScores.style.position = 'fixed'
+buttonScrapeScores.style.top = '95%'
+buttonScrapeScores.style.left = '20px'
+buttonScrapeScores.style.height = '2em'
+buttonScrapeScores.style.width = '10em'
 buttonScrapeScores.addEventListener('click', () => {
   buttonScrapeScores.disabled = true
   scrapeAndSave()
@@ -1066,22 +1076,30 @@ document.body.appendChild(buttonScrapeScores)
 const inputDebugEval = document.createElement('input')
 inputDebugEval.id = 'inputDebugEval'
 inputDebugEval.type = 'text'
-inputDebugEval.style =
-  'position: fixed; top: 95%; left: 21em; height: 2em; width: 20em; padding-left: 0.25em; padding-right: 0.25em;'
+inputDebugEval.style.position = 'fixed'
+inputDebugEval.style.top = '95%'
+inputDebugEval.style.left = '21em'
+inputDebugEval.style.height = '2em'
+inputDebugEval.style.width = '20em'
+inputDebugEval.style.paddingLeft = '0.25em'
+inputDebugEval.style.paddingRight = '0.25em'
 document.body.appendChild(inputDebugEval)
 
 // Button to trigger debug evaluate and print
 const buttonDebugPrint = document.createElement('button')
 buttonDebugPrint.textContent = 'Debug Print'
 buttonDebugPrint.id = 'buttonDebugPrint'
-buttonDebugPrint.style =
-  'position: fixed; top: 95%; left: 13em; height: 2em; width: 8em;'
+buttonDebugPrint.style.position = 'fixed'
+buttonDebugPrint.style.top = '95%'
+buttonDebugPrint.style.left = '13em'
+buttonDebugPrint.style.height = '2em'
+buttonDebugPrint.style.width = '8em'
 buttonDebugPrint.addEventListener('click', () => {
   try {
     const result = eval(inputDebugEval.value)
     alert(JSON.stringify(result))
-  } catch (error) {
-    alert(`Error: ${error.message}`)
+  } catch (err) {
+    alert(`Error: ${(err as Error).message}`)
   }
 })
 document.body.appendChild(buttonDebugPrint)
@@ -1096,7 +1114,7 @@ inputDebugEval.addEventListener('keyup', function (event) {
 
 // ======  PUBLIC API  ======
 
-const reportCurrentScores = () => {
+const reportCurrentScores = (): void => {
   const names = getNames()
   const scores = getScores()
 
@@ -1115,16 +1133,16 @@ async function scrapeAndSave() {
   // Fix the endgame scores
   correctLastTurnGlitches(data)
 
-  const outerData = {}
-
-  outerData.data = data
-  outerData.table = tableNum()
-  outerData.timestamp = timestampFullShort()
-  outerData.colors = getNames().map((n, i) => {
-    return { name: n, color: getColors()[i] }
-  })
-  outerData.first_turns = getFirstTurns()
-  outerData.winner = getWinner()
+  const outerData: TCompleteScoreScrapeData = {
+    data: data,
+    table: tableNum(),
+    timestamp: timestampFullShort(),
+    colors: getNames().map((n, i) => {
+      return { name: n, color: getColors()[i] }
+    }),
+    first_turns: getFirstTurns(),
+    winner: getWinner(),
+  }
 
   download(
     `${tableNum()}-${timestampFullShort()}.json`,

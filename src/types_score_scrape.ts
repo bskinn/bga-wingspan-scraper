@@ -12,6 +12,20 @@ export type TScoreScrapeData = {
   scores: Array<TScoreScrapeSingleScore>
 }
 
+export type TColorData = {
+  name: string
+  color: string
+}
+
+export type TCompleteScoreScrapeData = {
+  data: Array<TScoreScrapeData>
+  table: string
+  timestamp: string
+  colors: Array<TColorData>
+  first_turns: TFirstTurnList
+  winner: string
+}
+
 export type TRawMoveInfo = {
   fullText: string
   moveNum: TMoveId
