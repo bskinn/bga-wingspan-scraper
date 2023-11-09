@@ -15,7 +15,6 @@ import {
   BONUS_TURN_ID,
   BONUS_CARD_TURN_ID,
   GAME_END_TURN_ID,
-  DEFAULT_ENDGAME_WAIT,
   DEFAULT_MOVE_WAIT_POLL,
   NO_MOVE_NUM,
   ROUND_BONUS_MOVE_NAME,
@@ -23,9 +22,18 @@ import {
 
 import { createArrayCycleProxy } from './proxies'
 
+import { getColors, getNames, getScores, numPlayers } from './data_player'
+import { getTableNum } from './data_table'
+
+import { rangeArray } from './helpers_array'
+import { waitForGameEndHelper, waitForMoveHelper } from './helpers_async'
+import { timestampFullShort } from './helpers_string'
+
+import { logMsg } from './logging'
+
 // ======  DEV HELPERS  ======
 
-const devRoundStartScores: Array<TScoreScrapeData> = [
+export const devRoundStartScores: Array<TScoreScrapeData> = [
   {
     move: '67',
     round: '2',
@@ -95,56 +103,7 @@ const devRoundStartScores: Array<TScoreScrapeData> = [
   },
 ]
 
-// ======  PROXY HANDLERS  ======
-
 // ======  UTILITY FUNCTIONS  ======
-const twoDigit = (val: number): string => {
-  return val >= 10 ? `${val}` : `0${val}`
-}
-
-const logMsg = (msg: string): void => {
-  const now = new Date()
-
-  const tstamp = `${twoDigit(now.getHours())}:${twoDigit(
-    now.getMinutes(),
-  )}:${twoDigit(now.getSeconds())}`
-
-  console.log(`SCORE SCRAPE [${tstamp}]: ${msg}`)
-}
-
-const rangeArray = (len: number, start = 0, step = 1): Array<number> => {
-  return Array.from(Array(len).keys(), (k) => start + step * k)
-}
-
-const tableNum = (): string => {
-  const search = window.location.search
-
-  if (search !== null) {
-    const match = search.match(/[?&]table=(\d+)(&|$)/)
-
-    if (match != null) {
-      return match[1]
-    } else {
-      const errMsg = `Table number not found in query parameters: "${search}"`
-      alert(errMsg)
-      throw errMsg
-    }
-  } else {
-    const errMsg = `Current URL has no query parameters: "${window.location}"`
-    alert(errMsg)
-    throw errMsg
-  }
-}
-
-const timestampFullShort = (): string => {
-  const d = new Date()
-
-  return `${d.getFullYear()}${twoDigit(d.getMonth() + 1)}${twoDigit(
-    d.getDate(),
-  )}_${twoDigit(d.getHours())}${twoDigit(d.getMinutes())}${twoDigit(
-    d.getSeconds(),
-  )}`
-}
 
 const extractRoundBonusScore = (name: string, text: string) => {
   const match = text.match(
@@ -255,175 +214,7 @@ function download(filename: string, text: string) {
 
 // ======  ASYNC HELPERS  ======
 
-const sleepHelper = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-const waitForGameEndHelper = (timeout_step = 10) => {
-  logMsg('Waiting for game end...')
-
-  function waiter(resolve: Function) {
-    if (
-      [...window.document.querySelectorAll('span')].some(
-        (span) => span.textContent?.includes('End of game'),
-      )
-    ) {
-      logMsg('Reached game end.')
-      resolve()
-    } else {
-      logMsg('Waiting...')
-      setTimeout(() => waiter(resolve), 1000 * timeout_step)
-    }
-  }
-
-  return new Promise((resolve) => waiter(resolve))
-}
-
-const waitForMoveHelper = (move_num: string, timeout_step = 1) => {
-  // We're waiting for the previous move's class to be viewed.
-  // We use a nonzero default on the timeout_step so that it doesn't spam
-  // the system if accidentally called without a timeout while
-  // developing/debugging.
-
-  const watched_move_num = `${parseInt(move_num) - 1}`
-
-  logMsg(`Watching move ${watched_move_num}.`)
-
-  function finisher(resolve: Function) {
-    resolve()
-  }
-
-  function waiter(resolve: Function) {
-    const checkDivs = window.document.querySelectorAll(
-      `div[id="replaylogs_move_${watched_move_num}"][class~="viewed"]`,
-    )
-
-    if (checkDivs.length < 1) {
-      logMsg('Waiting...')
-      setTimeout(() => waiter(resolve), 1000 * timeout_step)
-    } else {
-      logMsg(
-        'Move reached, waiting one more time to ensure animation is complete...',
-      )
-      setTimeout(() => finisher(resolve), 1000 * timeout_step)
-    }
-  }
-
-  return new Promise((resolve) => waiter(resolve))
-}
-
 // ======  BASIC DATA RETRIEVAL FUNCTIONS  ======
-
-const getIds = (): Array<string> => {
-  // Scrape the player IDs out of the page
-
-  const divs = [
-    ...window.document.querySelectorAll('div[class="player-name"]'),
-  ] as Array<HTMLDivElement>
-
-  return divs.map((s) => s.id.split('_')[2])
-}
-
-const getNames = (): Array<string> => {
-  // Scrape the player names out of the page
-
-  const playerIds = getIds()
-
-  return playerIds.map((pid) => {
-    const div = window.document.querySelector(
-      `div[id$="${pid}"][class="player-name"]`,
-    ) as HTMLDivElement
-
-    if (div != null) {
-      if (div.textContent) {
-        return div.textContent.trim()
-      } else {
-        const errMsg = `Empty name string found for player ID '${pid}'`
-        alert(errMsg)
-        throw errMsg
-      }
-    } else {
-      const errMsg = `Player name div not found for player ID '${pid}'`
-      alert(errMsg)
-      throw errMsg
-    }
-  })
-}
-
-const getColors = (): Array<string> => {
-  const playerIds = getIds()
-
-  return playerIds.map((pid) => {
-    let div = window.document.querySelector(
-      `div[id$="${pid}"][class="player-name"]`,
-    ) as HTMLDivElement
-
-    if (div == null) {
-      const errMsg = `Player colored name div not found for player ID '${pid}'`
-      alert(errMsg)
-      throw errMsg
-    }
-
-    let anchors = Array.from(div.children).filter((el) => {
-      const target = el.getAttribute('target')
-      return target && target == '_blank'
-    }) as Array<HTMLAnchorElement>
-
-    if (anchors.length < 1) {
-      const errMsg = `No suitable anchor element for color determination for player ID '${pid}'`
-      alert(errMsg)
-      throw errMsg
-    }
-
-    let mch = anchors[0].style.color.match(/rgb\((\d+), (\d+), (\d+)\)/)
-
-    if (mch == null) {
-      const errMsg = `Color style information not found for player ID ${pid}`
-      alert(errMsg)
-      throw errMsg
-    }
-
-    let color = (
-      65536 * parseInt(mch[1]) +
-      256 * parseInt(mch[2]) +
-      parseInt(mch[3])
-    )
-      .toString(16)
-      .toUpperCase()
-
-    return '#' + '0'.repeat(6 - color.length) + color
-  })
-}
-
-const numPlayers = (): number => {
-  return getNames().length
-}
-
-const getScores = (): Array<number> => {
-  // Store at the per-player, per-turn JSON scope
-  const playerIds = getIds()
-
-  return playerIds.map((pid) => {
-    const span = window.document.querySelector(
-      `span[id$="${pid}"][class^="player_score"]`,
-    ) as HTMLSpanElement
-    if (span != null) {
-      const text = span.textContent
-
-      if (text) {
-        return parseInt(text.trim())
-      } else {
-        const errMsg = `Score span for player ID ${pid} is empty`
-        alert(errMsg)
-        throw errMsg
-      }
-    } else {
-      const errMsg = `Score span not found player ID ${pid}`
-      alert(errMsg)
-      throw errMsg
-    }
-  })
-}
 
 // ======  MOVE RETRIEVAL AND PROCESSING  ======
 
@@ -479,6 +270,7 @@ const getRawMoveInfo = (): Array<TRawMoveInfo> => {
   })
 }
 
+// @ts-expect-error
 const getNamedMoves = (rawMoveInfo: Array<TRawMoveInfo>): Array<TMoveInfo> => {
   // BELIEVED OBSOLETE
   // Returns object
@@ -515,6 +307,7 @@ const getNamedMoves = (rawMoveInfo: Array<TRawMoveInfo>): Array<TMoveInfo> => {
   })
 }
 
+// @ts-expect-error
 const removeUndoMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
   // BELIEVED OBSOLETE
   // Strip out any moves that are pure undo notification moves
@@ -523,6 +316,7 @@ const removeUndoMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
   })
 }
 
+// @ts-expect-error
 const removeRepeatMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
   // BELIEVED OBSOLETE
   // Pass the moves list through after undos are stripped out
@@ -1114,7 +908,7 @@ inputDebugEval.addEventListener('keyup', function (event) {
 
 // ======  PUBLIC API  ======
 
-const reportCurrentScores = (): void => {
+export const reportCurrentScores = (): void => {
   const names = getNames()
   const scores = getScores()
 
@@ -1135,7 +929,7 @@ async function scrapeAndSave() {
 
   const outerData: TCompleteScoreScrapeData = {
     data: data,
-    table: tableNum(),
+    table: getTableNum(),
     timestamp: timestampFullShort(),
     colors: getNames().map((n, i) => {
       return { name: n, color: getColors()[i] }
@@ -1145,11 +939,11 @@ async function scrapeAndSave() {
   }
 
   download(
-    `${tableNum()}-${timestampFullShort()}.json`,
+    `${getTableNum()}-${timestampFullShort()}.json`,
     JSON.stringify(outerData),
   )
   download(
-    `${tableNum()}-${timestampFullShort()}.b64`,
+    `${getTableNum()}-${timestampFullShort()}.b64`,
     btoa(JSON.stringify(outerData)),
   )
 }

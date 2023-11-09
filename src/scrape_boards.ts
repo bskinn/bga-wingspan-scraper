@@ -1,16 +1,15 @@
-import {
-  BOARD_LOCATION_IDS,
-  BOARD_LOCATION_DESCRIPTIONS,
-  NO_BIRD_ID,
-  ROUND_BONUS_SCORES,
-} from './consts'
-
 import type {
   TBirdId,
   TBoardLocationID,
   TPixelValues,
   TRoundBonusChipId,
 } from './types_misc'
+
+import { NO_BIRD_ID } from './consts'
+
+import { getIds, getNames } from './data_player'
+
+import { rangeArray } from './helpers_array'
 
 // ======  HELPER FUNCTIONS  ======
 
@@ -51,6 +50,7 @@ const calcBirdId = (div: HTMLDivElement): TBirdId => {
   return calcCardIndex(div, 16, 11) as TBirdId
 }
 
+// @ts-expect-error
 const getBoardBirdId = (player: string, loc: TBoardLocationID): TBirdId => {
   // Store at the per-card, per-turn JSON scope
   const divId = `bird_img_${player}_${loc}`
@@ -65,6 +65,7 @@ const getBoardBirdId = (player: string, loc: TBoardLocationID): TBirdId => {
   return calcBirdId(div)
 }
 
+// @ts-expect-error
 const getHandBirdsIds = (): Array<TBirdId> => {
   // Store at the per-player, per-turn JSON scope
   const divArray: Array<HTMLDivElement> = [
@@ -75,6 +76,7 @@ const getHandBirdsIds = (): Array<TBirdId> => {
 
 // ======  EGG CALCULATION  ======
 
+// @ts-expect-error
 const calcEggCount = (playerId: string, loc: TBoardLocationID): number => {
   // Store at the per-card, per-turn JSON scope
   const eggDiv: HTMLDivElement = window.document.querySelector(
@@ -85,6 +87,7 @@ const calcEggCount = (playerId: string, loc: TBoardLocationID): number => {
 
 // ======  TUCKED CARD CALCULATION  ======
 
+// @ts-expect-error
 const calcTuckCount = (playerId: string, loc: TBoardLocationID): number => {
   // Store at the per-card, per-turn JSON scope
   const div: HTMLDivElement = window.document.querySelector(
@@ -96,6 +99,7 @@ const calcTuckCount = (playerId: string, loc: TBoardLocationID): number => {
 
 // ======  CACHED FOOD CALCULATION  ======
 
+// @ts-expect-error
 const calcCacheCount = (playerId: string, loc: TBoardLocationID): number => {
   // Store at the per-card, per-turn scope of JSON
   var accum: number = 0
@@ -114,6 +118,7 @@ const calcCacheCount = (playerId: string, loc: TBoardLocationID): number => {
 
 // ======  ROUND BONUS CALCULATION  ======
 
+// @ts-expect-error
 const getRoundBonusBoardSide = () => {
   // Store at the game-scope, one-time level
   const div = window.document.querySelector(
@@ -126,6 +131,7 @@ const calcRoundBonusChipIndex = (div: HTMLDivElement): TRoundBonusChipId => {
   return calcCardIndex(div, 4, 4) as TRoundBonusChipId
 }
 
+// @ts-expect-error
 const getRoundBonusChipIndices = (): Array<TRoundBonusChipId> => {
   // Store at the game-scope, one-time level
   return rangeArray(4).map((idx) => {
@@ -145,7 +151,7 @@ const getRoundBonusChipIndices = (): Array<TRoundBonusChipId> => {
 
 // ======  PUBLIC API  ======
 
-const printNameInfo = () => {
+export const printNameInfo = () => {
   getNames().forEach((n, i) => {
     console.log(`${n}: ${getIds()[i]}`)
   })

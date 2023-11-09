@@ -15,7 +15,7 @@
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "strict": true
   },
   "include": ["src/**/*.ts"],
