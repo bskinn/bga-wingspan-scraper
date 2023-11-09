@@ -1,8 +1,10 @@
 {
   "scripts": {
     "format": "npx prettier -w .",
-    "build": "tsc --build && node comment_build_files.js",
-    "clean": "tsc --build --clean"
+    "build": "npm run build-ts && npm run comment-built",
+    "clean": "tsc --build --clean",
+    "build-ts": "tsc --build",
+    "comment-built": "node comment_build_files.js"
   },
   "devDependencies": {
     "prettier": "3.0.3",
