@@ -21,6 +21,16 @@ const commentOutNoise = (filePath) => {
       (match) => `// ${match}`,
     )
 
+    workData = workData.replaceAll(
+      /^exports[.].+void 0/gm,
+      (match) => `// ${match}`,
+    )
+
+    workData = workData.replaceAll(
+      /^const.+require.+$/gm,
+      (match) => `// ${match}`,
+    )
+
     fs.writeFile(filePath, workData, 'utf-8', (err) => {
       if (err) {
         console.error(err)
