@@ -26,7 +26,11 @@ import { getColors, getNames, getScores, numPlayers } from './data_player'
 import { getTableNum } from './data_table'
 
 import { rangeArray } from './helpers_array'
-import { waitForGameEndHelper, waitForMoveHelper } from './helpers_async'
+import {
+  sleepHelper,
+  waitForGameEndHelper,
+  waitForMoveHelper,
+} from './helpers_async'
 import { timestampFullShort } from './helpers_string'
 
 import { logMsg } from './logging'
@@ -822,6 +826,22 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
 }
 
 // ======  EXTENSION  ======
+
+// Button for testing await behavior
+const buttonAwaitTest = document.createElement('button')
+buttonAwaitTest.textContent = 'Test Await'
+buttonAwaitTest.id = 'buttonAwaitTest'
+buttonAwaitTest.style.position = 'fixed'
+buttonAwaitTest.style.top = '85%'
+buttonAwaitTest.style.left = '10px'
+buttonAwaitTest.style.height = '2em'
+buttonAwaitTest.style.width = '8em'
+buttonAwaitTest.addEventListener('click', async () => {
+  console.log('Start')
+  await sleepHelper(5000)
+  console.log('End')
+})
+document.body.appendChild(buttonAwaitTest)
 
 // Button for checking the turnset move list length
 const buttonCheckMoveList = document.createElement('button')
