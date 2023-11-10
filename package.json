@@ -1,4 +1,8 @@
 {
+  "name": "bga-wingspan-scraper",
+  "version": "0.1",
+  "description": "Firefox extension to scrape BGA Wingspan game replays",
+  "private": true,
   "scripts": {
     "format": "npx prettier -w .",
     "build": "npm run build-ts && npm run comment-built",
