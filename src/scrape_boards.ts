@@ -3,13 +3,13 @@ import type {
   TBoardLocationID,
   TPixelValues,
   TRoundBonusChipId,
-} from './types_misc'
+} from './types/types_misc'
 
 import { NO_BIRD_ID } from './consts'
 
-import { getIds, getNames } from './data_player'
+import { getIds, getNames } from './data/player'
 
-import { rangeArray } from './helpers_array'
+import { rangeArray } from './helpers/array'
 
 // ======  HELPER FUNCTIONS  ======
 

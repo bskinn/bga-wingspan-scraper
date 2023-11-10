@@ -1,4 +1,4 @@
-import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types_misc'
+import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types/types_misc'
 import {
   TCompleteScoreScrapeData,
   TFirstTurnList,
@@ -9,7 +9,7 @@ import {
   TRoundTurnInfo,
   TScoreScrapeData,
   TScoreScrapeSingleScore,
-} from './types_score_scrape'
+} from './types/types_score_scrape'
 
 import {
   BONUS_TURN_ID,
@@ -22,16 +22,16 @@ import {
 
 import { createArrayCycleProxy } from './proxies'
 
-import { getColors, getNames, getScores, numPlayers } from './data_player'
-import { getTableNum } from './data_table'
+import { getColors, getNames, getScores, numPlayers } from './data/player'
+import { getTableNum } from './data/table'
 
-import { rangeArray } from './helpers_array'
+import { rangeArray } from './helpers/array'
 import {
   sleepHelper,
   waitForGameEndHelper,
   waitForMoveHelper,
-} from './helpers_async'
-import { timestampFullShort } from './helpers_string'
+} from './helpers/async'
+import { timestampFullShort } from './helpers/string'
 
 import { logMsg } from './logging'
 

@@ -5,8 +5,8 @@ import {
   TBirdId,
   TMoveId,
   TTurnId,
-} from './types_misc'
-import { TRoundBonusMoveName } from './types_score_scrape'
+} from './types/types_misc'
+import { TRoundBonusMoveName } from './types/types_score_scrape'
 
 export const NO_BIRD_ID: TBirdId = -1
 export const BONUS_TURN_ID: TTurnId = 'B'

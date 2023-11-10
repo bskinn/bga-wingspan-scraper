@@ -1,4 +1,4 @@
-import { twoDigit } from './helpers_string'
+import { twoDigit } from './helpers/string'
 
 export const logMsg = (msg: string): void => {
   const now = new Date()
