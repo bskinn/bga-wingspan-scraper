@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "amd",
+    "module": "commonjs",
     "outDir": "./dist",
-    "outFile": "./dist/wingspan.js",
     "rootDir": "./src",
     "removeComments": false,
     "sourceMap": false,
