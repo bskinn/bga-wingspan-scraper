@@ -287,13 +287,13 @@ const getNamedMoves = (rawMoveInfo: Array<TRawMoveInfo>): Array<TMoveInfo> => {
     )
 
     if (matchingNames.length < 1) {
-      const errMsg = `No matching player name found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
+      const errMsg = `(getNamedMoves) No matching player name found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
       alert(errMsg)
       throw errMsg
     }
 
     if (matchingNames.length > 1) {
-      const errMsg = `Too many player names found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
+      const errMsg = `(getNamedMoves) Too many player names found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
       alert(errMsg)
       throw errMsg
     }
@@ -352,17 +352,17 @@ const getActionCubeMoves = (
 
   return filteredRawMoves.map((frm) => {
     const matchingNames = names.filter((n) => {
-      frm.moveText.match(new RegExp(`^.*?${n}\\s+places an action cube`))
+      return frm.moveText.match(new RegExp(`^.*?${n}\\s+places an action cube`))
     })
 
     if (matchingNames.length < 1) {
-      const errMsg = `No matching player name found in move ${frm.moveNum} text:\n\n${frm.fullText}`
+      const errMsg = `(getActionCubeMoves) No matching player name found in move ${frm.moveNum} text:\n\n${frm.fullText}`
       alert(errMsg)
       throw errMsg
     }
 
     if (matchingNames.length > 1) {
-      const errMsg = `Too many player names found in move ${frm.moveNum} text:\n\n${frm.fullText}`
+      const errMsg = `(getActionCubeMoves) Too many player names found in move ${frm.moveNum} text:\n\n${frm.fullText}`
       alert(errMsg)
       throw errMsg
     }
