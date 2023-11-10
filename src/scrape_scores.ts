@@ -803,13 +803,13 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
   moves.push(getRoundBonusMoves()[3].moveNum)
 
   // Step through each turnset and pull the scores
-  moves.forEach(async (mi, idx) => {
-    var turnset_num = (idx + 1) as TRawTurnId
+  for (const [idx, mi] of moves.entries()) {
+    const turnset_num = (idx + 1) as TRawTurnId
     logMsg(
       `Start score retrieval for turnset ${turnset_num}, at log move ${mi}...`,
     )
 
-    var timeout_current =
+    const timeout_current =
       timeout_step * (slowTurnsets.includes(turnset_num) ? 3 : 1)
 
     logMsg(`Wait timeout is ${timeout_current} sec.`)
@@ -820,7 +820,7 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
       scores: result,
     })
     logMsg(`Score retrieval complete for turnset ${turnset_num}.`)
-  })
+  }
 
   return data
 }
@@ -880,9 +880,9 @@ buttonScrapeScores.style.top = '95%'
 buttonScrapeScores.style.left = '20px'
 buttonScrapeScores.style.height = '2em'
 buttonScrapeScores.style.width = '10em'
-buttonScrapeScores.addEventListener('click', () => {
+buttonScrapeScores.addEventListener('click', async () => {
   buttonScrapeScores.disabled = true
-  scrapeAndSave()
+  await scrapeAndSave()
 })
 document.body.appendChild(buttonScrapeScores)
 
