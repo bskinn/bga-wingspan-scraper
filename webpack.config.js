@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   output: {
-    filename: 'wingspan_scores.js',
+    filename: 'wingspan.js',
     path: path.resolve(__dirname, 'dist'),
   },
 }
