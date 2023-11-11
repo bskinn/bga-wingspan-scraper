@@ -1,16 +1,25 @@
 {
   "name": "bga-wingspan-scraper",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "Firefox extension to scrape BGA Wingspan game replays",
   "private": true,
   "scripts": {
     "format": "npx prettier -w .",
-    "build": "npx webpack --config webpack.config.dev.js",
-    "build:dev": "npm run build",
+    "build": "npm run build:dev",
+    "build:dev": "npx webpack --config webpack.config.dev.js",
     "build:prod": "npx webpack --config webpack.config.prod.js",
-    "clean": "node -e \"fs = require('fs'); fs.unlinkSync('build-dev/wingspan.js')\""
+    "manifest:dev": "",
+    "clean": "node -e \"fs = require('fs'); fs.unlinkSync('build-dev/wingspan.js')\"",
+    "dist": "run-s dist:clean dist:build dist:copy dist:assets",
+    "dist:clean": "node -e \"fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true})\"",
+    "dist:build": "npm run build:prod",
+    "dist:copy": "npx copyfiles -f build/*.js dist",
+    "dist:assets": "npx copyfiles assets/**/* dist"
   },
   "devDependencies": {
+    "commander": "^11.1.0",
+    "copyfiles": "^2.4.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "3.0.3",
     "ts-loader": "^9.5.0",
     "typescript": "^5.2.2",

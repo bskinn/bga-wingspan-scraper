@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "BGA Wingspan Scraper",
-  "version": "0.1",
+  "version": "0.1.0",
 
   "description": "Tools for scraping information from BGA Wingspan replays",
 
