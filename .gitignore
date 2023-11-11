@@ -1,3 +1,6 @@
+# Project-specific
+build-dev/*
+
 # Logs
 logs
 *.log

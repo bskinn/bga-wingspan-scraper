@@ -15,11 +15,11 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
-      '@': path.resolve(__dirname, 'src/')
-    }
+      '@': path.resolve(__dirname, 'src/'),
+    },
   },
   output: {
     filename: 'wingspan.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build-dev'),
   },
 }

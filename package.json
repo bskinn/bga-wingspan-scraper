@@ -5,10 +5,8 @@
   "private": true,
   "scripts": {
     "format": "npx prettier -w .",
-    "build": "npm run build-ts && npm run comment-built",
-    "clean": "tsc --build --clean",
-    "build-ts": "tsc --build",
-    "comment-built": "node comment_build_files.js"
+    "build": "npx webpack --config webpack.config.dev.js",
+    "clean": "node -e \"fs = require('fs'); fs.unlinkSync('build-dev/wingspan.js')\""
   },
   "devDependencies": {
     "prettier": "3.0.3",
