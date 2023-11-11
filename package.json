@@ -5,16 +5,21 @@
   "private": true,
   "scripts": {
     "format": "npx prettier -w .",
-    "build": "npm run build:dev",
+    "build": "run-s clean:dev build:dev assets:dev manifest:dev",
+    "clean": "npm run clean:dev",
+    "dist": "run-s dist:clean dist:build dist:copy dist:assets dist:manifest",
     "build:dev": "npx webpack --config webpack.config.dev.js",
     "build:prod": "npx webpack --config webpack.config.prod.js",
-    "manifest:dev": "",
-    "clean": "node -e \"fs = require('fs'); fs.unlinkSync('build-dev/wingspan.js')\"",
-    "dist": "run-s dist:clean dist:build dist:copy dist:assets",
-    "dist:clean": "node -e \"fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true})\"",
+    "manifest:dev": "node render_manifest.js build-dev",
+    "assets:dev": "npx copyfiles assets/**/* build-dev",
+    "clean:dev": "node -e \"fs = require('fs'); fs.rmSync('build-dev', {recursive: true, force: true})\"",
+    "dist:clean": "run-s dist:clean:dist dist:clean:build",
+    "dist:clean:dist": "node -e \"fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true})\"",
+    "dist:clean:build": "node -e \"fs = require('fs'); fs.rmSync('build', {recursive: true, force: true})\"",
     "dist:build": "npm run build:prod",
     "dist:copy": "npx copyfiles -f build/*.js dist",
-    "dist:assets": "npx copyfiles assets/**/* dist"
+    "dist:assets": "npx copyfiles assets/**/* dist",
+    "dist:manifest": "node render_manifest.js dist"
   },
   "devDependencies": {
     "commander": "^11.1.0",
