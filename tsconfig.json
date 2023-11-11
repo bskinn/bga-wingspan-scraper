@@ -16,7 +16,10 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@/*": ["./src/*"],
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
