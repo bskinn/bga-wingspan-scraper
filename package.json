@@ -6,6 +6,8 @@
   "scripts": {
     "format": "npx prettier -w .",
     "build": "npx webpack --config webpack.config.dev.js",
+    "build:dev": "npm run build",
+    "build:prod": "npx webpack --config webpack.config.prod.js",
     "clean": "node -e \"fs = require('fs'); fs.unlinkSync('build-dev/wingspan.js')\""
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 # Project-specific
 build-dev/*
+build/*
 
 # Logs
 logs
