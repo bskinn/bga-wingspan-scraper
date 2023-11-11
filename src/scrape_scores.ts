@@ -441,7 +441,7 @@ const calcAndAddRoundEndScores = (
 
   // Scores at the start of the next round
   const nextScores = scoreData.find(
-    (sd) => sd.round == `${round + 1}` && sd.turn == '1',
+    (sd) => sd.round == `${parseInt(round) + 1}` && sd.turn == '1',
   )
 
   if (nextScores == null) {
