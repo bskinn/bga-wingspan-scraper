@@ -1,4 +1,7 @@
-BIRD_MAPPING = {
+import type { TBirdId } from '@/types/types_misc'
+
+const BIRD_MAPPING: { [key in TBirdId]: string } = {
+  [-1]: '(No bird card present)',
   0: 'Acorn Woodpecker',
   1: 'American Avocet',
   2: 'American Bittern',
@@ -170,3 +173,5 @@ BIRD_MAPPING = {
   168: 'Yellow-Headed Blackbird',
   169: 'Yellow-Rumped Warbler',
 }
+
+export default BIRD_MAPPING

@@ -1,4 +1,6 @@
-BONUS_CARD_MAPPING = {
+import type { TBonusCardId } from '@/types/types_misc'
+
+const BONUS_CARD_MAPPING: { [key in TBonusCardId]: string } = {
   0: 'Anatomist',
   1: 'Backyard Birder',
   2: 'Bird Counter',
@@ -26,3 +28,5 @@ BONUS_CARD_MAPPING = {
   24: 'Wetland Scientist',
   25: 'Wildlife Gardener',
 }
+
+export default BONUS_CARD_MAPPING

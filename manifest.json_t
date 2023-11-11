@@ -6,14 +6,14 @@
   "description": "Tools for scraping information from BGA Wingspan replays",
 
   "icons": {
-    "48": "assets/icons/wingspan-box-bga-48.png",
-    "96": "assets/icons/wingspan-box-bga-96.png"
+    "48": "icons/wingspan-box-bga-48.png",
+    "96": "icons/wingspan-box-bga-96.png"
   },
 
   "content_scripts": [
     {
       "matches": ["*://boardgamearena.com/archive/replay/*"],
-      "js": ["build-dev/wingspan.js"]
+      "js": []
     }
   ]
 }
