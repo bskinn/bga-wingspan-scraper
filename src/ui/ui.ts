@@ -1,9 +1,6 @@
 import { sleepHelper } from '@/helpers/async'
-import {
-  scrapeAndSave,
-  checkFullPlaySequence,
-  checkMoveListLength,
-} from '@/scrape_scores'
+import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
+import { scrapeAndSave } from '@/scrape/scores'
 
 const addDebugControls = () => {
   // Button to trigger debug eval

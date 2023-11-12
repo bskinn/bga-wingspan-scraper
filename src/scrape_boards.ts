@@ -7,7 +7,7 @@ import type {
 
 import { NO_BIRD_ID } from './consts'
 
-import { getIds, getNames } from './data/player'
+import { getIds, getNames } from './data/table'
 
 import { rangeArray } from './helpers/array'
 

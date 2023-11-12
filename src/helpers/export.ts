@@ -1,4 +1,3 @@
-// ======  DATA EXPORT  ======
 // From https://stackoverflow.com/a/18197341/4376000
 export function download(filename: string, text: string) {
   var element = document.createElement('a')

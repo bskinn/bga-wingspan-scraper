@@ -5,11 +5,13 @@ export type TScoreScrapeSingleScore = {
   score: number
 }
 
+export type TScoreSet = Array<TScoreScrapeSingleScore>
+
 export type TScoreScrapeData = {
   move: TMoveId
   round: TRoundId
   turn: TTurnId
-  scores: Array<TScoreScrapeSingleScore>
+  scores: TScoreSet
 }
 
 export type TColorData = {

@@ -1,4 +1,4 @@
-import { logMsg } from '@/logging'
+import { logMsg } from '@/helpers/logging'
 
 export const sleepHelper = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
