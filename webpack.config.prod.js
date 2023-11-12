@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   mode: 'production',
-  entry: './src/scrape_scores.ts',
+  entry: './src/main.ts',
   module: {
     rules: [
       {

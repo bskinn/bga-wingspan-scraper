@@ -1,4 +1,4 @@
-import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types/types-ids'
+import { TMoveId, TRawTurnId, TRoundId } from './types/types-ids'
 import {
   TCompleteScoreScrapeData,
   TFirstTurnList,
@@ -6,7 +6,6 @@ import {
   TMoveInfo,
   TRawMoveInfo,
   TRoundBonusMoveInfo,
-  TRoundTurnInfo,
   TScoreScrapeData,
   TScoreScrapeSingleScore,
 } from './types/types-score-scrape'
@@ -20,92 +19,18 @@ import {
   ROUND_BONUS_MOVE_NAME,
 } from './consts'
 
-import { createArrayCycleProxy } from './proxies'
-
 import { getColors, getNames, getScores, numPlayers } from './data/player'
 import { getTableNum } from './data/table'
 
-import { rangeArray } from './helpers/array'
-import {
-  sleepHelper,
-  waitForGameEndHelper,
-  waitForMoveHelper,
-} from './helpers/async'
+import { createArrayCycleProxy, rangeArray } from './helpers/array'
+import { waitForGameEndHelper, waitForMoveHelper } from './helpers/async'
 import { timestampFullShort } from './helpers/string'
 
 import { logMsg } from './logging'
-
-// ======  DEV HELPERS  ======
-
-export const devRoundStartScores: Array<TScoreScrapeData> = [
-  {
-    move: '67',
-    round: '2',
-    turn: '1',
-    scores: [
-      {
-        name: 'Brian Skinn',
-        score: 5,
-      },
-      {
-        name: 'xïkmd',
-        score: 19,
-      },
-      {
-        name: 'KrissiMay',
-        score: 12,
-      },
-    ],
-  },
-  {
-    move: '120',
-    round: '3',
-    turn: '1',
-    scores: [
-      {
-        name: 'Brian Skinn',
-        score: 17,
-      },
-      {
-        name: 'xïkmd',
-        score: 32,
-      },
-      {
-        name: 'KrissiMay',
-        score: 25,
-      },
-    ],
-  },
-  {
-    move: '185',
-    round: '4',
-    turn: '1',
-    scores: [
-      {
-        name: 'Brian Skinn',
-        score: 48,
-      },
-      {
-        name: 'xïkmd',
-        score: 42,
-      },
-      {
-        name: 'KrissiMay',
-        score: 32,
-      },
-    ],
-  },
-  {
-    move: '232',
-    round: '4',
-    turn: 'B',
-    scores: [
-      { name: 'Brian Skinn', score: 68 },
-      { name: 'xïkmd', score: 65 },
-      { name: 'KrissiMay', score: 52 },
-    ],
-  },
-]
+import { advanceToMove, advanceToGameEnd } from './helpers/move-control'
+import { calcRoundTurn } from './data/state'
+import { download } from './export'
+import { getWinner } from './data/table'
 
 // ======  UTILITY FUNCTIONS  ======
 
@@ -133,87 +58,6 @@ const extractBonusCardScore = (name: string, text: string) => {
       ),
     ),
   ].reduce((accum, newMatch) => accum + parseInt(newMatch[1]), 0)
-}
-
-const calcRoundTurn = (raw_turn: TRawTurnId): TRoundTurnInfo => {
-  // raw_turn is zero-indexed
-  // The output round and in-round turn are one-indexed
-  if (raw_turn <= 7) {
-    return { round: '1', turn: `${raw_turn + 1}` as TTurnId }
-  } else if (raw_turn <= 14) {
-    return { round: '2', turn: `${raw_turn - 7}` as TTurnId }
-  } else if (raw_turn <= 20) {
-    return { round: '3', turn: `${raw_turn - 14}` as TTurnId }
-  } else if (raw_turn <= 25) {
-    return { round: '4', turn: `${raw_turn - 20}` as TTurnId }
-  } else if (raw_turn == 26) {
-    return { round: '4', turn: BONUS_TURN_ID }
-  } else {
-    const errMsg = `Raw turn index out of bounds: ${raw_turn}`
-    alert(errMsg)
-    throw errMsg
-  }
-}
-
-// ======  MOVE STATE CONTROL  ======
-
-const advanceToMove = (move_num: string) => {
-  const moveElement = window.document.querySelector(
-    `div[id="replaylogs_move_${move_num}"]`,
-  ) as HTMLDivElement
-
-  if (moveElement != null) {
-    moveElement.click()
-  } else {
-    const errMsg = `Replay log div for move '${move_num} not found in page`
-    alert(errMsg)
-    throw errMsg
-  }
-}
-
-const advanceToGameEnd = () => {
-  var aElement1 = window.document.querySelector(
-    'a[id="archive_end_game"]',
-  ) as HTMLAnchorElement
-
-  if (aElement1 != null) {
-    aElement1.click()
-  } else {
-    const errMsg = `Anchor element to expose extra replay options not found`
-    alert(errMsg)
-    throw errMsg
-  }
-
-  var aElement2 = window.document.querySelector(
-    'a[id="go_to_game_end_slow"]',
-  ) as HTMLAnchorElement
-
-  if (aElement2 != null) {
-    aElement2.click()
-  } else {
-    const errMsg = `Anchor element to trigger replay advance to game end not found`
-    alert(errMsg)
-    throw errMsg
-  }
-}
-
-// ======  DATA EXPORT  ======
-
-// From https://stackoverflow.com/a/18197341/4376000
-function download(filename: string, text: string) {
-  var element = document.createElement('a')
-  element.setAttribute(
-    'href',
-    'data:text/plain;charset=utf-8,' + encodeURIComponent(text),
-  )
-  element.setAttribute('download', filename)
-
-  element.style.display = 'none'
-  document.body.appendChild(element)
-
-  element.click()
-
-  document.body.removeChild(element)
 }
 
 // ======  ASYNC HELPERS  ======
@@ -271,71 +115,6 @@ const getRawMoveInfo = (): Array<TRawMoveInfo> => {
       alert(errMsg)
       throw errMsg
     }
-  })
-}
-
-// @ts-expect-error
-const getNamedMoves = (rawMoveInfo: Array<TRawMoveInfo>): Array<TMoveInfo> => {
-  // BELIEVED OBSOLETE
-  // Returns object
-  // move: Move number
-  // name: Player name
-  // msg: Log message
-  // text: Full text match
-
-  var names = getNames()
-
-  return rawMoveInfo.map((rmi) => {
-    const matchingNames: Array<string> = names.filter((n) =>
-      rmi.moveText.startsWith(n),
-    )
-
-    if (matchingNames.length < 1) {
-      const errMsg = `(getNamedMoves) No matching player name found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
-      alert(errMsg)
-      throw errMsg
-    }
-
-    if (matchingNames.length > 1) {
-      const errMsg = `(getNamedMoves) Too many player names found in move ${rmi.moveNum} text:\n\n${rmi.fullText}`
-      alert(errMsg)
-      throw errMsg
-    }
-
-    return {
-      moveNum: rmi.moveNum,
-      playerName: matchingNames[0],
-      moveText: rmi.moveText,
-      fullText: rmi.fullText,
-    }
-  })
-}
-
-// @ts-expect-error
-const removeUndoMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
-  // BELIEVED OBSOLETE
-  // Strip out any moves that are pure undo notification moves
-  return namedMoves.filter((nm) => {
-    !nm.moveText.startsWith(`${nm.playerName} may undo up to this point`)
-  })
-}
-
-// @ts-expect-error
-const removeRepeatMoves = (namedMoves: Array<TMoveInfo>): Array<TMoveInfo> => {
-  // BELIEVED OBSOLETE
-  // Pass the moves list through after undos are stripped out
-  // Skip the first move entirely, it will be the discard move.
-  // Keep the second move, it will be the first move of the game.
-
-  return namedMoves.filter((nm, idx, arr) => {
-    if (idx == 0) {
-      return false
-    }
-    if (idx == 1) {
-      return true
-    }
-
-    return nm.playerName != arr[idx - 1].playerName
   })
 }
 
@@ -694,47 +473,13 @@ const getFirstTurns = (): TFirstTurnList => {
   return firstTurns as TFirstTurnList
 }
 
-// ======  FINDING THE WINNER  ======
-
-const getWinner = (): string => {
-  const endDivs = [...window.document.querySelectorAll('div')].filter(
-    (div) => div.textContent?.includes('The end of the game'),
-  ) as Array<HTMLDivElement>
-
-  if (endDivs.length < 1) {
-    const errMsg = `No suitable divs found for retrieving winner name`
-    alert(errMsg)
-    throw errMsg
-  }
-
-  const endDiv = endDivs[0]
-
-  if (endDiv.textContent == null) {
-    const errMsg = `This should have been impossible, but no text was found in the winner-reporting div, despite it passing the initial filtering`
-    alert(errMsg)
-    throw errMsg
-  }
-
-  const endDivMatch = endDiv.textContent.match(
-    /The end of the game: (.+?) wins!/,
-  )
-
-  if (endDivMatch == null) {
-    const errMsg = `Winner name could not be extracted from the end-game div`
-    alert(errMsg)
-    throw errMsg
-  }
-
-  return endDivMatch[1]
-}
-
 // ======  STATE VALIDATION ======
 
-const checkMoveListLength = (): boolean => {
+export const checkMoveListLength = (): boolean => {
   return getMovesList().length == numPlayers() * 26
 }
 
-const checkFullPlaySequence = (): boolean => {
+export const checkFullPlaySequence = (): boolean => {
   // Check to see whether the sequence of moves identified by
   // getMovesList() contains the players in the sequence as
   // expected by the actual game progression (advancement of
@@ -825,107 +570,6 @@ async function getTurnsetScores(timeout_step = DEFAULT_MOVE_WAIT_POLL) {
   return data
 }
 
-// ======  EXTENSION  ======
-
-// Button for testing await behavior
-const buttonAwaitTest = document.createElement('button')
-buttonAwaitTest.textContent = 'Test Await'
-buttonAwaitTest.id = 'buttonAwaitTest'
-buttonAwaitTest.style.position = 'fixed'
-buttonAwaitTest.style.top = '85%'
-buttonAwaitTest.style.left = '10px'
-buttonAwaitTest.style.height = '2em'
-buttonAwaitTest.style.width = '8em'
-buttonAwaitTest.addEventListener('click', async () => {
-  console.log('Start')
-  await sleepHelper(5000)
-  console.log('End')
-})
-document.body.appendChild(buttonAwaitTest)
-
-// Button for checking the turnset move list length
-const buttonCheckMoveList = document.createElement('button')
-buttonCheckMoveList.textContent = 'Check Move List'
-buttonCheckMoveList.id = 'buttonCheckMoveList'
-buttonCheckMoveList.style.position = 'fixed'
-buttonCheckMoveList.style.top = '90%'
-buttonCheckMoveList.style.left = '10px'
-buttonCheckMoveList.style.height = '2em'
-buttonCheckMoveList.style.width = '10em'
-buttonCheckMoveList.addEventListener('click', () => {
-  alert(checkMoveListLength() ? 'Check OK' : 'Check FAILED')
-})
-document.body.appendChild(buttonCheckMoveList)
-
-// Button for checking the player sequence in the turnset move list
-const buttonCheckPlaySeq = document.createElement('button')
-buttonCheckPlaySeq.textContent = 'Check Play Sequence'
-buttonCheckPlaySeq.id = 'buttonCheckPlaySeq'
-buttonCheckPlaySeq.style.position = 'fixed'
-buttonCheckPlaySeq.style.top = '90%'
-buttonCheckPlaySeq.style.left = '11em'
-buttonCheckPlaySeq.style.height = '2em'
-buttonCheckPlaySeq.style.width = '12em'
-buttonCheckPlaySeq.addEventListener('click', () => {
-  alert(checkFullPlaySequence() ? 'Check OK' : 'Check FAILED')
-})
-document.body.appendChild(buttonCheckPlaySeq)
-
-// Button to start score scraping
-const buttonScrapeScores = document.createElement('button')
-buttonScrapeScores.textContent = 'Scrape Scores'
-buttonScrapeScores.id = 'buttonScrapeScores'
-buttonScrapeScores.style.position = 'fixed'
-buttonScrapeScores.style.top = '95%'
-buttonScrapeScores.style.left = '20px'
-buttonScrapeScores.style.height = '2em'
-buttonScrapeScores.style.width = '10em'
-buttonScrapeScores.addEventListener('click', async () => {
-  buttonScrapeScores.disabled = true
-  await scrapeAndSave()
-})
-document.body.appendChild(buttonScrapeScores)
-
-// Input field for debug expression to evaluate
-const inputDebugEval = document.createElement('input')
-inputDebugEval.id = 'inputDebugEval'
-inputDebugEval.type = 'text'
-inputDebugEval.style.position = 'fixed'
-inputDebugEval.style.top = '95%'
-inputDebugEval.style.left = '21em'
-inputDebugEval.style.height = '2em'
-inputDebugEval.style.width = '20em'
-inputDebugEval.style.paddingLeft = '0.25em'
-inputDebugEval.style.paddingRight = '0.25em'
-document.body.appendChild(inputDebugEval)
-
-// Button to trigger debug evaluate and print
-const buttonDebugPrint = document.createElement('button')
-buttonDebugPrint.textContent = 'Debug Print'
-buttonDebugPrint.id = 'buttonDebugPrint'
-buttonDebugPrint.style.position = 'fixed'
-buttonDebugPrint.style.top = '95%'
-buttonDebugPrint.style.left = '13em'
-buttonDebugPrint.style.height = '2em'
-buttonDebugPrint.style.width = '8em'
-buttonDebugPrint.addEventListener('click', () => {
-  try {
-    const result = eval(inputDebugEval.value)
-    alert(JSON.stringify(result))
-  } catch (err) {
-    alert(`Error: ${(err as Error).message}`)
-  }
-})
-document.body.appendChild(buttonDebugPrint)
-
-// Extra listener for the Enter keyup in the input field,
-// so we don't have to use the mouse to do the debug print
-inputDebugEval.addEventListener('keyup', function (event) {
-  if (event.key == 'Enter') {
-    buttonDebugPrint.click()
-  }
-})
-
 // ======  PUBLIC API  ======
 
 export const reportCurrentScores = (): void => {
@@ -935,7 +579,7 @@ export const reportCurrentScores = (): void => {
   console.log(`${names.join()}\n${scores.join()}`)
 }
 
-async function scrapeAndSave() {
+export async function scrapeAndSave() {
   // Get the main data and augment with end-scores
   const data = await getTurnsetScores()
   calcAndAddAllEndScores(data)
