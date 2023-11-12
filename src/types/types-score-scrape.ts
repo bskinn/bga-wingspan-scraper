@@ -1,4 +1,4 @@
-import { TMoveId, TRoundId, TTurnId } from './types_misc'
+import { TMoveId, TRoundId, TTurnId } from './types-ids'
 
 export type TScoreScrapeSingleScore = {
   name: string

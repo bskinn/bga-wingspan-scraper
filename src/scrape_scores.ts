@@ -1,4 +1,4 @@
-import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types/types_misc'
+import { TMoveId, TRawTurnId, TRoundId, TTurnId } from './types/types-ids'
 import {
   TCompleteScoreScrapeData,
   TFirstTurnList,
@@ -9,7 +9,7 @@ import {
   TRoundTurnInfo,
   TScoreScrapeData,
   TScoreScrapeSingleScore,
-} from './types/types_score_scrape'
+} from './types/types-score-scrape'
 
 import {
   BONUS_TURN_ID,

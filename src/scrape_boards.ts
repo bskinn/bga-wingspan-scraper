@@ -3,7 +3,7 @@ import type {
   TBoardLocationID,
   TPixelValues,
   TRoundBonusChipId,
-} from './types/types_misc'
+} from './types/types-ids'
 
 import { NO_BIRD_ID } from './consts'
 
