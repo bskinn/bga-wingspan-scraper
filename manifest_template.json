@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
   "name": "BGA Wingspan Scraper",
-  "version": "0.1",
+  "version": "0.1.0",
 
   "description": "Tools for scraping information from BGA Wingspan replays",
 
   "icons": {
-    "48": "icons/wingspan-box-bga-48.png",
-    "96": "icons/wingspan-box-bga-96.png"
+    "48": "assets/icons/wingspan-box-bga-48.png",
+    "96": "assets/icons/wingspan-box-bga-96.png"
   },
 
   "content_scripts": [
