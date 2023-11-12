@@ -9,6 +9,7 @@
     "clean": "npm run dev:clean",
     "clean-all": "run-p dev:clean dist:clean",
     "dist": "run-s dist:clean dist:build dist:copy dist:assets dist:manifest",
+    "tsc": "npx tsc --noEmit",
     "dev:build": "npx webpack --config webpack.config.dev.js",
     "dev:manifest": "node render_manifest.js build-dev",
     "dev:assets": "npx copyfiles assets/**/* build-dev",
