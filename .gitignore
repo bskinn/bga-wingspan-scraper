@@ -1,8 +1,8 @@
 # Project-specific
-build-dev/*
-build/*
-build-prod/*
-dist/*
+build-dev
+build
+build-prod
+dist
 
 # Logs
 logs
