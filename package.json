@@ -20,7 +20,7 @@
     "prod:manifest": "node render_manifest build-prod",
     "prod:assets": "npx copyfiles assets/**/* build-prod",
     "dist:clean": "node -e \"fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true})\"",
-    "dist:pack": ""
+    "dist:pack": "node zip-dist.js"
   },
   "devDependencies": {
     "adm-zip": "^0.5.10",
