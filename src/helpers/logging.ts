@@ -1,5 +1,5 @@
 import { getScores } from '@/data/scores'
-import { getNames } from '@/data/table'
+import { getIds, getNames } from '@/data/table'
 import { twoDigit } from './string'
 
 export const logMsg = (msg: string): void => {
@@ -17,4 +17,11 @@ export const reportCurrentScores = (): void => {
   const scores = getScores()
 
   console.log(`${names.join()}\n${scores.join()}`)
+}
+// ======  PUBLIC API  ======
+
+export const printNameInfo = () => {
+  getNames().forEach((n, i) => {
+    console.log(`${n}: ${getIds()[i]}`)
+  })
 }
