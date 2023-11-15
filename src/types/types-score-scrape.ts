@@ -1,15 +1,17 @@
-import { TMoveId, TRoundId, TTurnId } from './types_misc'
+import { TMoveId, TRoundId, TTurnId } from './types-ids'
 
 export type TScoreScrapeSingleScore = {
   name: string
   score: number
 }
 
+export type TScoreSet = Array<TScoreScrapeSingleScore>
+
 export type TScoreScrapeData = {
   move: TMoveId
   round: TRoundId
   turn: TTurnId
-  scores: Array<TScoreScrapeSingleScore>
+  scores: TScoreSet
 }
 
 export type TColorData = {

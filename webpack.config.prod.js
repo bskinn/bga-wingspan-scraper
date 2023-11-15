@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   mode: 'production',
-  entry: './src/scrape_scores.ts',
+  entry: './src/main.ts',
   module: {
     rules: [
       {
@@ -20,6 +20,6 @@ module.exports = {
   },
   output: {
     filename: 'wingspan.js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build-prod'),
   },
 }
