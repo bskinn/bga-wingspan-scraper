@@ -1,4 +1,4 @@
-import type { TBonusCardId } from '@/types/types-ids'
+import type { TBonusCardId } from '@type/types-ids'
 
 const BONUS_CARD_MAPPING: { [key in TBonusCardId]: string } = {
   0: 'Anatomist',

@@ -1,12 +1,9 @@
-import { E_Habitat, E_PlayedCardPosition, E_RoundBonusBoards } from './enums'
 import {
-  TBoardLocationID,
-  TBoardLocationDescription,
-  TBirdId,
-  TMoveId,
-  TTurnId,
-} from './types/types-ids'
-import { TRoundBonusMoveName } from './types/types-score-scrape'
+    TBirdId, TBoardLocationDescription, TBoardLocationID, TMoveId, TTurnId
+} from '@type/types-ids'
+import { TRoundBonusMoveName } from '@type/types-score-scrape'
+
+import { E_Habitat, E_PlayedCardPosition, E_RoundBonusBoards } from './enums'
 
 export const NO_BIRD_ID: TBirdId = -1
 export const BONUS_TURN_ID: TTurnId = 'B'

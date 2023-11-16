@@ -1,5 +1,5 @@
-import { sleepHelper } from '@/helpers/async'
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
+import { sleepHelper } from '@/helpers/async'
 import { scrapeAndSave } from '@/scrape/scores'
 
 const addDebugControls = () => {

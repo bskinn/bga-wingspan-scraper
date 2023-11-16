@@ -1,4 +1,4 @@
-import type { TRoundBonusChipId } from '@/types/types-ids'
+import type { TRoundBonusChipId } from '@type/types-ids'
 
 const ROUND_BONUS_CHIP_MAPPING: { [key in TRoundBonusChipId]: string } = {
   0: 'Eggs in Bowl Nests',

@@ -1,4 +1,4 @@
-import { TPixelValues } from '@/types/types-ids'
+import { TPixelValues } from '@type/types-ids'
 
 const getXYPixelValues = (xyString: string): TPixelValues => {
   const mch = xyString.match(/(-?\d+)px\s+(-?\d+)px/)

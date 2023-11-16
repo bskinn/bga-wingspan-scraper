@@ -1,5 +1,6 @@
 import { getScores } from '@/data/scores'
 import { getIds, getNames } from '@/data/table'
+
 import { twoDigit } from './string'
 
 export const logMsg = (msg: string): void => {

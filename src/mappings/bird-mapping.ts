@@ -1,4 +1,4 @@
-import type { TBirdId } from '@/types/types-ids'
+import type { TBirdId } from '@type/types-ids'
 
 const BIRD_MAPPING: { [key in TBirdId]: string } = {
   [-1]: '(No bird card present)',

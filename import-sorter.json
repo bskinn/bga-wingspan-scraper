@@ -1,0 +1,30 @@
+{
+  "generalConfiguration": {
+    "sortOnBeforeSave": true
+  },
+  "importStringConfiguration": {
+    "hasSemicolon": false
+  },
+  "sortConfiguration": {
+    "customOrderingRules": {
+      "rules": [
+        {
+          "regex": "^[@]type/",
+          "orderLevel": 10
+        },
+        {
+          "regex": "^[@]/",
+          "orderLevel": 30
+        },
+        {
+          "regex": "^[.]/",
+          "orderLevel": 50
+        },
+        {
+          "regex": "^[.][.]/",
+          "orderLevel": 1000
+        }
+      ]
+    }
+  }
+}

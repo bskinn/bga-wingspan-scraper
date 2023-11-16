@@ -3,9 +3,10 @@
 // Probably NOT birds in discard, since those will take
 //  tracking/scraping out of the replay log, more than the board itself
 
+import { TBirdId, TBoardLocationID } from '@type/types-ids'
+
 import { NO_BIRD_ID } from '@/consts'
 import { calcCardIndex } from '@/helpers/card-index'
-import { TBirdId, TBoardLocationID } from '@/types/types-ids'
 
 const calcBirdId = (div: HTMLDivElement): TBirdId => {
   // Infer the bird card present (if any) in some location

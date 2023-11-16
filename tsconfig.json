@@ -18,7 +18,8 @@
     "noUnusedLocals": true,
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@type/*": ["./src/types/*"]
     }
   },
   "include": ["src/**/*.ts"],
