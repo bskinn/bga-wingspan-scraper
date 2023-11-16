@@ -1,6 +1,6 @@
-import { numPlayers } from '../data/table'
-import { rangeArray } from '../helpers/array'
-import { getMovesList, getPlayOrderProxy } from '../data/moves'
+import { getMovesList, getPlayOrderProxy } from '@/data/moves'
+import { numPlayers } from '@/data/table'
+import { rangeArray } from '@/helpers/array'
 
 export const checkMoveListLength = (): boolean => {
   return getMovesList().length == numPlayers() * 26

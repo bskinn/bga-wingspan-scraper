@@ -1,4 +1,4 @@
-import { TScoreScrapeData } from './types/types-score-scrape'
+import type { TScoreScrapeData } from './types/types-score-scrape'
 
 // ======  DEV HELPERS  ======
 

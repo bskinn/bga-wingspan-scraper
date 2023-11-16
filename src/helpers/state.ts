@@ -1,5 +1,6 @@
-import { TRawTurnId, TTurnId } from '@/types/types-ids'
-import { TRoundTurnInfo } from '@/types/types-score-scrape'
+import type { TRawTurnId, TTurnId } from '@/types/types-ids'
+import type { TRoundTurnInfo } from '@/types/types-score-scrape'
+
 import { BONUS_TURN_ID } from '@/consts'
 
 export const calcRoundTurn = (raw_turn: TRawTurnId): TRoundTurnInfo => {

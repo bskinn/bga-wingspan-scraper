@@ -1,6 +1,6 @@
 // Scraping things that decorate a given bird on the board
 
-import { TBoardLocationID } from '@/types/types-ids'
+import type { TBoardLocationID } from '@/types/types-ids'
 
 // @ts-expect-error
 const calcEggCount = (playerId: string, loc: TBoardLocationID): number => {

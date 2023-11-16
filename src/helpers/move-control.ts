@@ -1,4 +1,4 @@
-import { TMoveId } from '@/types/types-ids'
+import type { TMoveId } from '@/types/types-ids'
 
 export const advanceToMove = (move_num: TMoveId) => {
   const moveElement = window.document.querySelector(

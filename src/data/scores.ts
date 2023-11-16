@@ -1,4 +1,5 @@
-import { TScoreSet } from '@/types/types-score-scrape'
+import type { TScoreSet } from '@/types/types-score-scrape'
+
 import { getIds, getNames } from './table'
 
 export const getScores = (): Array<number> => {
