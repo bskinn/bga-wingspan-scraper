@@ -1,14 +1,16 @@
-import { TMoveId, TRoundId } from '../types/types-ids'
-import {
+import type { TMoveId, TRoundId } from '@/types/types-ids'
+import type {
   TFirstTurnList,
   TFirstTurnListPartial,
   TMoveInfo,
   TRawMoveInfo,
   TRoundBonusMoveInfo,
-} from '../types/types-score-scrape'
-import { getNames, numPlayers } from './table'
-import { createArrayCycleProxy, rangeArray } from '../helpers/array'
+} from '@/types/types-score-scrape'
+
 import { ROUND_BONUS_MOVE_NAME } from '@/consts'
+import { createArrayCycleProxy, rangeArray } from '@/helpers/array'
+
+import { getNames, numPlayers } from './table'
 
 export const getRawMoveInfo = (): Array<TRawMoveInfo> => {
   // Array of info for all the moves in the replay.

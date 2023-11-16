@@ -1,18 +1,10 @@
-import {
+import type { TMoveId, TRawTurnId, TRoundId } from '@/types/types-ids'
+import type {
   TCompleteScoreScrapeData,
   TScoreScrapeData,
   TScoreScrapeSingleScore,
-} from '../types/types-score-scrape'
-import { getColors, getNames } from '../data/table'
-import { getTableNum } from '../data/table'
-import { waitForGameEndHelper, waitForMoveHelper } from '../helpers/async'
-import { timestampFullShort } from '../helpers/string'
-import { advanceToGameEnd, advanceToMove } from '../helpers/move-control'
-import { download } from '../helpers/export'
-import { getWinner } from '../data/table'
-import { getFirstTurns } from '@/data/moves'
-import { getRoundBonusMoves } from '@/data/moves'
-import { getTurnsetStartMoveIds, getMoveIds, getMovesList } from '@/data/moves'
+} from '@/types/types-score-scrape'
+
 import {
   BONUS_CARD_TURN_ID,
   BONUS_TURN_ID,
@@ -20,15 +12,26 @@ import {
   GAME_END_TURN_ID,
   NO_MOVE_NUM,
 } from '@/consts'
-import { logMsg } from '@/helpers/logging'
-import { calcRoundTurn } from '@/helpers/state'
-import { TMoveId, TRawTurnId, TRoundId } from '@/types/types-ids'
+import {
+  getFirstTurns,
+  getMoveIds,
+  getMovesList,
+  getRoundBonusMoves,
+  getTurnsetStartMoveIds,
+} from '@/data/moves'
 import {
   extractBonusCardScore,
   extractRoundBonusScore,
   scrapeScoreSet,
 } from '@/data/scores'
+import { getColors, getNames, getTableNum, getWinner } from '@/data/table'
 import { rangeArray } from '@/helpers/array'
+import { waitForGameEndHelper, waitForMoveHelper } from '@/helpers/async'
+import { download } from '@/helpers/export'
+import { logMsg } from '@/helpers/logging'
+import { advanceToGameEnd, advanceToMove } from '@/helpers/move-control'
+import { calcRoundTurn } from '@/helpers/state'
+import { timestampFullShort } from '@/helpers/string'
 
 export async function scrapeAndSave() {
   // Get the main data and augment with end-scores
