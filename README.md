@@ -1,24 +1,10 @@
 # bga-wingspan-scraper
-JS helper script and nascent Firefox extension to generate JSON output
-of the score history of a Wingspan game on [Board Game Arena].
+Firefox extension to generate JSON output of the score history of a Wingspan
+game on [Board Game Arena].
 
-This code has been developed and tested using Firefox around v118.
+This code has been developed and tested using Firefox around v118-119.
 
-## Direct Use in Console
 
-1. Navigate to a Wingspan replay page.
-2. Open the Console.
-3. Copy & paste the entirety of `scrape_scores.js` into the console and execute.
-4. Run `checkMoveListLength()` and `checkFullPlaySequence()` and ensure both
-   return `true`
-   - If they don't, try:
-     - Loading the replay from the perspective of a different player, and/or
-     - Adjusting the value of `player_id` in the `comments=<player_id>`
-       parameter in the page URL to that of a different player involved in the
-       game
-5. Run `scrapeAndSave()`. The script will start advancing through the game and
-   scraping the scores. Once complete, it will automatically trigger download of
-   the data files.
 
 ## Use Via Local Firefox Extension
 
