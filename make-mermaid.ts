@@ -77,8 +77,18 @@ const buildDirTree = (
   }
 }
 
-console.log(
-  buildDirTree('C:\\git\\ar-frontend\\src').subdirs.find(
-    (sd) => sd.dirName == 'form',
-  )?.subdirs[0],
-)
+const renderDirs = (
+  rootNode: TDirTreeNode,
+  indent: number = 0,
+  indentStep: number = 2,
+): void => {
+  const newIndent = indent + indentStep
+
+  console.log(' '.repeat(indent) + rootNode.dirName + '/')
+  rootNode.files.forEach((f) => console.log(' '.repeat(newIndent) + '- ' + f))
+  rootNode.subdirs.forEach((sd) => {
+    renderDirs(sd, newIndent, indentStep)
+  })
+}
+
+renderDirs(buildDirTree('src'))
