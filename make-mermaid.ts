@@ -79,15 +79,28 @@ const buildDirTree = (
 
 const renderDirs = (
   rootNode: TDirTreeNode,
+  showFiles: boolean = true,
+  indentStep: number = 2,
+): void => {
+  renderDirsInternal(rootNode, showFiles, 0, indentStep)
+}
+
+const renderDirsInternal = (
+  rootNode: TDirTreeNode,
+  showFiles: boolean,
   indent: number = 0,
   indentStep: number = 2,
 ): void => {
   const newIndent = indent + indentStep
 
   console.log(' '.repeat(indent) + rootNode.dirName + '/')
-  rootNode.files.forEach((f) => console.log(' '.repeat(newIndent) + '- ' + f))
+
+  if (showFiles) {
+    rootNode.files.forEach((f) => console.log(' '.repeat(newIndent) + '- ' + f))
+  }
+
   rootNode.subdirs.forEach((sd) => {
-    renderDirs(sd, newIndent, indentStep)
+    renderDirsInternal(sd, showFiles, newIndent, indentStep)
   })
 }
 
