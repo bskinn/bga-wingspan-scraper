@@ -133,6 +133,18 @@ const composeNodeSource = (node: TDirTreeNode): Array<string> => {
   return sourceArray
 }
 
+const assembleAllNodeSources = (root: TDirTreeNode): Array<Array<string>> => {
+  const sourcesArray: Array<Array<string>> = []
+
+  sourcesArray.push(composeNodeSource(root))
+
+  root.subdirs.forEach((sd) => {
+    sourcesArray.push(...assembleAllNodeSources(sd))
+  })
+
+  return sourcesArray
+}
+
 const renderDirs = (
   // For testing
   rootNode: TDirTreeNode,
@@ -163,4 +175,4 @@ const renderDirsInternal = (
   })
 }
 
-console.log(composeNodeSource(buildDirTree('src')).join('\n  '))
+console.log(assembleAllNodeSources(buildDirTree('src')))
