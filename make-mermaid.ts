@@ -10,6 +10,12 @@ type TDirTreeNode = {
   subdirs: Array<TDirTreeNode>
   files: Array<TFileName>
 }
+type TNodeShapeDelims = { open: string; close: string }
+
+enum E_NodeShapes {
+  Square = 'square',
+  Rounded = 'rounded',
+}
 
 const FONT_SIZE = 10
 const LINE_COLOR = '#003812'
@@ -21,9 +27,9 @@ const DIR_TEXT_COLOR = '#fff'
 const DIR_BORDER_COLOR = '#D3F1C8'
 const DIR_NODE_NAME = 'dirNode'
 
-const NODE_SHAPES = {
-  square: ['[', ']'],
-  rounded: ['(', ')'],
+const NODE_SHAPES: { [key in E_NodeShapes]: TNodeShapeDelims } = {
+  [E_NodeShapes.Square]: { open: '[', close: ']' },
+  [E_NodeShapes.Rounded]: { open: '(', close: ')' },
 }
 
 const SRC_OPEN_LINE = '```mermaid'
@@ -45,6 +51,11 @@ var mermaidSrcLines = [
 const getDirContents = (dirPath: string): TDirContents => {
   const files: Array<TFileName> = []
   const dirs: Array<TDirName> = []
+
+  // TODO: Include/exclude logic based on Regex matching of BOTH directory
+  // and filename. E.g., `include` and `exclude` are arrays of objects
+  // with 'dir' and 'file' regexes. Where both match, the include/exclude
+  // are applied. Perhaps make `include` override `exclude`?
 
   fs.readdirSync(dirPath).forEach((entry: string) => {
     const stat = fs.lstatSync(`${dirPath}/${entry}`)
