@@ -4,7 +4,7 @@
   "description": "Firefox extension to scrape BGA Wingspan game replays",
   "private": true,
   "scripts": {
-    "format": "run-s format:code format:tocs",
+    "format": "run-s format:code format:mermaid format:tocs",
     "tsc": "npx tsc --noEmit",
     "build": "run-s dev:clean dev:build dev:assets dev:manifest",
     "build-prod": "run-s prod:clean prod:build prod:assets prod:manifest",
@@ -12,6 +12,7 @@
     "clean-all": "run-p dev:clean prod:clean dist:clean",
     "dist": "run-s build-prod dist:clean dist:pack",
     "format:code": "npx prettier -w .",
+    "format:mermaid": "npx ts-node make-mermaid.ts",
     "format:tocs": "run-p format:toc:*",
     "format:toc:CONTRIBUTING": "npx markdown-toc -i CONTRIBUTING.md",
     "format:toc:ARCHITECTURE": "npx markdown-toc -i ARCHITECTURE.md",
