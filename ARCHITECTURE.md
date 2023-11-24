@@ -28,6 +28,6 @@ codebase, this is the place to start!
 
 ### Directory Structure
 
-`mermaid diagram`
+<!-- mermaid-fs-diagram -->
 
 ### Code Semantics
