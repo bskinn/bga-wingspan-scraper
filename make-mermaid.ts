@@ -1,5 +1,5 @@
-const { program } = require('commander')
-const fs = require('fs')
+// import { program } from 'commander'
+import * as fs from 'fs'
 
 type TDirName = string
 type TFileName = string
@@ -29,6 +29,14 @@ const DIR_BORDER_COLOR = '#D3F1C8'
 const DIR_NODE_NAME = 'dirNode'
 const FILES_NODE_SUFFIX = 'Files'
 const INDENT_WIDTH = 2
+
+const MARKER_STRING_START = '<!-- mermaid-fs-diagram -->'
+const MARKER_STRING_STOP = '<!-- mermaid-fs-diagram-stop -->'
+const MARKER_REGEX_START = new RegExp(`^${MARKER_STRING_START}$`, 'm')
+const MARKER_REGEX_STOP = new RegExp(`^${MARKER_STRING_STOP}$`, 'm')
+const MARKER_REGEX_SPAN = new RegExp(
+  `${MARKER_STRING_START}[\\w\\W]+?${MARKER_STRING_STOP}`,
+)
 
 const NODE_SHAPES: { [key in E_NodeShapes]: TNodeShapeDelims } = {
   [E_NodeShapes.Square]: { open: '[', close: ']' },
@@ -169,7 +177,31 @@ const composeMermaidSource = (sourcesArray: Array<Array<string>>): string => {
   return mermaidSourceLines.join('\n')
 }
 
-const renderDirs = (
+const injectMermaidSource = (
+  inputSource: string,
+  mermaidSource: string,
+): string => {
+  const startMarkerIndex = inputSource.search(MARKER_REGEX_START)
+  const stopMarkerIndex = inputSource.search(MARKER_REGEX_STOP)
+
+  if (startMarkerIndex < 0) {
+    throw `Diagram start marker not found! (${MARKER_STRING_START})`
+  }
+
+  const injectedSource = `${MARKER_STRING_START}\n\n${mermaidSource}\n\n${MARKER_STRING_STOP}`
+
+  if (stopMarkerIndex < 0) {
+    // We replace the lone start marker with the start marker, the source,
+    // and the stop marker
+    return inputSource.replace(MARKER_REGEX_START, injectedSource)
+  } else {
+    // We replace the content between the start and stop markers with the
+    // source
+    return inputSource.replace(MARKER_REGEX_SPAN, injectedSource)
+  }
+}
+
+export const renderDirs = (
   // For testing
   rootNode: TDirTreeNode,
   showFiles: boolean = true,
@@ -178,7 +210,7 @@ const renderDirs = (
   renderDirsInternal(rootNode, showFiles, 0, indentStep)
 }
 
-const renderDirsInternal = (
+export const renderDirsInternal = (
   rootNode: TDirTreeNode,
   showFiles: boolean,
   indent: number = 0,
@@ -199,4 +231,9 @@ const renderDirsInternal = (
   })
 }
 
-console.log(composeMermaidSource(assembleAllNodeSources(buildDirTree('src'))))
+const archSource = fs.readFileSync('ARCHITECTURE.md').toString()
+const mermaidSource = composeMermaidSource(
+  assembleAllNodeSources(buildDirTree('src')),
+)
+
+console.log(injectMermaidSource(archSource, mermaidSource))
