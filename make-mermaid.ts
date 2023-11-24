@@ -28,6 +28,7 @@ const DIR_TEXT_COLOR = '#fff'
 const DIR_BORDER_COLOR = '#D3F1C8'
 const DIR_NODE_NAME = 'dirNode'
 const FILES_NODE_SUFFIX = 'Files'
+const INDENT_WIDTH = 2
 
 const NODE_SHAPES: { [key in E_NodeShapes]: TNodeShapeDelims } = {
   [E_NodeShapes.Square]: { open: '[', close: ']' },
@@ -40,14 +41,6 @@ const SRC_CLOSE_LINE = '```'
 const THEME_SETTINGS = `%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '${FONT_SIZE}px', 'lineColor': '${LINE_COLOR}', 'primaryColor': '${FILES_FILL_COLOR}', 'primaryTextColor': '${FILES_TEXT_COLOR}', 'primaryBorderColor': '${FILES_BORDER_COLOR}'}}}%%`
 
 const DIR_NODE_DEF = `classDef ${DIR_NODE_NAME} fill: ${DIR_FILL_COLOR}, stroke: ${DIR_BORDER_COLOR}, color: ${DIR_TEXT_COLOR}`
-
-// Initialize the list of source lines
-var mermaidSrcLines = [
-  SRC_OPEN_LINE,
-  THEME_SETTINGS,
-  'graph LR',
-  `  ${DIR_NODE_DEF}`,
-]
 
 // Given a directory, grab the lists of files and directories in it
 const getDirContents = (dirPath: string): TDirContents => {
@@ -97,7 +90,7 @@ const buildDirTree = (
   }
 }
 
-const composeNodeSource = (node: TDirTreeNode): Array<string> => {
+const assembleNodeSource = (node: TDirTreeNode): Array<string> => {
   var sourceArray: Array<string> = []
 
   // Files node first, if there are any
@@ -123,12 +116,21 @@ const composeNodeSource = (node: TDirTreeNode): Array<string> => {
     sourceArray.push(
       `${node.nodeName} --> ${sd.nodeName}${
         NODE_SHAPES[E_NodeShapes.Rounded].open
-      }/${sd.dirName}${NODE_SHAPES[E_NodeShapes.Rounded].close}`,
+      }${sd.dirName}/${NODE_SHAPES[E_NodeShapes.Rounded].close}`,
     )
   })
 
   // Then assign the directory-node class
-  sourceArray.push(`${node.nodeName}:::${DIR_NODE_NAME}`)
+  // If this is the _true_ root node, we have to name it here
+  if (node.parents.length == 0) {
+    sourceArray.push(
+      `${node.nodeName}${NODE_SHAPES[E_NodeShapes.Rounded].open}${
+        node.dirName
+      }/${NODE_SHAPES[E_NodeShapes.Rounded].close}:::${DIR_NODE_NAME}`,
+    )
+  } else {
+    sourceArray.push(`${node.nodeName}:::${DIR_NODE_NAME}`)
+  }
 
   return sourceArray
 }
@@ -136,13 +138,35 @@ const composeNodeSource = (node: TDirTreeNode): Array<string> => {
 const assembleAllNodeSources = (root: TDirTreeNode): Array<Array<string>> => {
   const sourcesArray: Array<Array<string>> = []
 
-  sourcesArray.push(composeNodeSource(root))
+  sourcesArray.push(assembleNodeSource(root))
 
   root.subdirs.forEach((sd) => {
     sourcesArray.push(...assembleAllNodeSources(sd))
   })
 
   return sourcesArray
+}
+
+const composeMermaidSource = (sourcesArray: Array<Array<string>>): string => {
+  // Initialize the list of source lines
+  const mermaidSourceLines = [
+    SRC_OPEN_LINE,
+    THEME_SETTINGS,
+    'graph LR',
+    ' '.repeat(INDENT_WIDTH) + `${DIR_NODE_DEF}`,
+    '',
+  ]
+
+  sourcesArray.forEach((arr) => {
+    arr.forEach((line) => {
+      mermaidSourceLines.push(' '.repeat(INDENT_WIDTH) + line)
+    })
+    mermaidSourceLines.push('')
+  })
+
+  mermaidSourceLines.push(SRC_CLOSE_LINE)
+
+  return mermaidSourceLines.join('\n')
 }
 
 const renderDirs = (
@@ -175,4 +199,4 @@ const renderDirsInternal = (
   })
 }
 
-console.log(assembleAllNodeSources(buildDirTree('src')))
+console.log(composeMermaidSource(assembleAllNodeSources(buildDirTree('src'))))
