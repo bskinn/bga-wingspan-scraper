@@ -83,6 +83,8 @@ const buildDirTree = (
 
   const dirContents = getDirContents(fullPath)
 
+  console.log(`Traversing ${fullPath}...`)
+
   return {
     parents: parents,
     dirName: dirName,
@@ -100,6 +102,11 @@ const buildDirTree = (
 
 const assembleNodeSource = (node: TDirTreeNode): Array<string> => {
   var sourceArray: Array<string> = []
+
+  const parentString =
+    node.parents.length > 0 ? `${node.parents.join('/')}/` : ''
+
+  console.log(`Generating ${parentString}${node.dirName}...`)
 
   // Files node first, if there are any
   if (node.files.length > 0) {
@@ -165,7 +172,9 @@ const composeMermaidSource = (sourcesArray: Array<Array<string>>): string => {
     '',
   ]
 
-  sourcesArray.forEach((arr) => {
+  sourcesArray.forEach((arr, index) => {
+    console.log(`Rendering block ${index}...`)
+
     arr.forEach((line) => {
       mermaidSourceLines.push(' '.repeat(INDENT_WIDTH) + line)
     })
@@ -231,12 +240,21 @@ export const renderDirsInternal = (
   })
 }
 
-const archSource = fs.readFileSync('ARCHITECTURE.md').toString()
-const mermaidSource = composeMermaidSource(
-  assembleAllNodeSources(buildDirTree('src')),
-)
+const updateArchFile = (): void => {
+  process.stdout.write('Loading ARCHITECTURE.md...')
+  const archSource = fs.readFileSync('ARCHITECTURE.md').toString()
+  console.log('OK\n')
 
-fs.writeFileSync(
-  'ARCHITECTURE.md',
-  injectMermaidSource(archSource, mermaidSource),
-)
+  const mermaidSource = composeMermaidSource(
+    assembleAllNodeSources(buildDirTree('src')),
+  )
+
+  process.stdout.write('\nWriting new ARCHITECTURE.md...')
+  fs.writeFileSync(
+    'ARCHITECTURE.md',
+    injectMermaidSource(archSource, mermaidSource),
+  )
+  console.log('OK')
+}
+
+updateArchFile()
