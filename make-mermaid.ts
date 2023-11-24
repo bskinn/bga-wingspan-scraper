@@ -6,6 +6,7 @@ type TFileName = string
 type TDirContents = { dirs: Array<TDirName>; files: Array<TFileName> }
 type TDirTreeNode = {
   dirName: TDirName
+  nodeName: string
   parents: Array<TDirName>
   subdirs: Array<TDirTreeNode>
   files: Array<TFileName>
@@ -26,6 +27,7 @@ const DIR_FILL_COLOR = '#136F17'
 const DIR_TEXT_COLOR = '#fff'
 const DIR_BORDER_COLOR = '#D3F1C8'
 const DIR_NODE_NAME = 'dirNode'
+const FILES_NODE_SUFFIX = 'Files'
 
 const NODE_SHAPES: { [key in E_NodeShapes]: TNodeShapeDelims } = {
   [E_NodeShapes.Square]: { open: '[', close: ']' },
@@ -83,12 +85,56 @@ const buildDirTree = (
   return {
     parents: parents,
     dirName: dirName,
+    nodeName:
+      parents.length == 0
+        ? 'root'
+        : pathArray
+            .map((dir) => dir.replace(/[^0-9a-z]/gi, ''))
+            .map((dir) => dir[0].toUpperCase() + dir.slice(1))
+            .join(''),
     files: dirContents.files,
     subdirs: dirContents.dirs.map((dir) => buildDirTree(dir, pathArray)),
   }
 }
 
+const composeNodeSource = (node: TDirTreeNode): Array<string> => {
+  var sourceArray: Array<string> = []
+
+  // Files node first, if there are any
+  if (node.files.length > 0) {
+    // In case there's a subdir that's using our suffix
+    var suffix = FILES_NODE_SUFFIX
+    while (node.subdirs.map((sd) => sd.dirName).includes(suffix)) {
+      suffix += 'x'
+    }
+
+    const filesList = node.files.join('<br>')
+
+    sourceArray.push(
+      `${node.nodeName} --> ${node.nodeName}${suffix}${
+        NODE_SHAPES[E_NodeShapes.Square].open
+      }${filesList}${NODE_SHAPES[E_NodeShapes.Square].close}`,
+    )
+  }
+
+  // Then link to subdir nodes
+  // We're not recursing into these here; just creating the links in the source
+  node.subdirs.forEach((sd) => {
+    sourceArray.push(
+      `${node.nodeName} --> ${sd.nodeName}${
+        NODE_SHAPES[E_NodeShapes.Rounded].open
+      }/${sd.dirName}${NODE_SHAPES[E_NodeShapes.Rounded].close}`,
+    )
+  })
+
+  // Then assign the directory-node class
+  sourceArray.push(`${node.nodeName}:::${DIR_NODE_NAME}`)
+
+  return sourceArray
+}
+
 const renderDirs = (
+  // For testing
   rootNode: TDirTreeNode,
   showFiles: boolean = true,
   indentStep: number = 2,
@@ -104,7 +150,9 @@ const renderDirsInternal = (
 ): void => {
   const newIndent = indent + indentStep
 
-  console.log(' '.repeat(indent) + rootNode.dirName + '/')
+  console.log(
+    ' '.repeat(indent) + rootNode.dirName + '/' + `  (${rootNode.nodeName})`,
+  )
 
   if (showFiles) {
     rootNode.files.forEach((f) => console.log(' '.repeat(newIndent) + '- ' + f))
@@ -115,4 +163,4 @@ const renderDirsInternal = (
   })
 }
 
-renderDirs(buildDirTree('src'))
+console.log(composeNodeSource(buildDirTree('src')).join('\n  '))
