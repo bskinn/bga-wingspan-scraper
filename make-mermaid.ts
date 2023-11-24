@@ -236,4 +236,7 @@ const mermaidSource = composeMermaidSource(
   assembleAllNodeSources(buildDirTree('src')),
 )
 
-console.log(injectMermaidSource(archSource, mermaidSource))
+fs.writeFileSync(
+  'ARCHITECTURE.md',
+  injectMermaidSource(archSource, mermaidSource),
+)
