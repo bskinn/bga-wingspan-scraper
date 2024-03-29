@@ -20,6 +20,7 @@ then
   # grep found something modified, reject
   exit 1
 elif [ $RESULT = 1 ]
+then
   # grep didn't find anything, we're ok
   exit 0
 else
