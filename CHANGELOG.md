@@ -1,6 +1,6 @@
 ## CHANGELOG: bga-wingspan-scraper
 
-### Firefox extension to scrape data from a Wingspan game replay on Board Game Arena 
+### Firefox extension to scrape data from a Wingspan game replay on Board Game Arena
 
 All notable changes to this project will be documented in this file.
 
@@ -10,9 +10,7 @@ This project follows a `yyyy.mm.dd.n` flavor of
 [Calendar Versioning](https://calver.org/). The `n` value is sequential and
 serves to distinguish between multiple releases created on the same day.
 
-
-### *Unreleased*
-
+### _Unreleased_
 
 #### Features
 

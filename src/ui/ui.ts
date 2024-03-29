@@ -39,23 +39,25 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
     const commandArgStrs = inputDebugEval.value.split(',')
 
     // @ts-ignore
-    const commandArgVals = commandArgStrs.map(arg => eval(arg))
+    const commandArgVals = commandArgStrs.map((arg) => eval(arg))
 
-    const evaluator = (func: () => any) => {return func()}
+    const evaluator = (func: () => any) => {
+      return func()
+    }
 
     // TODO: Refactor this switch for func creation to a new file.
     //  No need to bloat this one.
-    switch(dropdown.value) {
+    switch (dropdown.value) {
       case GET_RAW_MOVE_INFO:
         func = () => getRawMoveInfo()
         break
 
       case RAW_MOVE_ID_LIST:
-        func = () => getRawMoveInfo().map(rm => parseInt(rm.moveNum))
+        func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
         break
 
       default:
-        func = () => "Not Implemented"
+        func = () => 'Not Implemented'
     }
 
     try {
@@ -138,7 +140,7 @@ const addDropDownRunFunction = (): HTMLSelectElement => {
   dropdownRunFunction.style.width = '15em'
   dropdownRunFunction.style.paddingLeft = '0.5em'
 
-  OPTIONS.forEach(opText => {
+  OPTIONS.forEach((opText) => {
     var option = document.createElement('option')
     option.textContent = opText
     dropdownRunFunction.appendChild(option)
@@ -174,5 +176,4 @@ export const buildUI = () => {
   addButtonScrapeScores()
   const dropdown = addDropDownRunFunction()
   addDebugControls(dropdown)
-  
 }
