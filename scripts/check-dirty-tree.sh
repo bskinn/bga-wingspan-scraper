@@ -2,7 +2,7 @@
 
 #####################################################################
 # Per https://sharats.me/posts/shell-script-best-practices/ (partial)
-set -o errexit
+# set -o errexit  # We don't want this because we're trapping errors
 set -o nounset
 set -o pipefail
 
