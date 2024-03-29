@@ -24,4 +24,4 @@ jobs:
         run: npm run format
 
       - name: Check for dirty working tree
-        run: git diff
+        run: git diff | grep -q 'modified' && exit 1 || exit 0
