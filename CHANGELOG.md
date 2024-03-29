@@ -18,7 +18,6 @@ serves to distinguish between multiple releases created on the same day.
 
 - Added CI workflow to check formatting, TOCs, Mermaid on pull
 
-
 ### Features at CHANGELOG Creation
 
 - TypeScript codebase, webpacked, manifested, and zipped. Builds to a
