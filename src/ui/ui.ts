@@ -1,8 +1,14 @@
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
+import { getRawMoveInfo } from '@/data/moves'
 import { sleepHelper } from '@/helpers/async'
 import { scrapeAndSave } from '@/scrape/scores'
 
-const addDebugControls = () => {
+const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
+const RAW_MOVE_ID_LIST = 'Raw Move ID List'
+
+const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST]
+
+const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Button to trigger debug eval
   // These controls may be obsolete, since it's hard to reach into the
   // webpack this way
@@ -29,8 +35,33 @@ const addDebugControls = () => {
 
   // Evalaute the expression in the input box when the button is clicked
   buttonDebugPrint.addEventListener('click', () => {
+    var func: () => any
+    const commandArgStrs = inputDebugEval.value.split(',')
+
+    // @ts-ignore
+    const commandArgVals = commandArgStrs.map((arg) => eval(arg))
+
+    const evaluator = (func: () => any) => {
+      return func()
+    }
+
+    // TODO: Refactor this switch for func creation to a new file.
+    //  No need to bloat this one.
+    switch (dropdown.value) {
+      case GET_RAW_MOVE_INFO:
+        func = () => getRawMoveInfo()
+        break
+
+      case RAW_MOVE_ID_LIST:
+        func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
+        break
+
+      default:
+        func = () => 'Not Implemented'
+    }
+
     try {
-      const result = eval(inputDebugEval.value)
+      const result = evaluator(func)
       alert(JSON.stringify(result))
     } catch (err) {
       alert(`Error: ${(err as Error).message}`)
@@ -97,6 +128,29 @@ const addButtonCheckMoveList = () => {
   document.body.appendChild(buttonCheckMoveList)
 }
 
+const addDropDownRunFunction = (): HTMLSelectElement => {
+  // Dropdown for selecting which function to run
+  // Pulls arguments from inputDebugEval
+  const dropdownRunFunction = document.createElement('select')
+  dropdownRunFunction.id = 'dropdownRunFunction'
+  dropdownRunFunction.style.position = 'fixed'
+  dropdownRunFunction.style.top = '90%'
+  dropdownRunFunction.style.left = '26em'
+  dropdownRunFunction.style.height = '2.25em'
+  dropdownRunFunction.style.width = '15em'
+  dropdownRunFunction.style.paddingLeft = '0.5em'
+
+  OPTIONS.forEach((opText) => {
+    var option = document.createElement('option')
+    option.textContent = opText
+    dropdownRunFunction.appendChild(option)
+  })
+
+  document.body.appendChild(dropdownRunFunction)
+
+  return dropdownRunFunction
+}
+
 const addButtonAwaitTest = () => {
   // Button for testing await behavior
   const buttonAwaitTest = document.createElement('button')
@@ -120,5 +174,6 @@ export const buildUI = () => {
   addButtonCheckMoveList()
   addButtonCheckPlaySeq()
   addButtonScrapeScores()
-  addDebugControls()
+  const dropdown = addDropDownRunFunction()
+  addDebugControls(dropdown)
 }
