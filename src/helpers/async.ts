@@ -1,3 +1,6 @@
+import type { TMoveId } from '@/types/types-ids'
+
+import { getRawMoveInfo } from '@/data/moves'
 import { logMsg } from '@/helpers/logging'
 
 export const sleepHelper = (ms: number) => {
@@ -30,7 +33,9 @@ export const waitForMoveHelper = (move_num: string, timeout_step = 1) => {
   // the system if accidentally called without a timeout while
   // developing/debugging.
 
-  const watched_move_num = `${parseInt(move_num) - 1}`
+  const actualMovesNumsList = getRawMoveInfo().map((rmi) => rmi.moveNum)
+  const tgtMoveIndex = actualMovesNumsList.indexOf(move_num as TMoveId)
+  const watched_move_num = actualMovesNumsList[tgtMoveIndex - 1]
 
   logMsg(`Watching move ${watched_move_num}.`)
 
