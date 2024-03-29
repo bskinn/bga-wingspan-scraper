@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "format": "run-s format:code format:mermaid format:tocs",
-    "tsc": "npx tsc --noEmit",
+    "type-check": "npx tsc --noEmit",
     "build": "run-s dev:clean dev:build dev:assets dev:manifest",
     "build-prod": "run-s prod:clean prod:build prod:assets prod:manifest",
     "clean": "npm run dev:clean",
