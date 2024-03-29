@@ -3,7 +3,7 @@ import type { TRoundTurnInfo } from '@/types/types-score-scrape'
 
 import { BONUS_TURN_ID } from '@/consts'
 
-export const calcRoundTurn = (raw_turn: TRawTurnId): TRoundTurnInfo => {
+export const calcRoundTurn = (raw_turn: TRawTurnIdxx): TRoundTurnInfo => {
   // raw_turn is zero-indexed
   // The output round and in-round turn are one-indexed
   if (raw_turn <= 7) {
