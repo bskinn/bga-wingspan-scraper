@@ -12,7 +12,12 @@ serves to distinguish between multiple releases created on the same day.
 
 ### _Unreleased_
 
-#### Features
+#### Internal
+
+- Relocated dev helper scripts to `scripts/` folder.
+
+
+### Features at CHANGELOG Creation
 
 - TypeScript codebase, webpacked, manifested, and zipped. Builds to a
   single-file artifact ready to be loaded into Firefox's 'Load Temporary Add-on'

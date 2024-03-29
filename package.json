@@ -12,7 +12,7 @@
     "clean-all": "run-p dev:clean prod:clean dist:clean",
     "dist": "run-s build-prod dist:clean dist:pack",
     "format:code": "npx prettier -w .",
-    "format:mermaid": "npx ts-node make-mermaid.ts",
+    "format:mermaid": "npx ts-node scripts/make-mermaid.ts",
     "format:tocs": "run-p format:toc:*",
     "format:toc:CONTRIBUTING": "npx markdown-toc -i CONTRIBUTING.md",
     "format:toc:ARCHITECTURE": "npx markdown-toc -i ARCHITECTURE.md",
@@ -20,13 +20,13 @@
     "dev:clean": "node -e \"fs = require('fs'); fs.rmSync('build-dev', {recursive: true, force: true})\"",
     "dev:build": "npx webpack --config webpack.config.dev.js",
     "dev:assets": "npx copyfiles assets/**/* build-dev",
-    "dev:manifest": "node render_manifest.js build-dev",
+    "dev:manifest": "node scripts/render_manifest.js build-dev",
     "prod:clean": "node -e \"fs = require('fs'); fs.rmSync('build-prod', {recursive: true, force: true})\"",
     "prod:build": "npx webpack --config webpack.config.prod.js",
-    "prod:manifest": "node render_manifest build-prod",
+    "prod:manifest": "node scripts/render_manifest.js build-prod",
     "prod:assets": "npx copyfiles assets/**/* build-prod",
     "dist:clean": "node -e \"fs = require('fs'); fs.rmSync('dist', {recursive: true, force: true})\"",
-    "dist:pack": "node zip-dist.js"
+    "dist:pack": "node scripts/zip-dist.js"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
