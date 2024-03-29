@@ -23,7 +23,7 @@ export const getRawMoveInfo = (): Array<TRawMoveInfo> => {
   //
   // But now we're using the TMoveInfo type.
   //
-  const divs = [
+  const divs =   [
     ...window.document.querySelectorAll('div[id^="replaylogs_move_"]'),
   ] as Array<HTMLDivElement>
 
