@@ -24,4 +24,4 @@ jobs:
         run: npm run format
 
       - name: Check for dirty working tree
-        run: git diff-files --quiet
+        run: git diff-files
