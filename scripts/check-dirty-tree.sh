@@ -13,7 +13,16 @@ fi
 
 git status | grep modified:
 
-if [ $? = 0 ]
+RESULT=$?
+
+if [ $RESULT = 0 ]
 then
+  # grep found something modified, reject
   exit 1
+elif [ $RESULT = 1 ]
+  # grep didn't find anything, we're ok
+  exit 0
+else
+  # Some other error
+  exit $RESULT
 fi
