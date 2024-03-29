@@ -1,0 +1,27 @@
+name: check-types
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    name: Typecheck Codebase
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v4
+
+    - name: Set up Node w/caching
+      uses: actions/setup-node@v4
+      with:
+        cache: 'npm'
+        cache-dependency-path: 'package-lock.json'
+
+    - name: Install deps
+      run: npm install
+
+    - name: Run formatting check
+      run: npm run type-check
