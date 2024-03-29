@@ -28,7 +28,7 @@ export const getScores = (): Array<number> => {
   })
 }
 
-export const   scrapeScoreSet = (): TScoreSet => {
+export const scrapeScoreSet = (): TScoreSet => {
   const results = { scores: getScores(), names: getNames() }
   return results.names.map((n, i) => {
     return { name: n, score: results.scores[i] }

@@ -16,7 +16,6 @@ serves to distinguish between multiple releases created on the same day.
 
 - Relocated dev helper scripts to `scripts/` folder.
 
-
 ### Features at CHANGELOG Creation
 
 - TypeScript codebase, webpacked, manifested, and zipped. Builds to a
