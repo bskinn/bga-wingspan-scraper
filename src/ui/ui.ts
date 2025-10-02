@@ -1,25 +1,29 @@
+import type { TMoveId } from '@/types/types-ids'
+
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
 import { getRawMoveInfo } from '@/data/moves'
-import { sleepHelper } from '@/helpers/async'
+import { sleepHelper, waitForMoveHelper } from '@/helpers/async'
+import { advanceToMove } from '@/helpers/move-control'
 import { scrapeAndSave } from '@/scrape/scores'
 
 const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
+const ADV_TO_MOVE = 'Advance to Move'
 
-const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST]
+const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST, ADV_TO_MOVE]
 
 const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Button to trigger debug eval
   // These controls may be obsolete, since it's hard to reach into the
   // webpack this way
-  const buttonDebugPrint = document.createElement('button')
-  buttonDebugPrint.textContent = 'Debug Print'
-  buttonDebugPrint.id = 'buttonDebugPrint'
-  buttonDebugPrint.style.position = 'fixed'
-  buttonDebugPrint.style.top = '95%'
-  buttonDebugPrint.style.left = '13em'
-  buttonDebugPrint.style.height = '2em'
-  buttonDebugPrint.style.width = '8em'
+  const buttonRunDropdownCmd = document.createElement('button')
+  buttonRunDropdownCmd.textContent = 'Run Cmd'
+  buttonRunDropdownCmd.id = 'buttonRunDropdownCmd'
+  buttonRunDropdownCmd.style.position = 'fixed'
+  buttonRunDropdownCmd.style.top = '95%'
+  buttonRunDropdownCmd.style.left = '13em'
+  buttonRunDropdownCmd.style.height = '2em'
+  buttonRunDropdownCmd.style.width = '8em'
 
   // Input field for debug expression to evaluate
   const inputDebugEval = document.createElement('input')
@@ -33,8 +37,8 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
   inputDebugEval.style.paddingLeft = '0.25em'
   inputDebugEval.style.paddingRight = '0.25em'
 
-  // Evalaute the expression in the input box when the button is clicked
-  buttonDebugPrint.addEventListener('click', () => {
+  // Evaluate the expression in the input box when the button is clicked
+  buttonRunDropdownCmd.addEventListener('click', () => {
     var func: () => any
     const commandArgStrs = inputDebugEval.value.split(',')
 
@@ -56,6 +60,17 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
         func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
         break
 
+      case ADV_TO_MOVE:
+        func = () => {
+          const move_num = `${commandArgVals[0] as number}` as TMoveId
+          const timeout_step = (commandArgVals[1] ?? 1) as number
+          advanceToMove(move_num)
+          waitForMoveHelper(move_num, timeout_step).then(() =>
+            console.log('Done!'),
+          )
+        }
+        break
+
       default:
         func = () => 'Not Implemented'
     }
@@ -72,11 +87,11 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
   // so we don't have to use the mouse to do the debug print
   inputDebugEval.addEventListener('keyup', function (event) {
     if (event.key == 'Enter') {
-      buttonDebugPrint.click()
+      buttonRunDropdownCmd.click()
     }
   })
 
-  document.body.appendChild(buttonDebugPrint)
+  document.body.appendChild(buttonRunDropdownCmd)
   document.body.appendChild(inputDebugEval)
 }
 const addButtonScrapeScores = () => {
