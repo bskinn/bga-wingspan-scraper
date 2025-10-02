@@ -35,9 +35,9 @@ export const waitForMoveHelper = (move_num: string, timeout_step = 1) => {
 
   const actualMovesNumsList = getRawMoveInfo().map((rmi) => rmi.moveNum)
   const tgtMoveIndex = actualMovesNumsList.indexOf(move_num as TMoveId)
-  const watched_move_num = actualMovesNumsList[tgtMoveIndex - 1]
+  const watchedMoveNum = actualMovesNumsList[tgtMoveIndex - 1]
 
-  logMsg(`Watching move ${watched_move_num}.`)
+  logMsg(`Watching move ${watchedMoveNum}.`)
 
   function finisher(resolve: Function) {
     resolve()
@@ -45,7 +45,7 @@ export const waitForMoveHelper = (move_num: string, timeout_step = 1) => {
 
   function waiter(resolve: Function) {
     const checkDivs = window.document.querySelectorAll(
-      `div[id="replaylogs_move_${watched_move_num}"][class~="viewed"]`,
+      `div[id="replaylogs_move_${watchedMoveNum}"][class~="viewed"]`,
     )
 
     if (checkDivs.length < 1) {
