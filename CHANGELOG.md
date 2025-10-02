@@ -12,11 +12,28 @@ serves to distinguish between multiple releases created on the same day.
 
 ### _Unreleased_
 
+#### Added
+
+- Add 'advance to move #' option to UI custom commands ([#74]).
+
+#### Changed
+
+- Rename custom-command UI button to "Run Cmd" ([#74]).
+
+#### Fixed
+
+- Convert replay-advance logic to tolerate missing move numbers ([#74]).
+  - Now uses lookup of move numbers out of the list of available moves, instead
+    of assuming `n-1`.
+
 #### Internal
 
-- Relocated dev helper scripts to `scripts/` folder.
+- Expand `prettier` config ([#74]).
 
-- Added CI workflow to check formatting, TOCs, Mermaid on pull
+- Relocate dev helper scripts to `scripts/` folder.
+
+- Add CI workflow to check formatting, TOCs, Mermaid on pull.
+
 
 ### Features at CHANGELOG Creation
 
@@ -34,3 +51,5 @@ serves to distinguish between multiple releases created on the same day.
 - Includes a UI for debugging during development, lightweight consistency
   checking of key data for a given replay, and kickoff of the score-scraping
   process.
+
+[#74]: https://github.com/bskinn/bga-wingspan-scraper/pull/74
