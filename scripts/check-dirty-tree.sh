@@ -17,7 +17,8 @@ RESULT=$?
 
 if [[ $RESULT -eq 0 ]]
 then
-  # grep found something modified, reject
+  # grep found something modified, print and reject
+  git diff || true
   exit 1
 elif [[ $RESULT -eq 1 ]]
 then
