@@ -2,6 +2,7 @@ import type { TMoveId } from '@/types/types-ids'
 
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
 import { getRawMoveInfo } from '@/data/moves'
+import { extractRoundBonusScore } from '@/data/scores'
 import { sleepHelper, waitForMoveHelper } from '@/helpers/async'
 import { advanceToMove } from '@/helpers/move-control'
 import { scrapeAndSave } from '@/scrape/scores'
@@ -10,8 +11,15 @@ const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
 const ADV_TO_MOVE = 'Advance to Move'
 const MOVE_TEXT = 'Show Move Text'
+const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
 
-const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST, MOVE_TEXT, ADV_TO_MOVE]
+const OPTIONS = [
+  GET_RAW_MOVE_INFO,
+  RAW_MOVE_ID_LIST,
+  MOVE_TEXT,
+  EXTRACT_ROUND_BONUS,
+  ADV_TO_MOVE,
+]
 
 const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Button to trigger debug eval
@@ -80,6 +88,26 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
           const move_idx = actualMovesNumsList.indexOf(move_num as TMoveId)
 
           return raw_move_info[move_idx].fullText
+        }
+        break
+
+      case EXTRACT_ROUND_BONUS:
+        func = () => {
+          const move_num = `${commandArgVals[0] as number}` as TMoveId
+          const player_name = commandArgVals[1] as string
+          const move_info = getRawMoveInfo().find(
+            (rmi) => rmi.moveNum == move_num,
+          )
+
+          if (!move_info) {
+            throw `Move #${move_num} not found`
+          }
+          const round_bonus = extractRoundBonusScore(
+            player_name,
+            move_info.moveText,
+          )
+
+          return `Move ${move_num} bonus for ${player_name}: ${round_bonus}`
         }
         break
 
