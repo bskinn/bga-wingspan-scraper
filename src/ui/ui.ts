@@ -1,7 +1,7 @@
 import type { TMoveId } from '@/types/types-ids'
 
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
-import { getRawMoveInfo } from '@/data/moves'
+import { getFirstTurns, getRawMoveInfo } from '@/data/moves'
 import { extractRoundBonusScore } from '@/data/scores'
 import { sleepHelper, waitForMoveHelper } from '@/helpers/async'
 import { advanceToMove } from '@/helpers/move-control'
@@ -9,6 +9,7 @@ import { scrapeAndSave } from '@/scrape/scores'
 
 const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
+const FIRST_TURN_MOVE_ID_LIST = 'First Turn Move ID List'
 const ADV_TO_MOVE = 'Advance to Move'
 const MOVE_TEXT = 'Show Move Text'
 const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
@@ -16,6 +17,7 @@ const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
 const OPTIONS = [
   GET_RAW_MOVE_INFO,
   RAW_MOVE_ID_LIST,
+  FIRST_TURN_MOVE_ID_LIST,
   MOVE_TEXT,
   EXTRACT_ROUND_BONUS,
   ADV_TO_MOVE,
@@ -66,6 +68,10 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
 
       case RAW_MOVE_ID_LIST:
         func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
+        break
+
+      case FIRST_TURN_MOVE_ID_LIST:
+        func = () => JSON.stringify(getFirstTurns())
         break
 
       case ADV_TO_MOVE:
@@ -192,7 +198,7 @@ const addDropDownRunFunction = (): HTMLSelectElement => {
   dropdownRunFunction.style.top = '90%'
   dropdownRunFunction.style.left = '26em'
   dropdownRunFunction.style.height = '2.25em'
-  dropdownRunFunction.style.width = '15em'
+  dropdownRunFunction.style.width = '20em'
   dropdownRunFunction.style.paddingLeft = '0.5em'
 
   OPTIONS.forEach((opText) => {
