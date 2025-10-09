@@ -21,7 +21,7 @@ jobs:
           cache-dependency-path: 'package-lock.json'
 
       - name: Install deps
-        run: npm install
+        run: npm ci
 
       - name: Run formatting check
         run: npm run type-check

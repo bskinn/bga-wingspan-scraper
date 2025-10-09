@@ -15,11 +15,12 @@ git status | grep modified:
 
 RESULT=$?
 
-if [ $RESULT = 0 ]
+if [[ $RESULT -eq 0 ]]
 then
-  # grep found something modified, reject
+  # grep found something modified, print and reject
+  git diff || true
   exit 1
-elif [ $RESULT = 1 ]
+elif [[ $RESULT -eq 1 ]]
 then
   # grep didn't find anything, we're ok
   exit 0
