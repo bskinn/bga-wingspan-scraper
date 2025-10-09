@@ -68,6 +68,7 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
           waitForMoveHelper(move_num, timeout_step).then(() =>
             console.log('Done!'),
           )
+          return `Moving to #${move_num}`
         }
         break
 
