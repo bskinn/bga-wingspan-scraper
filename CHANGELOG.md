@@ -28,6 +28,14 @@ serves to distinguish between multiple releases created on the same day.
 
 #### Internal
 
+- Switch to using `npm ci` instead of `npm install` in workflows ([#75]).
+  - Installs the `package-lock.json` pure read-only.
+
+- Switch to `@fomantic/gulp-header@^2.1.1` override for `gulp-header` ([#75]).
+  - Changes to use non-`lodash` functionality.
+
+- Correct some syntax in `check-dirty-tree.sh` ([#75]).
+
 - Expand `prettier` config ([#74]).
 
 - Relocate dev helper scripts to `scripts/` folder.
@@ -52,3 +60,4 @@ serves to distinguish between multiple releases created on the same day.
   process.
 
 [#74]: https://github.com/bskinn/bga-wingspan-scraper/pull/74
+[#75]: https://github.com/bskinn/bga-wingspan-scraper/pull/75
