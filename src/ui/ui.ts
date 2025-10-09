@@ -9,8 +9,9 @@ import { scrapeAndSave } from '@/scrape/scores'
 const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
 const ADV_TO_MOVE = 'Advance to Move'
+const MOVE_TEXT = 'Show Move Text'
 
-const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST, ADV_TO_MOVE]
+const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST, MOVE_TEXT, ADV_TO_MOVE]
 
 const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Button to trigger debug eval
@@ -69,6 +70,17 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
             console.log('Done!'),
           )
           return `Moving to #${move_num}`
+        }
+        break
+
+      case MOVE_TEXT:
+        func = () => {
+          const move_num = `${commandArgVals[0] as number}` as TMoveId
+          const raw_move_info = getRawMoveInfo()
+          const actualMovesNumsList = raw_move_info.map((rmi) => rmi.moveNum)
+          const move_idx = actualMovesNumsList.indexOf(move_num as TMoveId)
+
+          return raw_move_info[move_idx].fullText
         }
         break
 
