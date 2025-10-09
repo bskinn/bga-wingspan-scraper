@@ -28,11 +28,11 @@ export const getRawMoveInfo = (): Array<TRawMoveInfo> => {
   ] as Array<HTMLDivElement>
 
   return divs.map((div: HTMLDivElement) => {
-    const text = div.textContent
+    const text = Array.from(div.childNodes).map(n => n.textContent).join('\n')
 
     if (text) {
       const mch = text.match(
-        /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/,
+        /Move (\d+)\s+:([0-9]+\/[0-9]+\/[0-9]+\s*)?[0-9:]+\s*[AP]M(.+)/s,
       )
 
       if (mch) {
@@ -80,7 +80,7 @@ const getActionCubeMoves = (
 
   return filteredRawMoves.map((frm) => {
     const matchingNames = names.filter((n) => {
-      return frm.moveText.match(new RegExp(`^.*?${n}\\s+places an action cube`))
+      return frm.moveText.match(new RegExp(`${n}\\s+places an action cube`))
     })
 
     if (matchingNames.length < 1) {

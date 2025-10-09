@@ -38,13 +38,13 @@ export const scrapeScoreSet = (): TScoreSet => {
 export const extractRoundBonusScore = (name: string, text: string) => {
   // Match old format, with tie
   let match = text.match(
-    new RegExp(`Action cubes.+?${name}.+?tie for rank[^=]+?scor[^\\s]+\\s+(\\d+)\\s+point`),
+    new RegExp(`${name}.+?tie for rank[^=]+?scor[^\\s]+\\s+(\\d+)\\s+point`),
   )
 
   // Didn't match; try to match new format, with tie
   if (! match) {
     match = text.match(
-      new RegExp(`Action cubes.+?${name}.+?tie for rank[^=]+?scor[^=]+=\\s+(\\d+)\\s+point`)
+      new RegExp(`${name}.+?tie for rank[^=]+?scor[^=]+=\\s+(\\d+)\\s+point`)
     )
   }
   // Didn't match; try to match old or new format, without tie
@@ -54,7 +54,7 @@ export const extractRoundBonusScore = (name: string, text: string) => {
   // who was involved in a tie
   if (! match) {
   match = text.match(
-    new RegExp(`Action cubes.+?${name}[^=]+?scor[^\\s]+\\s+(\\d+)\\s+point`),
+    new RegExp(`${name}[^=]+?scor[^\\s]+\\s+(\\d+)\\s+point`),
   )}
 
   if (match != null) {
