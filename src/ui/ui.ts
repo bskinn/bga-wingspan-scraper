@@ -41,10 +41,9 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Evaluate the expression in the input box when the button is clicked
   buttonRunDropdownCmd.addEventListener('click', () => {
     var func: () => any
-    const commandArgStrs = inputDebugEval.value.split(',')
 
     // @ts-ignore
-    const commandArgVals = commandArgStrs.map((arg) => eval(arg))
+    const commandArgVals: Array<any> = eval(`[${inputDebugEval.value}]`)
 
     const evaluator = (func: () => any) => {
       return func()
