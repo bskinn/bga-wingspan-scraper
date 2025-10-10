@@ -28,7 +28,9 @@ export const getRawMoveInfo = (): Array<TRawMoveInfo> => {
   ] as Array<HTMLDivElement>
 
   return divs.map((div: HTMLDivElement) => {
-    const text = Array.from(div.childNodes).map(n => n.textContent).join('\n')
+    const text = Array.from(div.childNodes)
+      .map((n) => n.textContent)
+      .join('\n')
 
     if (text) {
       const mch = text.match(
