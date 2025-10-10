@@ -43,7 +43,7 @@ export const getRawMoveInfo = (): Array<TRawMoveInfo> => {
             fullText: mchArr[0],
             moveNum: mchArr[1] as TMoveId,
             dateStr: mchArr[2],
-            moveText: mchArr[3],
+            moveText: mchArr[3].trim(),
           }
         } else {
           const errMsg = `Incorrect number of match groups for div text:\n\n${text}`
