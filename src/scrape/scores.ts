@@ -114,7 +114,10 @@ export async function getScoreForMove(
   await waitForMoveHelper(move_num, timeout_step)
   logMsg('Replay advance done.')
 
-  return scrapeScoreSet()
+  const scoreSet = scrapeScoreSet()
+  logMsg(JSON.stringify(scoreSet))
+
+  return scoreSet
 }
 
 const calcAndAddRoundEndScores = (
