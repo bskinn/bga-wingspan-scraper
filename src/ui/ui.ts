@@ -9,7 +9,7 @@ import { scrapeAndSave } from '@/scrape/scores'
 
 const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
-const FIRST_TURN_MOVE_ID_LIST = 'First Turn Move ID List'
+const FIRST_TURN_PLAYER_LIST = 'First Turn Player List'
 const ADV_TO_MOVE = 'Advance to Move'
 const MOVE_TEXT = 'Show Move Text'
 const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
@@ -17,7 +17,7 @@ const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
 const OPTIONS = [
   GET_RAW_MOVE_INFO,
   RAW_MOVE_ID_LIST,
-  FIRST_TURN_MOVE_ID_LIST,
+  FIRST_TURN_PLAYER_LIST,
   MOVE_TEXT,
   EXTRACT_ROUND_BONUS,
   ADV_TO_MOVE,
@@ -70,7 +70,7 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
         func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
         break
 
-      case FIRST_TURN_MOVE_ID_LIST:
+      case FIRST_TURN_PLAYER_LIST:
         func = () => JSON.stringify(getFirstTurns())
         break
 
