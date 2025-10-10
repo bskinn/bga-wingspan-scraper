@@ -1,16 +1,35 @@
 import type { TMoveId } from '@/types/types-ids'
 
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
-import { getRawMoveInfo } from '@/data/moves'
+import {
+  getFirstTurns,
+  getMoveIds,
+  getMovesList,
+  getRawMoveInfo,
+  getTurnsetStartMoveIds,
+} from '@/data/moves'
+import { extractRoundBonusScore } from '@/data/scores'
 import { sleepHelper, waitForMoveHelper } from '@/helpers/async'
 import { advanceToMove } from '@/helpers/move-control'
 import { scrapeAndSave } from '@/scrape/scores'
 
 const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
+const TURNSET_START_MOVE_ID_LIST = 'Turnset Start Move ID List'
+const FIRST_TURN_PLAYER_LIST = 'First Turn Player List'
 const ADV_TO_MOVE = 'Advance to Move'
+const MOVE_TEXT = 'Show Move Text'
+const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
 
-const OPTIONS = [GET_RAW_MOVE_INFO, RAW_MOVE_ID_LIST, ADV_TO_MOVE]
+const OPTIONS = [
+  GET_RAW_MOVE_INFO,
+  RAW_MOVE_ID_LIST,
+  TURNSET_START_MOVE_ID_LIST,
+  FIRST_TURN_PLAYER_LIST,
+  MOVE_TEXT,
+  EXTRACT_ROUND_BONUS,
+  ADV_TO_MOVE,
+]
 
 const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Button to trigger debug eval
@@ -40,10 +59,9 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
   // Evaluate the expression in the input box when the button is clicked
   buttonRunDropdownCmd.addEventListener('click', () => {
     var func: () => any
-    const commandArgStrs = inputDebugEval.value.split(',')
 
     // @ts-ignore
-    const commandArgVals = commandArgStrs.map((arg) => eval(arg))
+    const commandArgVals: Array<any> = eval(`[${inputDebugEval.value}]`)
 
     const evaluator = (func: () => any) => {
       return func()
@@ -60,6 +78,17 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
         func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
         break
 
+      case TURNSET_START_MOVE_ID_LIST:
+        func = () =>
+          getTurnsetStartMoveIds(getMoveIds(getMovesList())).map((mId) =>
+            parseInt(mId),
+          )
+        break
+
+      case FIRST_TURN_PLAYER_LIST:
+        func = () => JSON.stringify(getFirstTurns())
+        break
+
       case ADV_TO_MOVE:
         func = () => {
           const move_num = `${commandArgVals[0] as number}` as TMoveId
@@ -68,6 +97,38 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
           waitForMoveHelper(move_num, timeout_step).then(() =>
             console.log('Done!'),
           )
+          return `Moving to #${move_num}`
+        }
+        break
+
+      case MOVE_TEXT:
+        func = () => {
+          const move_num = `${commandArgVals[0] as number}` as TMoveId
+          const raw_move_info = getRawMoveInfo()
+          const actualMovesNumsList = raw_move_info.map((rmi) => rmi.moveNum)
+          const move_idx = actualMovesNumsList.indexOf(move_num as TMoveId)
+
+          return raw_move_info[move_idx].fullText
+        }
+        break
+
+      case EXTRACT_ROUND_BONUS:
+        func = () => {
+          const move_num = `${commandArgVals[0] as number}` as TMoveId
+          const player_name = commandArgVals[1] as string
+          const move_info = getRawMoveInfo().find(
+            (rmi) => rmi.moveNum == move_num,
+          )
+
+          if (!move_info) {
+            throw `Move #${move_num} not found`
+          }
+          const round_bonus = extractRoundBonusScore(
+            player_name,
+            move_info.moveText,
+          )
+
+          return `Move ${move_num} bonus for ${player_name}: ${round_bonus}`
         }
         break
 
@@ -152,7 +213,7 @@ const addDropDownRunFunction = (): HTMLSelectElement => {
   dropdownRunFunction.style.top = '90%'
   dropdownRunFunction.style.left = '26em'
   dropdownRunFunction.style.height = '2.25em'
-  dropdownRunFunction.style.width = '15em'
+  dropdownRunFunction.style.width = '20em'
   dropdownRunFunction.style.paddingLeft = '0.5em'
 
   OPTIONS.forEach((opText) => {
