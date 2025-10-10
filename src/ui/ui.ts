@@ -1,7 +1,13 @@
 import type { TMoveId } from '@/types/types-ids'
 
 import { checkFullPlaySequence, checkMoveListLength } from '@/checks/moves'
-import { getFirstTurns, getRawMoveInfo } from '@/data/moves'
+import {
+  getFirstTurns,
+  getMoveIds,
+  getMovesList,
+  getRawMoveInfo,
+  getTurnsetStartMoveIds,
+} from '@/data/moves'
 import { extractRoundBonusScore } from '@/data/scores'
 import { sleepHelper, waitForMoveHelper } from '@/helpers/async'
 import { advanceToMove } from '@/helpers/move-control'
@@ -9,6 +15,7 @@ import { scrapeAndSave } from '@/scrape/scores'
 
 const GET_RAW_MOVE_INFO = 'getRawMoveInfo()'
 const RAW_MOVE_ID_LIST = 'Raw Move ID List'
+const TURNSET_START_MOVE_ID_LIST = 'Turnset Start Move ID List'
 const FIRST_TURN_PLAYER_LIST = 'First Turn Player List'
 const ADV_TO_MOVE = 'Advance to Move'
 const MOVE_TEXT = 'Show Move Text'
@@ -17,6 +24,7 @@ const EXTRACT_ROUND_BONUS = 'Extract Round Bonus'
 const OPTIONS = [
   GET_RAW_MOVE_INFO,
   RAW_MOVE_ID_LIST,
+  TURNSET_START_MOVE_ID_LIST,
   FIRST_TURN_PLAYER_LIST,
   MOVE_TEXT,
   EXTRACT_ROUND_BONUS,
@@ -68,6 +76,13 @@ const addDebugControls = (dropdown: HTMLSelectElement) => {
 
       case RAW_MOVE_ID_LIST:
         func = () => getRawMoveInfo().map((rm) => parseInt(rm.moveNum))
+        break
+
+      case TURNSET_START_MOVE_ID_LIST:
+        func = () =>
+          getTurnsetStartMoveIds(getMoveIds(getMovesList())).map((mId) =>
+            parseInt(mId),
+          )
         break
 
       case FIRST_TURN_PLAYER_LIST:
